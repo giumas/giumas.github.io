@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.bag.base &mdash; HydrOffice BAG 0.2.5 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice BAG 0.2.5 documentation" href="../../../index.html" />
+    <link rel="up" title="hydroffice.bag" href="../bag.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice BAG 0.2.5 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../bag.html" accesskey="U">hydroffice.bag</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice BAG library and tools (0.2). For the source code,
+    <a href="https://bitbucket.org/gmasetti/hyo_bag">go here</a>.
+    </p>
+
+</div>
+    <h1>Source code for hydroffice.bag.base</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>  <span class="c"># , unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">h5py._hl.base</span> <span class="kn">import</span> <span class="n">with_phil</span>
+
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">BAGError</span>
+
+
+<span class="n">PY3</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="k">if</span> <span class="n">PY3</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">s</span>
+<span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="u"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.base.u">[docs]</a>    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">r&#39;</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">r&#39;</span><span class="se">\\\\</span><span class="s">&#39;</span><span class="p">),</span> <span class="s">&quot;unicode_escape&quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="is_bag"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.base.is_bag">[docs]</a><span class="k">def</span> <span class="nf">is_bag</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Determine if a file is valid BAG (False if it doesn&#39;t exist). &quot;&quot;&quot;</span>
+
+    <span class="c"># we first check if the file is a valid hdf5 (it also checks if the file exists)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">h5py</span><span class="o">.</span><span class="n">is_hdf5</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="n">fid</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fid</span><span class="p">[</span><span class="s">&quot;BAG_root&quot;</span><span class="p">]</span>
+
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="File"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.base.File">[docs]</a><span class="k">class</span> <span class="nc">File</span><span class="p">(</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Represents a BAG file (at low-level, thin wrapper around h5py). &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">libver</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">userblock_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">swmr</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new file object.</span>
+
+<span class="sd">        See the h5py user guide for a detailed explanation of the options.</span>
+
+<span class="sd">        name</span>
+<span class="sd">            Name of the file on disk.  Note: for files created with the &#39;core&#39;</span>
+<span class="sd">            driver, HDF5 still requires this be non-empty.</span>
+<span class="sd">        driver</span>
+<span class="sd">            Name of the driver to use.  Legal values are None (default,</span>
+<span class="sd">            recommended), &#39;core&#39;, &#39;sec2&#39;, &#39;stdio&#39;, &#39;mpio&#39;.</span>
+<span class="sd">        libver</span>
+<span class="sd">            Library version bounds.  Currently only the strings &#39;earliest&#39;</span>
+<span class="sd">            and &#39;latest&#39; are defined.</span>
+<span class="sd">        userblock</span>
+<span class="sd">            Desired size of user block.  Only allowed when creating a new</span>
+<span class="sd">            file (mode w, w- or x).</span>
+<span class="sd">        swmr</span>
+<span class="sd">            Open the file in SWMR read mode. Only used when mode = &#39;r&#39;.</span>
+<span class="sd">        Additional keywords</span>
+<span class="sd">            Passed on to the selected file driver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">File</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span>
+                                   <span class="n">libver</span><span class="o">=</span><span class="n">libver</span><span class="p">,</span> <span class="n">userblock_size</span><span class="o">=</span><span class="n">userblock_size</span><span class="p">,</span> <span class="n">swmr</span><span class="o">=</span><span class="n">swmr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<div class="viewcode-block" id="File.close"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.base.File.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Close the file.  All open objects become invalid &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;closing&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">File</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="File.flush"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.base.File.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Tell the BAG library to flush its buffers. &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;flushing&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">File</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+    <span class="nd">@with_phil</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;closed file&quot;</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s">&#39;&lt;Closed BAG file&gt;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Filename has to be forced to Unicode if it comes back bytes</span>
+            <span class="c"># Mode is always a &quot;native&quot; string</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>  <span class="c"># Can&#39;t decode fname</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s">&#39;&lt;BAG file &quot;</span><span class="si">%s</span><span class="s">&quot; (mode </span><span class="si">%s</span><span class="s">)&gt;&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s"> .id: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s"> .name: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s"> .driver: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s"> .user block size: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">userblock_size</span>
+
+        <span class="k">if</span> <span class="n">PY3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">r</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_bag/raw/tip/hydroffice/bag/media/favicon.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice BAG 0.2.5 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../bag.html" >hydroffice.bag</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, G.Masetti, B.R.Calder.
+    </div>
+  </body>
+</html>

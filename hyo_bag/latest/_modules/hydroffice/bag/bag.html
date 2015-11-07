@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.bag.bag &mdash; HydrOffice BAG 0.2.5 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice BAG 0.2.5 documentation" href="../../../index.html" />
+    <link rel="up" title="hydroffice.bag" href="../bag.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice BAG 0.2.5 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../bag.html" accesskey="U">hydroffice.bag</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice BAG library and tools (0.2). For the source code,
+    <a href="https://bitbucket.org/gmasetti/hyo_bag">go here</a>.
+    </p>
+
+</div>
+    <h1>Source code for hydroffice.bag.bag</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>  <span class="c"># , unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">is_bag</span><span class="p">,</span> <span class="n">File</span>
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">BAGError</span><span class="p">,</span> <span class="n">Helper</span>
+<span class="kn">from</span> <span class="nn">.meta</span> <span class="kn">import</span> <span class="n">Meta</span>
+
+
+<div class="viewcode-block" id="BAGFile"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile">[docs]</a><span class="k">class</span> <span class="nc">BAGFile</span><span class="p">(</span><span class="n">File</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Represents a BAG file. &quot;&quot;&quot;</span>
+
+    <span class="n">_bag_root</span> <span class="o">=</span> <span class="s">&quot;BAG_root&quot;</span>
+    <span class="n">_bag_version</span> <span class="o">=</span> <span class="s">&quot;Bag Version&quot;</span>
+    <span class="n">_bag_version_number</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;1.5.3&#39;</span>
+    <span class="n">_bag_elevation</span> <span class="o">=</span> <span class="s">&quot;BAG_root/elevation&quot;</span>
+    <span class="n">_bag_elevation_min_ev</span> <span class="o">=</span> <span class="s">&quot;Minimum Elevation Value&quot;</span>
+    <span class="n">_bag_elevation_max_ev</span> <span class="o">=</span> <span class="s">&quot;Maximum Elevation Value&quot;</span>
+    <span class="n">_bag_metadata</span> <span class="o">=</span> <span class="s">&quot;BAG_root/metadata&quot;</span>
+    <span class="n">_bag_tracking_list</span> <span class="o">=</span> <span class="s">&quot;BAG_root/tracking_list&quot;</span>
+    <span class="n">_bag_tracking_list_len</span> <span class="o">=</span> <span class="s">&quot;Tracking List Length&quot;</span>
+    <span class="n">_bag_tracking_list_type</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s">&#39;row&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;col&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">),</span>
+                                        <span class="p">(</span><span class="s">&#39;depth&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;uncertainty&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                        <span class="p">(</span><span class="s">&#39;track_code&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">byte</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;list_series&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)])</span>
+    <span class="n">_bag_uncertainty</span> <span class="o">=</span> <span class="s">&quot;BAG_root/uncertainty&quot;</span>
+    <span class="n">_bag_uncertainty_min_uv</span> <span class="o">=</span> <span class="s">&quot;Minimum Uncertainty Value&quot;</span>
+    <span class="n">_bag_uncertainty_max_uv</span> <span class="o">=</span> <span class="s">&quot;Maximum Uncertainty Value&quot;</span>
+    <span class="n">BAG_NAN</span> <span class="o">=</span> <span class="mi">1000000</span>
+
+    <span class="n">default_metadata_file</span> <span class="o">=</span> <span class="s">&quot;BAG_metadata.xml&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">libver</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">userblock_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">swmr</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new file object.</span>
+
+<span class="sd">        See the low level bag.File for a detailed explanation of the options.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&#39;w&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_bag</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">BAGError</span><span class="p">(</span><span class="s">&quot;The passed file </span><span class="si">%s</span><span class="s"> is not a BAG file&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">BAGFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span>
+                                      <span class="n">libver</span><span class="o">=</span><span class="n">libver</span><span class="p">,</span> <span class="n">userblock_size</span><span class="o">=</span><span class="n">userblock_size</span><span class="p">,</span> <span class="n">swmr</span><span class="o">=</span><span class="n">swmr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BAGFile.create_template"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.create_template">[docs]</a>    <span class="k">def</span> <span class="nf">create_template</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; create a BAG file with empty template structure &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;create new BAG file: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_bag</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">new_bag</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_root</span><span class="p">)</span>
+            <span class="n">new_bag</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_version</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">_bag_version_number</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&quot;S5&quot;</span><span class="p">)</span>
+
+            <span class="n">elevation</span> <span class="o">=</span> <span class="n">new_bag</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_elevation</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">elevation</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_elevation_min_ev</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">elevation</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_elevation_max_ev</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+            <span class="n">new_bag</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_metadata</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&quot;S1&quot;</span><span class="p">)</span>
+
+            <span class="n">tracking_list</span> <span class="o">=</span> <span class="n">new_bag</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_tracking_list</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_tracking_list_type</span><span class="p">)</span>
+            <span class="n">tracking_list</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_tracking_list_len</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+
+            <span class="n">uncertainty</span> <span class="o">=</span> <span class="n">new_bag</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_uncertainty</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">uncertainty</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_uncertainty_min_uv</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">uncertainty</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_bag_uncertainty_max_uv</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="n">BAGError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BAGError</span><span class="p">(</span><span class="s">&quot;Unable to create the BAG file </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">new_bag</span>
+</div>
+<div class="viewcode-block" id="BAGFile.elevation"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.elevation">[docs]</a>    <span class="k">def</span> <span class="nf">elevation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask_nan</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the elevation as numpy array</span>
+
+<span class="sd">        mask_nan</span>
+<span class="sd">            If True, apply a mask using the BAG nan value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask_nan</span><span class="p">:</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_elevation</span><span class="p">][:]</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">el</span> <span class="o">==</span> <span class="n">BAGFile</span><span class="o">.</span><span class="n">BAG_NAN</span>
+            <span class="n">el</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">return</span> <span class="n">el</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_elevation</span><span class="p">][:]</span>
+</div>
+<div class="viewcode-block" id="BAGFile.uncertainty"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.uncertainty">[docs]</a>    <span class="k">def</span> <span class="nf">uncertainty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask_nan</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the uncertainty as numpy array</span>
+
+<span class="sd">        mask_nan</span>
+<span class="sd">            If True, apply a mask using the BAG nan value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask_nan</span><span class="p">:</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_uncertainty</span><span class="p">][:]</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">el</span> <span class="o">==</span> <span class="n">BAGFile</span><span class="o">.</span><span class="n">BAG_NAN</span>
+            <span class="n">el</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">return</span> <span class="n">el</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_uncertainty</span><span class="p">][:]</span>
+</div>
+<div class="viewcode-block" id="BAGFile.tracking_list"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.tracking_list">[docs]</a>    <span class="k">def</span> <span class="nf">tracking_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the tracking list as numpy array &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_tracking_list</span><span class="p">][:]</span>
+</div>
+<div class="viewcode-block" id="BAGFile.tracking_list_fields"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.tracking_list_fields">[docs]</a>    <span class="k">def</span> <span class="nf">tracking_list_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the tracking list field names &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_tracking_list</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+</div>
+<div class="viewcode-block" id="BAGFile.metadata"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.metadata">[docs]</a>    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">as_pretty_xml</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the metadata</span>
+
+<span class="sd">        as_string</span>
+<span class="sd">            If True, convert the metadata from a dataset of characters to a string</span>
+<span class="sd">        as_pretty_xml</span>
+<span class="sd">            If True, return the xml in a pretty format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">as_string</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">as_pretty_xml</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_metadata</span><span class="p">][:]</span><span class="o">.</span><span class="n">tostring</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;exception raised: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">as_pretty_xml</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">xml_tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_metadata</span><span class="p">][:]</span><span class="o">.</span><span class="n">tostring</span><span class="p">())</span>
+                <span class="k">return</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">xml_tree</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;exception raised: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">BAGFile</span><span class="o">.</span><span class="n">_bag_metadata</span><span class="p">][:]</span>
+</div>
+<div class="viewcode-block" id="BAGFile.extract_metadata"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.extract_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">extract_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Save metadata on disk</span>
+
+<span class="sd">        name</span>
+<span class="sd">            The file path where the metadata will be saved. If None, use a default name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">meta_xml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">as_pretty_xml</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">meta_xml</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;unable to access the metadata&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_metadata_file</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
+            <span class="n">fid</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">meta_xml</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BAGFile.validate_metadata"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.validate_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">validate_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Validate metadata based on XML Schemas and schematron. &quot;&quot;&quot;</span>
+        <span class="c"># clean metadata error list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="c"># assuming a valid BAG</span>
+        <span class="n">is_valid</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">xml_tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">as_pretty_xml</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;unabled to parse XML metadata: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">schema_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Helper</span><span class="o">.</span><span class="n">iso19139_folder</span><span class="p">(),</span> <span class="s">&#39;bag&#39;</span><span class="p">,</span> <span class="s">&#39;bag.xsd&#39;</span><span class="p">)</span>
+            <span class="n">schema_doc</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">schema_path</span><span class="p">)</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="n">schema_doc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;unabled to parse XML schema: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">assertValid</span><span class="p">(</span><span class="n">xml_tree</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">DocumentInvalid</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;invalid metadata based on XML schema: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">error_log</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">is_valid</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="n">is_valid</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;xsd validated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">schematron_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Helper</span><span class="o">.</span><span class="n">iso19757_3_folder</span><span class="p">(),</span> <span class="s">&#39;bag_metadata_profile.sch&#39;</span><span class="p">)</span>
+            <span class="n">schematron_doc</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">schematron_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">DocumentInvalid</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;unabled to parse BAG schematron: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">isoschematron</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Unable to load lxml isoschematron files&quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">schematron</span> <span class="o">=</span> <span class="n">isoschematron</span><span class="o">.</span><span class="n">Schematron</span><span class="p">(</span><span class="n">schematron_doc</span><span class="p">,</span> <span class="n">store_report</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">etree</span><span class="o">.</span><span class="n">DocumentInvalid</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;unabled to load BAG schematron: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="n">schematron</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">xml_tree</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;schematron validated&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;invalid metadata based on Schematron&quot;</span><span class="p">)</span>
+            <span class="n">is_valid</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">ns</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;svrl&#39;</span><span class="p">:</span> <span class="s">&#39;http://purl.oclc.org/dsdl/svrl&#39;</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">schematron</span><span class="o">.</span><span class="n">error_log</span><span class="p">:</span>
+                <span class="n">err_tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+                <span class="c">#print(etree.tostring(err_tree, pretty_print=True))</span>
+                <span class="n">err_msg</span> <span class="o">=</span> <span class="n">err_tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">&#39;/svrl:failed-assert/svrl:text&#39;</span><span class="p">,</span> <span class="n">namespaces</span><span class="o">=</span><span class="n">ns</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">is_valid</span>
+</div>
+<div class="viewcode-block" id="BAGFile.validation_info"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.validation_info">[docs]</a>    <span class="k">def</span> <span class="nf">validation_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a message string with the result of the validation &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;XML input source: </span><span class="si">%s</span><span class="se">\n</span><span class="s">Validation output: &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bag_metadata</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_metadata</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;VALID&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;INVALID</span><span class="se">\n</span><span class="s">Reasons:</span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="k">for</span> <span class="n">err_msg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_errors</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot; - </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">err_msg</span>
+        <span class="k">return</span> <span class="n">msg</span>
+</div>
+<div class="viewcode-block" id="BAGFile.populate_metadata"><a class="viewcode-back" href="../../../api/hydroffice.bag.html#hydroffice.bag.bag.BAGFile.populate_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">populate_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Populate metadata class &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c">#log.debug(&quot;metadata already populated&quot;)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">Meta</span><span class="p">(</span><span class="n">meta_xml</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">as_pretty_xml</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span>
+</div>
+    <span class="k">def</span> <span class="nf">_str_group_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grp</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">grp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bag_root</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s"> &lt;root&gt;&quot;</span>
+        <span class="k">elif</span> <span class="n">grp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bag_elevation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  &lt;elevation shape=</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elevation</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">grp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bag_uncertainty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  &lt;uncertainty shape=</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">grp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bag_tracking_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  &lt;tracking list shape=</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tracking_list</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">grp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bag_metadata</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  &lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="n">grp</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  &lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="n">grp</span>
+
+        <span class="k">if</span> <span class="n">grp</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bag_metadata</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">atr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">grp</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+                <span class="n">atr_val</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">grp</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">atr</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">   - </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">atr</span><span class="p">,</span> <span class="n">atr_val</span><span class="p">,</span> <span class="n">atr_val</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">atr_val</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">BAGFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_str_group_info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_bag/raw/tip/hydroffice/bag/media/favicon.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice BAG 0.2.5 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../bag.html" >hydroffice.bag</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, G.Masetti, B.R.Calder.
+    </div>
+  </body>
+</html>

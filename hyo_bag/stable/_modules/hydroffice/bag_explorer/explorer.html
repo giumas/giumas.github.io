@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.bag_explorer.explorer &mdash; HydrOffice BAG 0.2.3 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice BAG 0.2.3 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice BAG 0.2.3 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    
+        <p>
+        This document describes the current stable version of HydrOffice BAG (0.2). For development docs,
+        <a href="https://hydroffice-bag.readthedocs.org/en/stable/">go here</a>.
+        </p>
+    
+
+</div>
+    <h1>Source code for hydroffice.bag_explorer.explorer</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">wx</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">hdf_compass.compass_viewer.viewer</span> <span class="kn">import</span> <span class="n">load_plugins</span>
+<span class="kn">from</span> <span class="nn">hdf_compass.compass_viewer</span> <span class="kn">import</span> <span class="n">open_store</span><span class="p">,</span> <span class="n">CompassApp</span>
+<span class="kn">from</span> <span class="nn">hdf_compass</span> <span class="kn">import</span> <span class="n">utils</span>
+
+<span class="kn">from</span> <span class="nn">hydroffice.bag_explorer</span> <span class="kn">import</span> <span class="n">frame</span>
+
+
+<div class="viewcode-block" id="BagExplorerApp"><a class="viewcode-back" href="../../../api/hydroffice.bag_explorer.html#hydroffice.bag_explorer.explorer.BagExplorerApp">[docs]</a><span class="k">class</span> <span class="nc">BagExplorerApp</span><span class="p">(</span><span class="n">CompassApp</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redirect</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor.  If *redirect*, show a windows with console output.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BagExplorerApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">redirect</span><span class="o">=</span><span class="n">redirect</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SetAppName</span><span class="p">(</span><span class="s">&quot;BAG Explorer&quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../api/hydroffice.bag_explorer.html#hydroffice.bag_explorer.explorer.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Run BAG Explorer.  Handles all command-line arguments, etc.&quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">faulthandler</span>
+        <span class="n">faulthandler</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">import</span> <span class="nn">os.path</span> <span class="kn">as</span> <span class="nn">op</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">BagExplorerApp</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">load_plugins</span><span class="p">()</span>
+
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&quot;://&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
+            <span class="c"># assumed to be file path</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">path2url</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">open_store</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Failed to open &quot;</span><span class="si">%s</span><span class="s">&quot;; no handlers&#39;</span> <span class="o">%</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">InitFrame</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_darwin</span><span class="p">:</span>
+        <span class="n">wx</span><span class="o">.</span><span class="n">MenuBar</span><span class="o">.</span><span class="n">MacSetCommonMenuBar</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">GetMenuBar</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">MainLoop</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_bag/raw/tip/hydroffice/bag_explorer/media/BAGExplorer_128.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice BAG 0.2.3 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, G.Masetti, B.R.Calder.
+    </div>
+  </body>
+</html>
