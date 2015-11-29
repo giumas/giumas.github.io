@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How to install &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="index.html" />
+    <link rel="next" title="How to use" href="how_to_use.html" />
+    <link rel="prev" title="License" href="license.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="how_to_use.html" title="How to use"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
+    </p>
+
+</div>
+    <div class="section" id="how-to-install">
+<h1>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">the simplest way:</p>
+<div class="highlight-python"><div class="highlight"><pre>pip install hydroffice.base
+</pre></div>
+</div>
+</li>
+<li><p class="first">for the latest features:</p>
+<div class="highlight-python"><div class="highlight"><pre>hg clone ssh://hg@bitbucket.org/ccomjhc/hyo_base
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="suggested-configurations">
+<h2>Suggested configurations<a class="headerlink" href="#suggested-configurations" title="Permalink to this headline">¶</a></h2>
+<p>Given its specific aim, this hydro-package is usually installed to run in one of two configurations:</p>
+<div class="section" id="on-the-machine-used-for-sound-speed-profile-acquisition">
+<h3>On the machine used for sound speed profile acquisition<a class="headerlink" href="#on-the-machine-used-for-sound-speed-profile-acquisition" title="Permalink to this headline">¶</a></h3>
+<p>This represents a quite common choice since many of the operations accomplished in the software are typically done
+immediately after acquisition of a cast. If the machine is on the same network as the multibeam acquisition workstation,
+the SSP can be directly delivered via network.
+When this is not possible, the package can export the processed data to files that can then be manually uploaded
+to the multibeam workstation.</p>
+</div>
+<div class="section" id="on-the-multibeam-acquisition-workstation">
+<h3>On the multibeam acquisition workstation<a class="headerlink" href="#on-the-multibeam-acquisition-workstation" title="Permalink to this headline">¶</a></h3>
+<p>This configuration is particularly useful when it is anticipated that the software will run in Server Mode.
+In fact, it is important that multibeam watch standers are able to monitor the server and to disable it
+in the event that a measured profile is to be uploaded.</p>
+</div>
+</div>
+<div class="section" id="upgrading">
+<h2>Upgrading<a class="headerlink" href="#upgrading" title="Permalink to this headline">¶</a></h2>
+<p>You will need to migrate specific configuration settings from your previous installation over
+into the new configuration file. The migration of configuration settings is currently done manually.</p>
+</div>
+<div class="section" id="space-requirements">
+<h2>Space requirements<a class="headerlink" href="#space-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Approximately 2GB of additional disk space is required for the WOA09 data set optionally required
+(but warmly suggested) by this hydro-package. If not available, the package will attempt to download it.
+Alternatively, it is also possible to manually download, unpack the WOA09 data set, and modify the configuration file
+to point to the correct path (see <a class="reference internal" href="#package-configuration"><span>Package configuration</span></a>).</p>
+</div>
+<div class="section" id="package-configuration">
+<span id="id1"></span><h2>Package configuration<a class="headerlink" href="#package-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the hydro-package project folder, you can find a configuration file: <code class="docutils literal"><span class="pre">__config__.db</span></code>.
+This SQLite database file has to be modified to reflect the chosen software deployment and environment-specific
+configuration settings (e.g., the SIS IP address and ports).</p>
+<p>Use the <a class="reference external" href="https://bitbucket.org/ccomjhc/hyo_ssp_settings">SSP Settings</a> application to modify the available
+configuration options.</p>
+</div>
+<div class="section" id="ssp-sis-interaction">
+<h2>SSP-SIS interaction<a class="headerlink" href="#ssp-sis-interaction" title="Permalink to this headline">¶</a></h2>
+<p>In order to automatically interact with <em>Kongsberg SIS</em>, some initial configuration are required on the <em>SIS</em> side
+to make it to broadcast a specific subset of datagrams that can then be interpreted by the <em>SSP</em> hydro-package
+(identification codes in parentheses):</p>
+<ul class="simple">
+<li><strong>Position</strong> (‘P’, 80, 0x50): for retrieving current date and position</li>
+<li><strong>Sound Speed Profile</strong> (‘U’, 85, 0x55): checking whether a SSP transmission was successful</li>
+<li><strong>XYZ88</strong> (‘X’, 88, 0x58): to retrieve:<ul>
+<li>The surface sound speed (used in beam forming and steering) and the transducer draft (both used when augmenting SSPs with the measured surface sound speed value).</li>
+<li>The depth (to estimate the approximate water depth). This is used in the sound speed, temperature and salinity plots to help the user appreciate the minimal depth to which the profiles should be extended.</li>
+</ul>
+</li>
+</ul>
+<p><em>Kongsberg SIS</em> can be configured to broadcast datagrams in different ways:</p>
+<div class="section" id="method-1">
+<span id="id2"></span><h3>Method #1<a class="headerlink" href="#method-1" title="Permalink to this headline">¶</a></h3>
+<p>This method is usually used for the case where the hydro-package and <em>SIS</em> are installed on the same machine.
+However, since the <em>User Defined UDP</em> port cannot be modified, this method may not be suitable if this mechanism is
+already in used by another program.
+In such a case, the <em>DataDistrib.exe</em> program explored in <a class="reference internal" href="#method-3"><span>Method #3</span></a> may be attempted.</p>
+<p>The configuration for this method is actually quite simple:</p>
+<ul class="simple">
+<li>Stop pinging</li>
+<li>Access the <em>Installation Parameters</em> dialog (see <a class="reference internal" href="#method-1-fig"><span>Figure - SIS Installation parameters dialog, with key settings in red for method_1.</span></a>) from the <em>View</em> menu by choosing <em>Tear off</em> and then <em>Installation Parameters</em></li>
+</ul>
+<div class="align-center figure" id="id5">
+<span id="method-1-fig"></span><a class="reference internal image-reference" href="_images/method1.png"><img alt="alternate text" src="_images/method1.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure - <em>SIS Installation parameters</em> dialog, with key settings in red for <a class="reference internal" href="#method-1"><span>Method #1</span></a>.</span></p>
+</div>
+<ul class="simple">
+<li>Select the <em>PU Communication Setup</em> tab and then choose the <em>Output Setup</em> sub-tab.</li>
+<li>Choose <em>User Defined</em> from the <em>UDP Host Port</em> dropdown menu (the default output port varies with the MBES model). Take a note of this for configuring SSP Manager later.</li>
+<li>Select the following datagrams: <em>Depth</em>, <em>Position</em>, and <em>Sound Speed Profile</em>.</li>
+<li>Click the <em>OK</em> button at the top left of the tabbed panels.</li>
+<li>Restart pinging.</li>
+</ul>
+</div>
+<div class="section" id="method-2">
+<span id="id3"></span><h3>Method #2<a class="headerlink" href="#method-2" title="Permalink to this headline">¶</a></h3>
+<p>This method is more general, and it can be used for data transmission to other computers on the network
+(by specifying IP address and port, as well as transmission rate).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><em>SIS</em> needs to be restarted for the changes to take effect. Furthermore, since the software does not seem
+to validate user inputs, mistakes made cannot be easily discovered and undone (unsubscribe).</p>
+</div>
+<ul class="simple">
+<li>From the <em>Tools</em> menu, choose <em>Custom…</em> and then <em>Datagram Distribution</em> (see <a class="reference internal" href="#method-2-fig"><span>Figure – Datagram Distribution dialog, with key settings in red for method_2.</span></a>).</li>
+</ul>
+<div class="align-center figure" id="id6">
+<span id="method-2-fig"></span><a class="reference internal image-reference" href="_images/method2.png"><img alt="alternate text" src="_images/method2.png" style="width: 300px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Datagram Distribution dialog, with key settings in red for <a class="reference internal" href="#method-2"><span>Method #2</span></a>.</span></p>
+</div>
+<ul class="simple">
+<li>Choose the datagram from the drop down menu, starting with <em>Position (P)</em>.</li>
+<li>Type in the IP address of the remote machine where this hydro-package is installed, immediately followed by a colon (:), then  the port number that the data should be delivered to on the remote machine: e.g., <code class="docutils literal"><span class="pre">192.168.1.67:16103</span></code>.</li>
+<li>Click the <em>Subscribe</em> button.</li>
+<li>Repeat Steps 2-4 for the <em>SVP (U)</em> and the <em>XYZ88 (X)</em> datagrams.</li>
+</ul>
+</div>
+<div class="section" id="method-3">
+<span id="id4"></span><h3>Method #3<a class="headerlink" href="#method-3" title="Permalink to this headline">¶</a></h3>
+<p>This method is required when multiple software packages need to receive data from <em>SIS</em>, and it represents
+an extension of the previous two methods. It uses a standalone program, named <em>DataDistrib.exe</em>,
+bundled with SIS and usually installed in <em>C:\Program Files\Kongsberg Maritime\SIS\bin</em>
+(together with a configuration file <em>DataDistrib.ini</em> with all the subscriptions).</p>
+<p>It is suggested to add the <em>DataDistrib.exe</em> to the <em>Startup</em> menu (so that it is automatically started).
+However, common backsides of this method is that the executable can be accidentally closed (stopping the data
+distribution to this package), or it can accidentally runs twice corrupting the configuration file
+(to prevent this, it could be made ‘read only’).</p>
+<p>The setup of this method is summarized as follows:</p>
+<ul class="simple">
+<li>If the program is running already, click the icon in the taskbar to launch the graphical user interface (see <a class="reference internal" href="#method-3-fig"><span>Figure – The Data Distrubution application, with key settings in red for method_3.</span></a>). If not, navigate to <em>C:Program FilesKongsberg MaritimeSISbin</em> and double click on <em>DataDistrib.exe</em> to launch it</li>
+</ul>
+<div class="align-center figure" id="id7">
+<span id="method-3-fig"></span><a class="reference internal image-reference" href="_images/method3.png"><img alt="alternate text" src="_images/method3.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – The Data Distrubution application, with key settings in red for <a class="reference internal" href="#method-3"><span>Method #3</span></a>.</span></p>
+</div>
+<ul class="simple">
+<li>Find the first empty row and enter the UDP port to which <em>SIS</em> has to distribute data in the left most column. Hit the <em>Enter</em> key to finalize the entry</li>
+<li>In the same row, click on the fourth column and type in the IP address of the remote machine on which this package is installed, immediately followed by a colon (:), then port number that the data should be delivered to on the remote machine: e.g., 192.168.1.67:16103. Again, hit the <em>Enter</em> key to finalize the entry. If SIS is pinging and distributing the data, you should see the packet count increase steadily in the third column.</li>
+</ul>
+</div>
+<div class="section" id="ssp-side">
+<h3>SSP side<a class="headerlink" href="#ssp-side" title="Permalink to this headline">¶</a></h3>
+<p>The parameters, present in <em>__config.db__</em>, that must be modified to match the <em>SIS</em> configuration are reported as <em>client_list</em> and <em>km_listen_port</em>.</p>
+<p>As <em>client_list</em> you need to specify:</p>
+<ul class="simple">
+<li>a name for the client (for ease of recognition)</li>
+<li>the client IP address to which the data should be sent by SSP Manager (if the package is installed on the same machine as <em>SIS</em>, this should be <code class="docutils literal"><span class="pre">127.0.0.1</span></code>)</li>
+<li>the port to which the client is listening for <em>SSP</em> (<em>SIS</em> always listens port <code class="docutils literal"><span class="pre">4001</span></code> for SSP input)</li>
+<li>the protocol in use: <code class="docutils literal"><span class="pre">SIS</span></code></li>
+</ul>
+<p>The <em>km_listen_port</em> provides the port to which <em>SIS</em> has been configured to broadcast datagrams.
+This should match the port address selected in the previous methods. For instance, <code class="docutils literal"><span class="pre">16103</span></code>.</p>
+<p>If both <em>SIS</em> and <em>SSP</em> sides have been properly configured, <em>SSP Manager</em> will show (in the right side
+of the lower window statusbar) the date, geographic position, surface sound speed and average depth.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The surface sound speed and depth will only update if the echosounder is pinging (since the surface sound speed information can only be extracted when <em>SSP</em> receives the depth datagram).</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp_manager/raw/tip/hydroffice/ssp_manager/media/favicon.png" alt="Logo"/>
+</a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="previous chapter">License</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="how_to_use.html"
+                        title="next chapter">How to use</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/how_to_install.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="how_to_use.html" title="How to use"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

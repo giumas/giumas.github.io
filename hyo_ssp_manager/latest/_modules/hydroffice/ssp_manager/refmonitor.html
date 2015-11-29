@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.ssp_manager.refmonitor &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../index.html" />
+    <link rel="up" title="hydroffice.ssp_manager" href="../ssp_manager.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../ssp_manager.html" accesskey="U">hydroffice.ssp_manager</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
+    </p>
+
+</div>
+    <h1>Source code for hydroffice.ssp_manager.refmonitor</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s">&#39;font.family&#39;</span><span class="p">:</span> <span class="s">&#39;sans-serif&#39;</span><span class="p">,</span>
+        <span class="s">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">7</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">wx</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">wxmpl</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">refmonitor_ui</span>
+<span class="kn">from</span> <span class="nn">hydroffice.ssp.io</span> <span class="kn">import</span> <span class="n">kmio</span>
+<span class="kn">from</span> <span class="nn">hydroffice.ssp.helper</span> <span class="kn">import</span> <span class="n">SspError</span>
+<span class="kn">from</span> <span class="nn">hydroffice.ssp.ssp_dicts</span> <span class="kn">import</span> <span class="n">Dicts</span>
+<span class="kn">from</span> <span class="nn">hydroffice.base.timerthread</span> <span class="kn">import</span> <span class="n">TimerThread</span>
+
+
+<div class="viewcode-block" id="RefMonitor"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor">[docs]</a><span class="k">class</span> <span class="nc">RefMonitor</span><span class="p">(</span><span class="n">refmonitor_ui</span><span class="o">.</span><span class="n">RefMonitorBase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">km_listener</span><span class="p">):</span>
+        <span class="n">refmonitor_ui</span><span class="o">.</span><span class="n">RefMonitorBase</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SetBackgroundColour</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">WHITE</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span> <span class="o">=</span> <span class="n">km_listener</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">km_listener</span><span class="p">,</span> <span class="n">kmio</span><span class="o">.</span><span class="n">KmIO</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">km_listener</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;SIS listener not active&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">raise</span> <span class="n">SspError</span><span class="p">(</span><span class="s">&quot;passed wrong instance of listener: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">km_listener</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_CLOSE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">OnHide</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">wxmpl</span><span class="o">.</span><span class="n">PlotPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_crosshairs</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_selection</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_zoom</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Compared Ping Bathymetry [m]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correction_axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correction_axes</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correction_axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Resulting Bathymetric Corrections [m]&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetSizer</span><span class="p">()</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">EXPAND</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sliderLabel</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Profile Correction [dm/s]&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTRE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetSizer</span><span class="p">()</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sliderLabel</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">EXPAND</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetSizer</span><span class="p">()</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SVCorrectorSlider</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">EXPAND</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetSizer</span><span class="p">()</span><span class="o">.</span><span class="n">Fit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Layout</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrected</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrector</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp_equiv</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pause</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="c"># init to hold 1000 beams</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">across</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_corrected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_correction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">across_correction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="RefMonitor.pause_corrections"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.pause_corrections">[docs]</a>    <span class="k">def</span> <span class="nf">pause_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pause</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.resume_corrections"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.resume_corrections">[docs]</a>    <span class="k">def</span> <span class="nf">resume_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">,</span> <span class="n">timing</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pause</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.set_ssp"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.set_ssp">[docs]</a>    <span class="k">def</span> <span class="nf">set_ssp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ssp</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp</span> <span class="o">=</span> <span class="n">ssp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_plots</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.on_ssp_scroll"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.on_ssp_scroll">[docs]</a>    <span class="k">def</span> <span class="nf">on_ssp_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrector</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SVCorrectorSlider</span><span class="o">.</span><span class="n">GetValue</span><span class="p">())</span> <span class="o">/</span> <span class="mf">10.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_plots</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.get_mean_depth"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.get_mean_depth">[docs]</a>    <span class="k">def</span> <span class="nf">get_mean_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.get_corrector"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.get_corrector">[docs]</a>    <span class="k">def</span> <span class="nf">get_corrector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrector</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.set_corrector"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.set_corrector">[docs]</a>    <span class="k">def</span> <span class="nf">set_corrector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVCorrectorSlider</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span> <span class="o">*</span> <span class="mf">10.0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrector</span> <span class="o">=</span> <span class="n">val</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.OnHide"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.OnHide">[docs]</a>    <span class="k">def</span> <span class="nf">OnHide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="n">evt</span><span class="o">.</span><span class="n">Skip</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.hide"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Hide</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.OnShow"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.OnShow">[docs]</a>    <span class="k">def</span> <span class="nf">OnShow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># since a thread cannot re-run, we create a thread each time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">,</span> <span class="n">timing</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.OnExit"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.OnExit">[docs]</a>    <span class="k">def</span> <span class="nf">OnExit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>  <span class="c"># Close the frame.</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.update"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">string0</span> <span class="o">=</span> <span class="s">&quot;SSP equiv. </span><span class="si">%.1f</span><span class="s">, corr. </span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssp_equiv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrected</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="p">:</span>
+            <span class="n">string1</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">dg_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span><span class="p">))</span>
+            <span class="n">string1</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s"> m/s&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">sound_speed</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">string1</span> <span class="o">=</span> <span class="s">&quot;0000-00-00 00:00:00, 0.0 m/s&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">RefractionMonitorFrame_statusbar</span><span class="o">.</span><span class="n">SetStatusText</span><span class="p">(</span><span class="n">string0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RefractionMonitorFrame_statusbar</span><span class="o">.</span><span class="n">SetStatusText</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_plots</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="RefMonitor.update_plots"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.refmonitor.RefMonitor.update_plots">[docs]</a>    <span class="k">def</span> <span class="nf">update_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;update both bathymetry and correction plots&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">pause</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c"># clear plots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correction_axes</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;missing XYZ88 datagram&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">num_beams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">number_beams</span>
+        <span class="n">temp_depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">temp_across</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">across</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">temp_flags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">detection_information</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">transducer_draft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">transducer_draft</span>
+        <span class="n">num_detections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">number_detections</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="n">num_detections</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth_corrected</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth_correction</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">across_correction</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_detections</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_corrected</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_correction</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">across_correction</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">beam</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_beams</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">temp_flags</span><span class="p">[</span><span class="n">beam</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0x80</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c"># We skip beams without valid detections</span>
+                <span class="k">continue</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_depth</span><span class="p">[</span><span class="n">beam</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_across</span><span class="p">[</span><span class="n">beam</span><span class="p">]</span>
+            <span class="c"># Hmmmm, angle and range need to be uncorrected for S1Y and S1Z</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">+</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_detections</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c"># Do some plotting!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_detections</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_detections</span><span class="p">],</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Compared Ping Bathymetry [m]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correction_axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Resulting Bathymetric Corrections [m]&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">ssp</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">pause</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="c"># Resample the sound speed profile into 1-m bins and then compute mean sound speed</span>
+        <span class="c"># over the bins (since bin size is constant, mean sound speed is the harmonic sound speed)</span>
+        <span class="n">num_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span><span class="p">)</span>
+        <span class="n">depth_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">transducer_draft</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_depth</span> <span class="o">+</span> <span class="n">transducer_draft</span><span class="p">,</span> <span class="n">num_bins</span><span class="p">)</span>
+
+        <span class="c"># Now get the equivalent SVP for the current profile being used to reduce the data</span>
+        <span class="n">sv_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">depth_interp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">ssp</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">ssp</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp_equiv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sv_interp</span><span class="p">)</span>
+
+        <span class="c"># Now get the equivalent SVP for the proposed replacement profile</span>
+        <span class="n">good_pts</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssp</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Dicts</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="s">&#39;flag&#39;</span><span class="p">],</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">sv_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">depth_interp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Dicts</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="s">&#39;depth&#39;</span><span class="p">],</span> <span class="n">good_pts</span><span class="p">],</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">ssp</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Dicts</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="s">&#39;speed&#39;</span><span class="p">],</span> <span class="n">good_pts</span><span class="p">])</span>
+        <span class="n">sv_equiv2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sv_interp</span><span class="p">)</span>
+
+        <span class="c"># The proposed &quot;corrected&quot; SVP used the equivalent sv from the</span>
+        <span class="c"># candidate profile AND applies a user specified corrector term from</span>
+        <span class="c"># the slider bar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrected</span> <span class="o">=</span> <span class="n">sv_equiv2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrector</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;compare: original </span><span class="si">%6.1f</span><span class="s">, corrected </span><span class="si">%6.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssp_equiv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrected</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssp_equiv</span> <span class="o">*</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrected</span> <span class="o">*</span> <span class="mf">10.0</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_detections</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth_corrected</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth_correction</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">across_correction</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Now do corrections</span>
+            <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_detections</span><span class="p">):</span>
+                <span class="n">angle_new</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">[</span><span class="n">count</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrected</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp_equiv</span><span class="p">)</span>
+                <span class="n">range_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp_corrected</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssp_equiv</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth_corrected</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">range_new</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_new</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth_correction</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_corrected</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">range_new</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_new</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">across_correction</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">across</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bathy_axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_detections</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_corrected</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_detections</span><span class="p">],</span> <span class="s">&#39;g&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correction_axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">across_corrected</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_detections</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_correction</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_detections</span><span class="p">],</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp_manager/raw/tip/hydroffice/ssp_manager/media/favicon.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../ssp_manager.html" >hydroffice.ssp_manager</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

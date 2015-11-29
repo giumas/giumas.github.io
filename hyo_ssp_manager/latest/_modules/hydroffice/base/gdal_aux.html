@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.base.gdal_aux &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../index.html" />
+    <link rel="up" title="hydroffice.base" href="../base.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../base.html" accesskey="U">hydroffice.base</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
+    </p>
+
+</div>
+    <h1>Source code for hydroffice.base.gdal_aux</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.base_objects</span> <span class="kn">import</span> <span class="n">BaseObject</span>
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HyOError</span><span class="p">,</span> <span class="n">Helper</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;Unable to load `osgeo.gdal` module: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">ogr</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;Unable to load `osgeo.ogr` module: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">osr</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;Unable to load `osgeo.osr` module: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="check_gdal_data"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.check_gdal_data">[docs]</a><span class="k">def</span> <span class="nf">check_gdal_data</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Check the correctness of os env GDAL_DATA &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s">&#39;GDAL_DATA&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;original GDAL_DATA = </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;GDAL_DATA&#39;</span><span class="p">])</span>
+
+    <span class="n">gdal_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">gdal</span><span class="o">.</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;gdal&#39;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;checking GDAL_DATA as </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">gdal_data_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">gdal_data_path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;GDAL_DATA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdal_data_path</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># conda specific</span>
+        <span class="n">gdal_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Helper</span><span class="o">.</span><span class="n">python_path</span><span class="p">(),</span> <span class="s">&#39;Library&#39;</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">gdal_data_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;GDAL_DATA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdal_data_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;Unable to locate GDAL data at </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">gdal_data_path</span><span class="p">)</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;resulting GDAL_DATA = </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;GDAL_DATA&#39;</span><span class="p">])</span>
+
+</div>
+<div class="viewcode-block" id="GdalAux"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.GdalAux">[docs]</a><span class="k">class</span> <span class="nc">GdalAux</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Auxiliary class to manage GDAL stuff &quot;&quot;&quot;</span>
+    <span class="n">ogr_formats</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">b</span><span class="s">&#39;ESRI Shapefile&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">b</span><span class="s">&#39;KML&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">b</span><span class="s">&#39;CSV&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">ogr_exts</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">b</span><span class="s">&#39;ESRI Shapefile&#39;</span><span class="p">:</span> <span class="s">&#39;.shp&#39;</span><span class="p">,</span>
+        <span class="n">b</span><span class="s">&#39;KML&#39;</span><span class="p">:</span> <span class="s">&#39;.kml&#39;</span><span class="p">,</span>
+        <span class="n">b</span><span class="s">&#39;CSV&#39;</span><span class="p">:</span> <span class="s">&#39;.csv&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GdalAux</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;GDL&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;gdal version: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">gdal</span><span class="o">.</span><span class="n">VersionInfo</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;VERSION_NUM&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_gdal_error_handler</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GdalAux.get_ogr_driver"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.GdalAux.get_ogr_driver">[docs]</a>    <span class="k">def</span> <span class="nf">get_ogr_driver</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">ogr_format</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">driver_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">GdalAux</span><span class="o">.</span><span class="n">ogr_formats</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">ogr_format</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;Unknown ogr format: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ogr_format</span><span class="p">)</span>
+        <span class="n">drv</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="n">driver_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">drv</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;Ogr failure &gt; </span><span class="si">%s</span><span class="s"> driver not available&quot;</span> <span class="o">%</span> <span class="n">driver_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">drv</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GdalAux.create_ogr_data_source"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.GdalAux.create_ogr_data_source">[docs]</a>    <span class="k">def</span> <span class="nf">create_ogr_data_source</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">ogr_format</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">):</span>
+        <span class="n">drv</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">get_ogr_driver</span><span class="p">(</span><span class="n">ogr_format</span><span class="p">)</span>
+        <span class="n">output_file</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">+</span> <span class="n">cls</span><span class="o">.</span><span class="n">ogr_exts</span><span class="p">[</span><span class="n">drv</span><span class="o">.</span><span class="n">GetName</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_file</span><span class="p">):</span>
+            <span class="n">drv</span><span class="o">.</span><span class="n">DeleteDataSource</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">drv</span><span class="o">.</span><span class="n">CreateDataSource</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;Ogr failure in creation of data source: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">output_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ogr_format</span> <span class="o">==</span> <span class="n">cls</span><span class="o">.</span><span class="n">ogr_formats</span><span class="p">[</span><span class="n">b</span><span class="s">&#39;ESRI Shapefile&#39;</span><span class="p">]:</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">create_prj_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">epsg</span><span class="o">=</span><span class="n">epsg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ds</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GdalAux.create_prj_file"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.GdalAux.create_prj_file">[docs]</a>    <span class="k">def</span> <span class="nf">create_prj_file</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an ESRI prj file (geographic WGS84 by default)&quot;&quot;&quot;</span>
+        <span class="n">spatial_ref</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+        <span class="n">spatial_ref</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
+
+        <span class="n">spatial_ref</span><span class="o">.</span><span class="n">MorphToESRI</span><span class="p">()</span>
+        <span class="n">fid</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span> <span class="o">+</span> <span class="s">&#39;.prj&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">fid</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">spatial_ref</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">())</span>
+        <span class="n">fid</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="GdalAux.list_ogr_drivers"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.GdalAux.list_ogr_drivers">[docs]</a>    <span class="k">def</span> <span class="nf">list_ogr_drivers</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot; Provide a list with all the available OGR drivers &quot;&quot;&quot;</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriverCount</span><span class="p">()</span>
+        <span class="n">driver_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cnt</span><span class="p">):</span>
+            <span class="n">driver</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriver</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">driver_name</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">driver_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">driver_list</span><span class="p">:</span>
+                <span class="n">driver_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">driver_name</span><span class="p">)</span>
+
+        <span class="n">driver_list</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>  <span class="c"># Sorting the messy list of ogr drivers</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">driver_list</span><span class="p">)):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%3s</span><span class="s">: </span><span class="si">%25s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">driver_list</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="GdalAux.push_gdal_error_handler"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.GdalAux.push_gdal_error_handler">[docs]</a>    <span class="k">def</span> <span class="nf">push_gdal_error_handler</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot; Install GDAL error handler &quot;&quot;&quot;</span>
+        <span class="n">gdal</span><span class="o">.</span><span class="n">PushErrorHandler</span><span class="p">(</span><span class="n">GdalAux</span><span class="o">.</span><span class="n">gdal_error_handler</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="GdalAux.gdal_error_handler"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.gdal_aux.GdalAux.gdal_error_handler">[docs]</a>    <span class="k">def</span> <span class="nf">gdal_error_handler</span><span class="p">(</span><span class="n">err_class</span><span class="p">,</span> <span class="n">err_num</span><span class="p">,</span> <span class="n">err_msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; GDAL Error Handler</span>
+
+<span class="sd">        To test it: gdal.Error(1, 2, b&#39;test error&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">err_type</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">gdal</span><span class="o">.</span><span class="n">CE_None</span><span class="p">:</span> <span class="s">&#39;None&#39;</span><span class="p">,</span>
+            <span class="n">gdal</span><span class="o">.</span><span class="n">CE_Debug</span><span class="p">:</span> <span class="s">&#39;Debug&#39;</span><span class="p">,</span>
+            <span class="n">gdal</span><span class="o">.</span><span class="n">CE_Warning</span><span class="p">:</span> <span class="s">&#39;Warning&#39;</span><span class="p">,</span>
+            <span class="n">gdal</span><span class="o">.</span><span class="n">CE_Failure</span><span class="p">:</span> <span class="s">&#39;Failure&#39;</span><span class="p">,</span>
+            <span class="n">gdal</span><span class="o">.</span><span class="n">CE_Fatal</span><span class="p">:</span> <span class="s">&#39;Fatal&#39;</span>
+        <span class="p">}</span>
+        <span class="n">err_msg</span> <span class="o">=</span> <span class="n">err_msg</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">err_class</span> <span class="o">=</span> <span class="n">err_type</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">err_class</span><span class="p">,</span> <span class="s">&#39;None&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HyOError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">: gdal error </span><span class="si">%s</span><span class="s"> &gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">err_class</span><span class="p">,</span> <span class="n">err_num</span><span class="p">,</span> <span class="n">err_msg</span><span class="p">))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp_manager/raw/tip/hydroffice/ssp_manager/media/favicon.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../base.html" >hydroffice.base</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

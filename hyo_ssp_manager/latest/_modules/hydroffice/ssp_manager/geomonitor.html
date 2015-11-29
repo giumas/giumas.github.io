@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.ssp_manager.geomonitor &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../index.html" />
+    <link rel="up" title="hydroffice.ssp_manager" href="../ssp_manager.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../ssp_manager.html" accesskey="U">hydroffice.ssp_manager</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
+    </p>
+
+</div>
+    <h1>Source code for hydroffice.ssp_manager.geomonitor</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">wx</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
+<span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">wxmpl</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">geomonitor_ui</span>
+<span class="kn">from</span> <span class="nn">hydroffice.ssp.io</span> <span class="kn">import</span> <span class="n">kmio</span>
+<span class="kn">from</span> <span class="nn">hydroffice.ssp.helper</span> <span class="kn">import</span> <span class="n">SspError</span>
+<span class="kn">from</span> <span class="nn">hydroffice.base.timerthread</span> <span class="kn">import</span> <span class="n">TimerThread</span>
+
+
+<div class="viewcode-block" id="GeoMonitor"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor">[docs]</a><span class="k">class</span> <span class="nc">GeoMonitor</span><span class="p">(</span><span class="n">geomonitor_ui</span><span class="o">.</span><span class="n">GeoMonitorBase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">km_listener</span><span class="p">):</span>
+        <span class="n">geomonitor_ui</span><span class="o">.</span><span class="n">GeoMonitorBase</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># a timer for display updates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span> <span class="o">=</span> <span class="n">km_listener</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">km_listener</span><span class="p">,</span> <span class="n">kmio</span><span class="o">.</span><span class="n">KmIO</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">km_listener</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;SIS listener not active&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">raise</span> <span class="n">SspError</span><span class="p">(</span><span class="s">&quot;passed wrong instance of listener: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">km_listener</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selection_mode</span> <span class="o">=</span> <span class="s">&quot;Zoom&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_CLOSE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_hide</span><span class="p">)</span>
+
+        <span class="c"># init plot canvas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">wxmpl</span><span class="o">.</span><span class="n">PlotPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_crosshairs</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_selection</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">set_zoom</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetSizer</span><span class="p">()</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">EXPAND</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetSizer</span><span class="p">()</span><span class="o">.</span><span class="n">Fit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c"># register to receive wxPython SelectionEvents from a PlotPanel or PlotFrame</span>
+        <span class="n">wxmpl</span><span class="o">.</span><span class="n">EVT_SELECTION</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">GetId</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_selection</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Layout</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_latitude</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_longitude</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_ssp</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_ssp_time</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view_min_lat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view_max_lat</span> <span class="o">=</span> <span class="mi">90</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat_step</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view_min_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view_max_lon</span> <span class="o">=</span> <span class="mi">180</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon_step</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_lat_lon_steps</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_ping_time</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_zoomed</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">&#39;mill&#39;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">llcrnrlon</span><span class="o">=-</span><span class="mi">180</span><span class="p">,</span> <span class="n">urcrnrlon</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
+                         <span class="n">llcrnrlat</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span> <span class="n">urcrnrlat</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;coral&#39;</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="s">&#39;aqua&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="s">&#39;aqua&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="mf">120.</span><span class="p">,</span> <span class="mf">30.</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="mf">180.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view_min_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_min_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view_max_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_max_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_on_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">x1data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y1data</span>
+        <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">x2data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y2data</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;got zoom coords </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selection_mode</span> <span class="o">==</span> <span class="s">&quot;Zoom&quot;</span><span class="p">:</span>
+            <span class="c"># Deal with case of zooming in</span>
+            <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">axes</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">view_min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">view_max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">view_min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">view_max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">view_min_lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_min_lat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view_min_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_min_y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">view_max_lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_max_lat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view_max_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_max_y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_lat_lon_steps</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">&#39;mill&#39;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">,</span>
+                                 <span class="n">llcrnrlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view_min_lon</span><span class="p">,</span> <span class="n">urcrnrlon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view_max_lon</span><span class="p">,</span>
+                                 <span class="n">llcrnrlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view_min_lat</span><span class="p">,</span> <span class="n">urcrnrlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view_max_lat</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_zoomed</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;unknown axes&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_plots</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;nothing to do&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GeoMonitor.on_hide"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor.on_hide">[docs]</a>    <span class="k">def</span> <span class="nf">on_hide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;hidden&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GeoMonitor.hide"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Hide</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GeoMonitor.OnShow"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor.OnShow">[docs]</a>    <span class="k">def</span> <span class="nf">OnShow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># since a thread cannot re-run, we create a thread each time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">,</span> <span class="n">timing</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GeoMonitor.OnExit"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor.OnExit">[docs]</a>    <span class="k">def</span> <span class="nf">OnExit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>  <span class="c"># Close the frame.</span>
+</div>
+<div class="viewcode-block" id="GeoMonitor.update"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span><span class="p">:</span>
+            <span class="n">empty_str</span> <span class="o">=</span> <span class="s">&quot;0000-00-00 00:00:00, 0.0 m/s&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GeographicMonitorFrame_statusbar</span><span class="o">.</span><span class="n">SetStatusText</span><span class="p">(</span><span class="n">empty_str</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span><span class="p">:</span>
+            <span class="n">empty_str</span> <span class="o">=</span> <span class="s">&quot;0000-00-00 00:00:00, 0.0 m/s&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GeographicMonitorFrame_statusbar</span><span class="o">.</span><span class="n">SetStatusText</span><span class="p">(</span><span class="n">empty_str</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;got position: </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_latitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_longitude</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_latitude</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_longitude</span><span class="p">)</span>
+        <span class="n">msg_str</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">dg_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span><span class="p">))</span>
+        <span class="n">msg_str</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s"> m/s&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">sound_speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GeographicMonitorFrame_statusbar</span><span class="o">.</span><span class="n">SetStatusText</span><span class="p">(</span><span class="n">msg_str</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">dg_time</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_ping_time</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;got same ping times!&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_ssp_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">dg_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_ssp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">sound_speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_ssp</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;got (</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">) -&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_latitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_ssp</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_ping_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">xyz88</span><span class="o">.</span><span class="n">dg_time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_timer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_plots</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GeoMonitor.get_lat_lon_steps"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor.get_lat_lon_steps">[docs]</a>    <span class="k">def</span> <span class="nf">get_lat_lon_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">lat_range</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view_max_lat</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_min_lat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat_step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lat_range</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span>
+        <span class="n">lon_range</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view_max_lon</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_min_lon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon_step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lon_range</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;got lat/lon steps </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon_step</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="GeoMonitor.update_plots"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.geomonitor.GeoMonitor.update_plots">[docs]</a>    <span class="k">def</span> <span class="nf">update_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;updating plots&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;coral&#39;</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="s">&#39;aqua&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="s">&#39;aqua&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawparallels</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">90.</span><span class="p">,</span> <span class="mf">120.</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat_step</span><span class="p">),</span>
+                                 <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">drawmeridians</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">180.</span><span class="p">,</span> <span class="mf">180.</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon_step</span><span class="p">),</span>
+                                 <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;failure in updating&quot;</span><span class="p">)</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;got projected coords: </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> from: </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&#39;r+&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp_manager/raw/tip/hydroffice/ssp_manager/media/favicon.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../ssp_manager.html" >hydroffice.ssp_manager</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

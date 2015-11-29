@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Appendix B - Connection Settings &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="index.html" />
+    <link rel="prev" title="Appendix A - Oceanographic Atlases" href="app_a_oceanographic_atlases.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="app_a_oceanographic_atlases.html" title="Appendix A - Oceanographic Atlases"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
+    </p>
+
+</div>
+    <div class="section" id="appendix-b-connection-settings">
+<span id="app-b-connection-settings"></span><h1>Appendix B - Connection Settings<a class="headerlink" href="#appendix-b-connection-settings" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="settings-for-data-reception">
+<h2>Settings for data reception<a class="headerlink" href="#settings-for-data-reception" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="moving-vessel-profiler">
+<h3>Moving Vessel Profiler<a class="headerlink" href="#moving-vessel-profiler" title="Permalink to this headline">¶</a></h3>
+<p>The MVP controller interface can be configured to transmit data via UDP using a variety of data format
+and transmission protocols (<a class="reference internal" href="#mvp-configuration-fig"><span>Figure – MVP Controller configuration dialog. Boxes A through C are required for transmission of cast information. Box D can be configured to transmit sensor data.</span></a>).</p>
+<div class="align-center figure" id="id1">
+<span id="mvp-configuration-fig"></span><a class="reference internal image-reference" href="_images/mvp_configuration.png"><img alt="alternate text" src="_images/mvp_configuration.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – MVP Controller configuration dialog. Boxes A through C are required for transmission of cast information. Box D can be configured to transmit sensor data.</span></p>
+</div>
+<p>The MVP computer IP address and the IP address of the machine running the <em>SSP</em> package can be configured in <em>Box A</em>.
+For newer versions of the MVP controller, it is recommended to choose the <code class="docutils literal"><span class="pre">NAVO_ISS60</span></code> transmission protocol
+as this will allow for large cast files to be transmitted in several packets without overflowing
+the UDP maximum packet size limitation (<em>Box B</em>). Older versions of the MVP controller software
+(up to version <code class="docutils literal"><span class="pre">2.35</span></code> to the best of our knowledge) do not support the <code class="docutils literal"><span class="pre">NAVO_ISS60</span></code> protocol and
+the package must be configured to use the <code class="docutils literal"><span class="pre">UNDEFINED</span></code> protocol in the SSP package configuration file.
+The file format can be adjusted to accommodate a CTD with the <code class="docutils literal"><span class="pre">S12</span></code> format or a sound speed sensor
+with the <code class="docutils literal"><span class="pre">CALC</span></code> or <code class="docutils literal"><span class="pre">ASVP</span></code> formats (Box C).</p>
+<p>Note that the transmission protocol and file format must be configured in both the MVP controller interface and
+in the <em>SSP</em> package configuration file.
+Boxes D and E refer to raw instrument transmission settings that are configurable for future use.
+Since casts received from an MVP system do not have a filename embedded in the data stream,
+the <em>SSP</em> package will name casts received using the following convention: <code class="docutils literal"><span class="pre">YYYYMMDD_HHMMSS_MVP</span></code>.
+The date/time stamp embedded in the filename will be the time of the cast.</p>
+</div>
+<div class="section" id="sippican">
+<h3>Sippican<a class="headerlink" href="#sippican" title="Permalink to this headline">¶</a></h3>
+<p>There does not currently exist any internal mechanism in the Sippican software to broadcast data via UDP,
+this capability has been included to accommodate vessels that use UDP network broadcasts
+to log data from various systems. The expected data format is the Sippican native <code class="docutils literal"><span class="pre">.EDF</span></code> file format.</p>
+<p>Note that a single Sippican data file can sometimes exceed the maximum buffer size for UDP packet transmissions.
+If software is written to transmit Sippican data files via UDP, this limitation should be kept in mind.
+The SSP package currently only accepts transfer of a single UDP packet thus transmission software may need
+to reduce the data by thinning the profile. Received profiles will use the filename embedded in the .EDF.</p>
+</div>
+</div>
+<div class="section" id="settings-for-data-transmission">
+<h2>Settings for data transmission<a class="headerlink" href="#settings-for-data-transmission" title="Permalink to this headline">¶</a></h2>
+<p>The <em>SSP</em> package can be configured to transmit data to a number of systems by selecting the <em>Send Profile</em> option
+under the <em>Tools</em> menu.</p>
+<p>For installations with multiple clients, the <em>SSP</em> package will deliver the cast sequentially to all clients.
+Failure on transmission to one client will not interfere with other clients though it will slow down
+the transmission sequence through all clients for any clients who are timing out on confirmation of reception
+as the <em>SSP</em> package will wait up to 1 minute for confirmation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Server mode will only currently work with the <em>SIS</em> transmission protocol.</p>
+</div>
+<div class="section" id="kongsberg-sis">
+<h3>Kongsberg SIS<a class="headerlink" href="#kongsberg-sis" title="Permalink to this headline">¶</a></h3>
+<p><em>SIS</em> does not require additional configuration to receive sound speed files since it always listens on port 4001
+for input sound speed data.</p>
+<p>The following indications are useful for monitoring reception of sound speed profiles:</p>
+<ul class="simple">
+<li>The SSP profile filename will be updated in the Runtime parameters menu in the form: <code class="docutils literal"><span class="pre">YYYYMMDD_HHMMSS.asvp</span></code>. The date and time fields are populated based on the time stamp in the profile that was received from the SSP package. In the case of measured casts, this is the time of acquisition, as found in the input file. In the case of synthetic WOA profiles, the date/time is based on the time of transmission of the cast (using the computer clock where the SSP package is installed).</li>
+<li><em>SIS</em> creates several files in the last location from which it loaded a sound speed profile.</li>
+<li>The SVP display window, if being viewed in <em>SIS</em>, will update with the new cast.</li>
+<li>In the event that a cast is rejected, <em>SIS</em> will launch a warning dialog to indicate that the cast it received was rejected.</li>
+</ul>
+<p>Although <em>SIS</em> always will allow incoming sound speed transmissions, it has several restrictions
+that must be observed in order for the data to be accepted (see <em>Kongsberg manual</em>).
+As this particular transmission protocol is used by other acquisition systems, it is worth describing in detail
+what the SSP package does to the cast data to satisfy the input criteria for <em>SIS</em>.</p>
+<p>The transmission procedure used by the SSP package will format the temperature and salinity profiles
+into the Kongsberg Maritime format. Since the WOA09/RTOFS grids only extend to a maximum depth of 5,500 m,
+the profile undergoes a final extrapolation to a depth of 12,000 m to satisfy <em>SIS</em> input criteria,
+this is done with temperature and salinity values measured in the Mariana Trench by <em>Taira et al. (2005)</em>.</p>
+<p>Since <em>SIS</em> input profiles have a limit on the maximum allowable number of data points,
+the sound speed profile is thinned using a modified version of the Douglas-Peucker line reduction method
+as described by <em>Beaudoin et al. (2011)</em>. The algorithm begins with a small tolerance and increases it linearly
+until the number of points in the profile falls below the maximum allowed by <em>SIS</em>.</p>
+<p>By default, the cast header is formatted to instruct <em>SIS</em> to accept the profile for immediate application
+without launching the <em>Kongsberg SVP Editor</em>. This behavior can be changed through the configuration file
+by setting <code class="docutils literal"><span class="pre">sis_auto_apply_manual_casts=False</span></code>. In this case, <em>SIS</em> will accept the cast
+but will then launch its own editor interface and user interaction will be required on the <em>SIS</em> computer
+in order to have the cast applied to the multibeam system.</p>
+<p>Once the cast has been prepared for transmission, it is sent to <em>SIS</em> via UDP transmission over the network.
+If <em>SIS</em> receives the profile and accepts it, it will rebroadcast the SVP datagram.
+The SSP package waits for this rebroadcast to ensure reception of the cast. The profile that was re-broadcasted
+from SIS is compared against that which was sent. If they match, then the transmission is considered successful.
+If there is a discrepancy, or if no rebroadcast profile is received, the user is notified that reception
+could not be confirmed. The lower left status bar notifies the user of the various stages of this verification process.</p>
+<p>In deep water, the rebroadcast event may take several seconds to occur and the software will wait up
+to a user-defined amount of time (e.g., 30 seconds) for reception of the rebroadcasted SVP.
+All other package functionalities are suspended during this wait period.</p>
+</div>
+<div class="section" id="hypack">
+<h3>Hypack<a class="headerlink" href="#hypack" title="Permalink to this headline">¶</a></h3>
+<p>The SSP package can transmit data to <em>HYPACK</em> using <em>HYPACK</em>&#8216;s driver
+for Moving Vessel Profiler (MVP) systems (<code class="docutils literal"><span class="pre">MVP.dll</span></code>). Next figures provide a guidance on how to configure
+a Hypack project to receive data from SSP package.</p>
+<div class="align-center figure" id="id2">
+<span id="hypack-1-fig"></span><a class="reference internal image-reference" href="_images/hypack_1.png"><img alt="alternate text" src="_images/hypack_1.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Step 1: opening the project manager.</span></p>
+</div>
+<div class="align-center figure" id="id3">
+<span id="hypack-2-fig"></span><a class="reference internal image-reference" href="_images/hypack_2.png"><img alt="alternate text" src="_images/hypack_2.png" style="width: 300px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Selecting or creating a Hypack project.</span></p>
+</div>
+<div class="align-center figure" id="id4">
+<span id="hypack-3-fig"></span><a class="reference internal image-reference" href="_images/hypack_3.png"><img alt="alternate text" src="_images/hypack_3.png" style="width: 600px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Selecting the Add device button.</span></p>
+</div>
+<div class="align-center figure" id="id5">
+<span id="hypack-4-fig"></span><a class="reference internal image-reference" href="_images/hypack_4.png"><img alt="alternate text" src="_images/hypack_4.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Adding device drivers to a Hypack project.</span></p>
+</div>
+<div class="align-center figure" id="id6">
+<span id="hypack-5-fig"></span><a class="reference internal image-reference" href="_images/hypack_5.png"><img alt="alternate text" src="_images/hypack_5.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Adding the MVP device driver.</span></p>
+</div>
+<div class="align-center figure" id="id7">
+<span id="hypack-6-fig"></span><a class="reference internal image-reference" href="_images/hypack_6.png"><img alt="alternate text" src="_images/hypack_6.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Configuring the MVP driver. The network parameters of the driver are configured to use a UDP input protocol in a client role. The host IP address must match the address used by the computer running SSP and the reception port must match the port configuration chosen in the package configuration file. The “Write Port” is left as zero.</span></p>
+</div>
+<div class="align-center figure" id="id8">
+<span id="hypack-7-fig"></span><a class="reference internal image-reference" href="_images/hypack_7.png"><img alt="alternate text" src="_images/hypack_7.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Additional configuration of the MVP device driver.</span></p>
+</div>
+<div class="align-center figure" id="id9">
+<span id="hypack-8-fig"></span><a class="reference internal image-reference" href="_images/hypack_8.png"><img alt="alternate text" src="_images/hypack_8.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Testing reception capabilities in Hypack. After having loaded a sample cast into SSP and send it, the profile should be visualized in Hypack (after clicking “Test” button).</span></p>
+</div>
+</div>
+<div class="section" id="qinsy">
+<h3>QINSy<a class="headerlink" href="#qinsy" title="Permalink to this headline">¶</a></h3>
+<p>QINSy accepts the same SVP transmission protocol as <em>SIS</em>, but a method to verify reception of the cast is
+not currently known thus the user should confirm reception in the acquisition system.</p>
+<div class="align-center figure" id="id10">
+<span id="qinsy-1-fig"></span><a class="reference internal image-reference" href="_images/qinsy_1.png"><img alt="alternate text" src="_images/qinsy_1.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Select <em>Setup</em> from the QINSy console after loading your project. Refer to QINSy documentation for information regarding setting up a project.</span></p>
+</div>
+<div class="align-center figure" id="id11">
+<span id="qinsy-2-fig"></span><a class="reference internal image-reference" href="_images/qinsy_2.png"><img alt="alternate text" src="_images/qinsy_2.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Edit your project database</span></p>
+</div>
+<div class="align-center figure" id="id12">
+<span id="qinsy-3-fig"></span><a class="reference internal image-reference" href="_images/qinsy_3.png"><img alt="alternate text" src="_images/qinsy_3.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  Right click the <em>Auxiliary Systems</em> icon and select <em>New System</em>.</span></p>
+</div>
+<div class="align-center figure" id="id13">
+<span id="qinsy-4-fig"></span><a class="reference internal image-reference" href="_images/qinsy_4.png"><img alt="alternate text" src="_images/qinsy_4.png" style="width: 400px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  Configure the new system as shown above. Choose the same port number that SSP package will be sending casts to (this is configured in the <code class="docutils literal"><span class="pre">__config__.db</span></code> file).</span></p>
+</div>
+<div class="align-center figure" id="id14">
+<span id="qinsy-5-fig"></span><a class="reference internal image-reference" href="_images/qinsy_5.png"><img alt="alternate text" src="_images/qinsy_5.png" style="width: 600px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  Choose <em>Echosounder Settings</em> from the <em>Settings</em> menu. This will allow you to configure the behavior of QINSy when it receives new sound speed profiles from SSP package.</span></p>
+</div>
+<div class="align-center figure" id="id15">
+<span id="qinsy-6-fig"></span><a class="reference internal image-reference" href="_images/qinsy_6.png"><img alt="alternate text" src="_images/qinsy_6.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  Left­click the icon for the <em>SVP Editor</em> device.</span></p>
+</div>
+<div class="align-center figure" id="id16">
+<span id="qinsy-7-fig"></span><a class="reference internal image-reference" href="_images/qinsy_7.png"><img alt="alternate text" src="_images/qinsy_7.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  Choose appropriate options to control QINSy’s behavior when it receives casts from SSP package. For initial testing purposes, you should at least choose to be informed after a new update.</span></p>
+</div>
+<div class="align-center figure" id="id17">
+<span id="qinsy-8-fig"></span><a class="reference internal image-reference" href="_images/qinsy_8.png"><img alt="alternate text" src="_images/qinsy_8.png" style="width: 600px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  With QINSy “online” and recording, send a test profile from SSP package. If you have chosen to be informed upon reception of a new cast, a message window will appear for acknowledgement.</span></p>
+</div>
+<div class="align-center figure" id="id18">
+<span id="qinsy-9-fig"></span><a class="reference internal image-reference" href="_images/qinsy_9.png"><img alt="alternate text" src="_images/qinsy_9.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  By choosing <em>Echosounder Settings</em> from the <em>Settings</em> menu again, you can verify that the cast was received.</span></p>
+</div>
+</div>
+<div class="section" id="pds2000">
+<h3>PDS2000<a class="headerlink" href="#pds2000" title="Permalink to this headline">¶</a></h3>
+<p>PDS2000 accepts the same SVP transmission protocol as SIS, but  a method to verify reception of the cast is
+not currently known thus the user must confirm reception in the acquisition system.</p>
+<div class="align-center figure" id="id19">
+<span id="pds-1-fig"></span><a class="reference internal image-reference" href="_images/pds_1.png"><img alt="alternate text" src="_images/pds_1.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure –  Adding an MVP driver to PDS2000.</span></p>
+</div>
+<div class="align-center figure" id="id20">
+<span id="pds-2-fig"></span><a class="reference internal image-reference" href="_images/pds_2.png"><img alt="alternate text" src="_images/pds_2.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Configuring the MVP driver for PDS2000.</span></p>
+</div>
+<div class="align-center figure" id="id21">
+<span id="pds-3-fig"></span><a class="reference internal image-reference" href="_images/pds_3.png"><img alt="alternate text" src="_images/pds_3.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – Configuring an MVP driver for PDS2000. Be sure to scroll down in the list on the left side and choose the driver you added in the previous step before modifying the port number. The port number must match that which SSP package is sending data to (configured in the <code class="docutils literal"><span class="pre">__config__.db</span></code> file).</span></p>
+</div>
+<div class="align-center figure" id="id22">
+<span id="pds-4-fig"></span><a class="reference internal image-reference" href="_images/pds_4.png"><img alt="alternate text" src="_images/pds_4.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – After the driver is added, test the device to verify correct configuration of communication protocols.</span></p>
+</div>
+<div class="align-center figure" id="id23">
+<span id="pds-5-fig"></span><a class="reference internal image-reference" href="_images/pds_5.png"><img alt="alternate text" src="_images/pds_5.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – With the device driver open, send a test cast from SSP package. The data should appear in the Io port View window. Be sure that the correct device driver is selected from the top left list window.</span></p>
+</div>
+<div class="align-center figure" id="id24">
+<span id="pds-6-fig"></span><a class="reference internal image-reference" href="_images/pds_6.png"><img alt="alternate text" src="_images/pds_6.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – While running PDS2000 in acquisition mode, right click in the multibeam raw profile display and choose “Multibeam filters”. Choose “SVP Sensor” as the source of sound speed profiles to be used.</span></p>
+</div>
+<div class="align-center figure" id="id25">
+<span id="pds-7-fig"></span><a class="reference internal image-reference" href="_images/pds_7.png"><img alt="alternate text" src="_images/pds_7.png" style="width: 600px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Figure – While running PDS2000 in acquisition mode, you can verify reception in the Status displays and the “Raw Data” displays. Check the date, time, latitude, longitude against what you sent from SSP package.</span></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp_manager/raw/tip/hydroffice/ssp_manager/media/favicon.png" alt="Logo"/>
+</a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="app_a_oceanographic_atlases.html"
+                        title="previous chapter">Appendix A - Oceanographic Atlases</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/app_b_connection_settings.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="app_a_oceanographic_atlases.html" title="Appendix A - Oceanographic Atlases"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

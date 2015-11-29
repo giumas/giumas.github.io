@@ -1,0 +1,629 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.base.pys57 &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../index.html" />
+    <link rel="up" title="hydroffice.base" href="../base.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../base.html" accesskey="U">hydroffice.base</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
+    </p>
+
+</div>
+    <h1>Source code for hydroffice.base.pys57</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">hydroffice.base.geodesy</span> <span class="kn">import</span> <span class="n">Geodesy</span> <span class="k">as</span> <span class="n">Gd</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_features_from_s57"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.get_features_from_s57">[docs]</a><span class="k">def</span> <span class="nf">get_features_from_s57</span><span class="p">(</span><span class="n">s57_list</span><span class="p">):</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57_list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;geometry&#39;</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;description&#39;</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;watlev&#39;</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;valsou&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span> <span class="o">==</span> <span class="s">&#39;Point&#39;</span> <span class="ow">and</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">watlev</span> <span class="o">==</span> <span class="s">&#39;3&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s">&#39;1&#39;</span> <span class="ow">or</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s">&#39;2&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">==</span> <span class="s">&#39;UWTROC&#39;</span> <span class="ow">or</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">==</span> <span class="s">&#39;WRECKS&#39;</span> <span class="ow">or</span> \
+                                    <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">==</span> <span class="s">&#39;OBSTRN&#39;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">valsou</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+                            <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                                             <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                                             <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">valsou</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">features</span>
+
+</div>
+<div class="viewcode-block" id="get_features_from_s57_no_extended"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.get_features_from_s57_no_extended">[docs]</a><span class="k">def</span> <span class="nf">get_features_from_s57_no_extended</span><span class="p">(</span><span class="n">s57_list</span><span class="p">):</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57_list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;geometry&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;watlev&#39;</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;valsou&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span> <span class="o">==</span> <span class="s">&#39;Point&#39;</span> <span class="ow">and</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">watlev</span> <span class="o">==</span> <span class="s">&#39;3&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">==</span> <span class="s">&#39;UWTROC&#39;</span> <span class="ow">or</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">==</span> <span class="s">&#39;WRECKS&#39;</span> <span class="ow">or</span> \
+                                <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">==</span> <span class="s">&#39;OBSTRN&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">valsou</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+                        <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                                         <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                                         <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">valsou</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">features</span>
+
+</div>
+<div class="viewcode-block" id="get_soundings_from_s57"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.get_soundings_from_s57">[docs]</a><span class="k">def</span> <span class="nf">get_soundings_from_s57</span><span class="p">(</span><span class="n">s57_list</span><span class="p">):</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57_list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;geometry&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span> <span class="o">==</span> <span class="s">&#39;Sounding&#39;</span><span class="p">:</span>
+                <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                               <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                               <span class="n">s57_list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">depth</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">points</span>
+
+</div>
+<div class="viewcode-block" id="filter_by_object"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.filter_by_object">[docs]</a><span class="k">def</span> <span class="nf">filter_by_object</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;acronym&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">filtered</span>
+
+</div>
+<div class="viewcode-block" id="sort_by_object"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.sort_by_object">[docs]</a><span class="k">def</span> <span class="nf">sort_by_object</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;acronym&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">filtered</span>
+
+</div>
+<div class="viewcode-block" id="sort_by_geometry"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.sort_by_geometry">[docs]</a><span class="k">def</span> <span class="nf">sort_by_geometry</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">geometry</span><span class="p">):</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;geometry&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">geometry</span><span class="p">:</span>
+            <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">filtered</span>
+
+</div>
+<div class="viewcode-block" id="sort_by_attribute"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.sort_by_attribute">[docs]</a><span class="k">def</span> <span class="nf">sort_by_attribute</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">setting</span><span class="p">):</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">attribute</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">attribute</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">setting</span><span class="p">:</span>
+                <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">filtered</span>
+
+</div>
+<div class="viewcode-block" id="check_mandatory_attributes"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.check_mandatory_attributes">[docs]</a><span class="k">def</span> <span class="nf">check_mandatory_attributes</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">objects</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># report section</span>
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Mandatory attributes [CHECK]&quot;</span>
+
+    <span class="n">info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="n">toggle</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">attributes</span><span class="p">[</span><span class="n">n</span><span class="p">]):</span>
+                    <span class="n">toggle</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="n">flag</span> <span class="o">+</span> <span class="n">attributes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span>
+            <span class="k">if</span> <span class="n">toggle</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">flag</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;,&#39;</span><span class="p">:</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">toggle</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;latitude&#39;</span><span class="p">):</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">+</span> <span class="s">&#39; at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span>
+                          <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39; is missing &#39;</span> <span class="o">+</span> <span class="n">flag</span><span class="p">)</span>
+                    <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">flag</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&#39; </span><span class="si">%s</span><span class="s"> line/area feature is missing </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">+</span> <span class="s">&#39; line/area feature is missing &#39;</span> <span class="o">+</span> <span class="n">flag</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">report</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">info</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;OK&quot;</span>
+
+    <span class="k">return</span> <span class="n">info</span>
+
+</div>
+<div class="viewcode-block" id="check_all_features_for_attribute_setting"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.check_all_features_for_attribute_setting">[docs]</a><span class="k">def</span> <span class="nf">check_all_features_for_attribute_setting</span><span class="p">(</span><span class="n">s57</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># report section</span>
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;All features for attribute </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> [CHECK]&quot;</span> <span class="o">%</span> <span class="n">attribute</span>
+
+    <span class="n">sorted_filter</span> <span class="o">=</span> <span class="n">sort_by_attribute</span><span class="p">(</span><span class="n">s57</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">setting</span><span class="p">)</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_filter</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;latitude&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> at </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s"> has CATOBS set to foul ground&#39;</span> <span class="o">%</span> \
+                          <span class="p">(</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+                           <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">+</span> <span class="s">&#39; at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span>
+                      <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39; has CATOBS set to foul ground&#39;</span><span class="p">)</span>
+            <span class="n">flag</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">sorted_filter</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">message</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">report</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;OK&quot;</span>
+
+    <span class="k">return</span> <span class="n">flag</span>
+
+</div>
+<div class="viewcode-block" id="check_all_features_for_attribute"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.check_all_features_for_attribute">[docs]</a><span class="k">def</span> <span class="nf">check_all_features_for_attribute</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># report section</span>
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;All features for attribute </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> [CHECK]&quot;</span> <span class="o">%</span> <span class="n">attribute</span>
+
+    <span class="n">flag</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">attribute</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;latitude&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                    <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> at </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s"> is missing </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> \
+                              <span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+                               <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span> <span class="n">attribute</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">+</span> <span class="s">&#39; at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span>
+                          <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39; is missing &#39;</span> <span class="o">+</span> <span class="n">attribute</span><span class="p">)</span>
+                <span class="n">flag</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="s">&#39;missing &#39;</span> <span class="o">+</span> <span class="n">attribute</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>  <span class="c"># &gt; this pass skip the next print, is this intended?</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">+</span> <span class="s">&#39; line/area feature is missing &#39;</span> <span class="o">+</span> <span class="n">attribute</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">report</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;OK&quot;</span>
+
+    <span class="k">return</span> <span class="n">flag</span>
+
+</div>
+<div class="viewcode-block" id="check_all_features_no_attribute"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.check_all_features_no_attribute">[docs]</a><span class="k">def</span> <span class="nf">check_all_features_no_attribute</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># report section</span>
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;All features no attribute </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> [CHECK]&quot;</span> <span class="o">%</span> <span class="n">attribute</span>
+
+    <span class="n">flag</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">attribute</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;latitude&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                    <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> at </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s"> has </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> \
+                              <span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+                               <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span> <span class="n">attribute</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">+</span> <span class="s">&#39; at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span>
+                          <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39; has &#39;</span> <span class="o">+</span> <span class="n">attribute</span><span class="p">)</span>
+                <span class="n">flag</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="s">&#39;prohibited &#39;</span> <span class="o">+</span> <span class="n">attribute</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                    <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> line/area feature has </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span> <span class="o">+</span> <span class="s">&#39; line/area feature has &#39;</span> <span class="o">+</span> <span class="n">attribute</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">report</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;OK&quot;</span>
+
+    <span class="k">return</span> <span class="n">flag</span>
+
+</div>
+<div class="viewcode-block" id="check_for_extended_attributes"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.check_for_extended_attributes">[docs]</a><span class="k">def</span> <span class="nf">check_for_extended_attributes</span><span class="p">(</span><span class="n">s57</span><span class="p">):</span>
+    <span class="n">extended_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;remarks&#39;</span><span class="p">,</span> <span class="s">&#39;recommendations&#39;</span><span class="p">,</span> <span class="s">&#39;images&#39;</span><span class="p">,</span> <span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;sftype&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;dbkyid&#39;</span><span class="p">,</span> <span class="s">&#39;onotes&#39;</span><span class="p">,</span> <span class="s">&#39;asgnmt&#39;</span><span class="p">,</span> <span class="s">&#39;obstim&#39;</span><span class="p">,</span> <span class="s">&#39;prmsec&#39;</span><span class="p">]</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">extended_attributes</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">extended_attributes</span><span class="p">[</span><span class="n">n</span><span class="p">]):</span>
+                <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s57</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">filtered</span>
+
+</div>
+<div class="viewcode-block" id="check_feature_redundancy"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.check_feature_redundancy">[docs]</a><span class="k">def</span> <span class="nf">check_feature_redundancy</span><span class="p">(</span><span class="n">s57list</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># report section</span>
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Feature redundancy [CHECK]&quot;</span>
+
+    <span class="n">features</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s57list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;latitude&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;longitude&#39;</span><span class="p">):</span>
+            <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">s57list</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">acronym</span><span class="p">])</span>
+    <span class="n">iredundancy</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">)):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">iredundancy</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">features</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">features</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;redundant &#39;</span> <span class="o">+</span> <span class="n">features</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">redundancy</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">iredundancy</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">redundancy</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&#39;found </span><span class="si">%s</span><span class="s"> at </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> \
+                          <span class="p">(</span><span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="mi">5</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39; - found &#39;</span> <span class="o">+</span> <span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39; at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span>
+                      <span class="s">&#39;, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="mi">5</span><span class="p">)))</span>
+            <span class="n">redundancy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iredundancy</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">report</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">redundancy</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;OK&quot;</span>
+
+    <span class="k">return</span> <span class="n">redundancy</span>
+
+</div>
+<div class="viewcode-block" id="hcell_sbdare"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.hcell_sbdare">[docs]</a><span class="k">def</span> <span class="nf">hcell_sbdare</span><span class="p">(</span><span class="n">sbdare</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># report section</span>
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SBDARE [CHECK]&quot;</span>
+
+    <span class="n">allowable</span> <span class="o">=</span> <span class="p">[[</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;14&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;17&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">],</span>
+                 <span class="p">[</span><span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">],</span>
+                 <span class="p">[</span><span class="s">&#39;7&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;7&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;7&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;5&#39;</span><span class="p">],</span>
+                 <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;8&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;9&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;11&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;18&#39;</span><span class="p">],</span>
+                 <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;5&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;8&#39;</span><span class="p">],</span>
+                 <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;9&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;17&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;18&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;10&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;10&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;10&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">],</span>
+                 <span class="p">[</span><span class="s">&#39;10&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">]]</span>
+
+    <span class="n">flag</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sbdare</span><span class="p">)):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;natqua&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="s">&#39;natsur&#39;</span><span class="p">):</span>
+            <span class="n">check</span> <span class="o">=</span> <span class="p">[</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">natqua</span><span class="p">,</span> <span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">natsur</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">check</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowable</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="s">&#39;natqua and natsur combination is not allowed, &#39;</span>
+        <span class="k">if</span> <span class="n">message</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;,&#39;</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+                <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&#39;SBDARE at </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s"> has prohibited NATSUR/NATQUA combination&#39;</span> <span class="o">%</span> \
+                          <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;SBDARE at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span>
+                      <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39; has prohibited NATSUR/NATQUA combination&#39;</span><span class="p">)</span>
+            <span class="n">flag</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">sbdare</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">message</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">report</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;OK&quot;</span>
+
+    <span class="k">return</span> <span class="n">flag</span>
+
+</div>
+<div class="viewcode-block" id="check_s57_linelist"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.check_s57_linelist">[docs]</a><span class="k">def</span> <span class="nf">check_s57_linelist</span><span class="p">(</span><span class="n">linelist</span><span class="p">):</span>
+    <span class="n">merged</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">linelist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">linelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">))</span>
+    <span class="n">toggle</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">linelist</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linelist</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">base</span> <span class="ow">and</span> <span class="n">toggle</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">linelist</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+            <span class="n">toggle</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">linelist</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">base</span> <span class="ow">and</span> <span class="n">toggle</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">merged</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">linelist</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">linelist</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+            <span class="n">toggle</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">merged</span>
+
+</div>
+<div class="viewcode-block" id="parse_s57"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.parse_s57">[docs]</a><span class="k">def</span> <span class="nf">parse_s57</span><span class="p">(</span><span class="n">linelist</span><span class="p">):</span>
+    
+    <span class="n">splits</span> <span class="o">=</span> <span class="n">linelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">)</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;acronym&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Acronym&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Geometry&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Latitude&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Longitude&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Depth&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;valsou&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Value of sounding&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;remarks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Remarks&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;recommendations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Recommendations&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Images&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Description&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;sftype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Special Feature Type&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;dbkyid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Database Key ID&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;onotes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Office Notes&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;colour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Colour&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;drval1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Depth range value 1&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;drval2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Depth range value 2&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;natqua&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Nature of surface - qualifying terms&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;natsur&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Nature of surface&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;quasou&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Quality of sounding measurement&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;sordat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Source date&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;sorind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Source indication&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Status&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;tecsou&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Technique of sounding measurement&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;sursta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Survey date - end&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;surend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Survey date - start&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;watlev&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Water level effect&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;catzoc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Category of zone of confidence in data&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;ntxtds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Textual description in national language&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;ninfom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Information in national language&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;asgnmt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Assignment flag&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;catwrk&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Category of wreck&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;catmor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Category of mooring/warping facility&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;catcoa&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Category of coastline&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;catslc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Category of shoreline construction&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;elevat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Elevation&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;catcov&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Category of coverage&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;inform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Information&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;obstim&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Observed time&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;scamin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Scale minimum&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;recdat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Recording date&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;verdat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Vertical datum&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;cscale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Compilation scale&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;prmsec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Status-Primary/Secondary flag&#39;</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;catobs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;Category of obstruction&#39;</span><span class="p">)</span>
+
+    <span class="n">s57_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">linelist</span><span class="p">)):</span>  <span class="c"># skip the first line (headers)</span>
+        <span class="c"># log.debug(&quot;#%d\n%s&quot; % (m, linelist[m]))</span>
+        <span class="k">if</span> <span class="n">linelist</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">s57</span> <span class="o">=</span> <span class="n">S57Object</span><span class="p">(</span><span class="n">linelist</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">headers</span><span class="p">)</span>
+            <span class="n">s57_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s57</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">s57_list</span>
+
+</div>
+<div class="viewcode-block" id="S57Object"><a class="viewcode-back" href="../../../api/hydroffice.base.html#hydroffice.base.pys57.S57Object">[docs]</a><span class="k">class</span> <span class="nc">S57Object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aline</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Identify field in the line using the headers dictionary &quot;&quot;&quot;</span>
+
+        <span class="n">splits</span> <span class="o">=</span> <span class="n">aline</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">acronym</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;acronym&#39;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;geometry&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;depth&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;depth&#39;</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">==</span> <span class="s">&#39;Sounding&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;valsou&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">valsou</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;valsou&#39;</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">valsou</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">valsou</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">valsou</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">valsou</span> <span class="o">=</span> <span class="n">valsou</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valsou</span> <span class="o">=</span> <span class="n">valsou</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;remarks&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remarks</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;remarks&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;recommendations&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recommendations</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;recommendations&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sftype&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sftype</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sftype&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;images&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;images&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;dbkyid&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dbkyid</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;dbkyid&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;colour&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;colour&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;drval1&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drval1</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;drval1&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;drval2&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drval2</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;drval2&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;natsur&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">natsur</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;natsur&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;natqua&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">natqua</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;natqua&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;quasou&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quasou</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;quasou&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sordat&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sordat</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sordat&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sorind&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sorind</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sorind&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;tecsou&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tecsou</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;tecsou&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sursta&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sursta</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;sursta&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;surend&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">surend</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;surend&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;watlev&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">watlev</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;watlev&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catzoc&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catzoc</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catzoc&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;ntxtds&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ntxtds</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;ntxtds&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;ninfom&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ninfom</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;ninfom&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;asgnmt&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asgnmt</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;asgnmt&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catwrk&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catwrk</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catwrk&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catmor&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catmor</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catmor&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catcoa&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catcoa</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catcoa&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catslc&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catslc</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catslc&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;elevat&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elevat</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;elevat&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catcov&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catcov</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catcov&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;inform&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inform</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catcov&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;obstim&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">obstim</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;obstim&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;scamin&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scamin</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;scamin&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;recdat&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recdat</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;recdat&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;verdat&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">verdat</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;verdat&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;cscale&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cscale</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;cscale&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;prmsec&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prmsec</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;prmsec&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catobs&#39;</span><span class="p">]])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catobs</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;catobs&#39;</span><span class="p">]]</span>
+
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;latitude&#39;</span><span class="p">]]</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;longitude&#39;</span><span class="p">]]</span>
+        <span class="c"># log.debug(&quot;lat, long: %s, %s&quot; % (latitude, longitude))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">latitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">schar</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">schar</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="n">deg_lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">latitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">min_lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">latitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">sec_lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">latitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+            <span class="n">sig_lat</span> <span class="o">=</span> <span class="n">latitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">2</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="c"># log.debug(sig_lat)</span>
+            <span class="n">deg_lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">min_lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">sec_lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+            <span class="n">sig_lon</span> <span class="o">=</span> <span class="n">longitude</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">schar</span><span class="p">)[</span><span class="mi">2</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="c"># log.debug(sig_lon)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">Gd</span><span class="o">.</span><span class="n">dms2dd</span><span class="p">(</span><span class="n">deg_lat</span><span class="p">,</span> <span class="n">min_lat</span><span class="p">,</span> <span class="n">sec_lat</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sig_lat</span> <span class="o">==</span> <span class="s">&quot;S&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">Gd</span><span class="o">.</span><span class="n">dms2dd</span><span class="p">(</span><span class="n">deg_lon</span><span class="p">,</span> <span class="n">min_lon</span><span class="p">,</span> <span class="n">sec_lon</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sig_lon</span> <span class="o">==</span> <span class="s">&quot;W&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="c"># log.debug(&quot;lat, long: %s, %s&quot; % (self.latitude, self.longitude))</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+            <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp_manager/raw/tip/hydroffice/ssp_manager/media/favicon.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../base.html" >hydroffice.base</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

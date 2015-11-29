@@ -1,0 +1,799 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.base package &mdash; HydrOffice SSP 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP 0.2.0 documentation" href="../index.html" />
+    <link rel="up" title="hydroffice package" href="hydroffice.html" />
+    <link rel="next" title="How to release" href="../how_to_release.html" />
+    <link rel="prev" title="hydroffice package" href="hydroffice.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../how_to_release.html" title="How to release"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="hydroffice.html" title="hydroffice package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">HydrOffice SSP 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="modules.html" >hydroffice</a> &raquo;</li>
+          <li class="nav-item nav-item-3"><a href="hydroffice.html" accesskey="U">hydroffice package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP library and tools (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp">go here</a>.
+    </p>
+
+</div>
+    <div class="section" id="hydroffice-base-package">
+<h1>hydroffice.base package<a class="headerlink" href="#hydroffice-base-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hydroffice.base.base_objects">
+<span id="hydroffice-base-base-objects-module"></span><h2>hydroffice.base.base_objects module<a class="headerlink" href="#module-hydroffice.base.base_objects" title="Permalink to this headline">¶</a></h2>
+<p>A module that provides some abstract classes to represent, for instance, a SQLite database</p>
+<dl class="class">
+<dt id="hydroffice.base.base_objects.BaseDbObject">
+<em class="property">class </em><code class="descclassname">hydroffice.base.base_objects.</code><code class="descname">BaseDbObject</code><span class="sig-paren">(</span><em>db_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hydroffice.base.base_objects.BaseObject" title="hydroffice.base.base_objects.BaseObject"><code class="xref py py-class docutils literal"><span class="pre">hydroffice.base.base_objects.BaseObject</span></code></a></p>
+<p>Abstract class that provides an interface to a SQLite db</p>
+<dl class="class">
+<dt id="hydroffice.base.base_objects.BaseDbObject.Point">
+<em class="property">class </em><code class="descname">Point</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.Point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.base_objects.BaseDbObject.adapt_point">
+<em class="property">static </em><code class="descclassname">BaseDbObject.</code><code class="descname">adapt_point</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.adapt_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.adapt_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.base_objects.BaseDbObject.build_tables">
+<code class="descclassname">BaseDbObject.</code><code class="descname">build_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.build_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.build_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method to be implemented to create tables structure</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.base_objects.BaseDbObject.check_table_cols_settings">
+<code class="descclassname">BaseDbObject.</code><code class="descname">check_table_cols_settings</code><span class="sig-paren">(</span><em>table_name</em>, <em>print_out=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.check_table_cols_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.check_table_cols_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns column information</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.base_objects.BaseDbObject.check_table_total_rows">
+<code class="descclassname">BaseDbObject.</code><code class="descname">check_table_total_rows</code><span class="sig-paren">(</span><em>table_name</em>, <em>print_out=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.check_table_total_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.check_table_total_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of rows in the database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.base_objects.BaseDbObject.check_tables_values_in_cols">
+<code class="descclassname">BaseDbObject.</code><code class="descname">check_tables_values_in_cols</code><span class="sig-paren">(</span><em>table_name</em>, <em>print_out=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.check_tables_values_in_cols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.check_tables_values_in_cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with columns as keys and the number of not-null entries</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>table_name (str):      the name of the table to check
+print_out (bool):      option to print out the result of the query</dd>
+<dt>Returns:</dt>
+<dd>dict:                  dictionary with columns as keys and the number of not-null entries</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.base_objects.BaseDbObject.clean_name">
+<em class="property">static </em><code class="descclassname">BaseDbObject.</code><code class="descname">clean_name</code><span class="sig-paren">(</span><em>some_var</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.clean_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.clean_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.base_objects.BaseDbObject.close">
+<code class="descclassname">BaseDbObject.</code><code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.base_objects.BaseDbObject.convert_point">
+<em class="property">static </em><code class="descclassname">BaseDbObject.</code><code class="descname">convert_point</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.convert_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.convert_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.base_objects.BaseDbObject.disconnect">
+<code class="descclassname">BaseDbObject.</code><code class="descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect from the current database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.base_objects.BaseDbObject.reconnect_or_create">
+<code class="descclassname">BaseDbObject.</code><code class="descname">reconnect_or_create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseDbObject.reconnect_or_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseDbObject.reconnect_or_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconnection to an existing database or create a new db</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hydroffice.base.base_objects.BaseObject">
+<em class="property">class </em><code class="descclassname">hydroffice.base.base_objects.</code><code class="descname">BaseObject</code><a class="reference internal" href="../_modules/hydroffice/base/base_objects.html#BaseObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.base_objects.BaseObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Common abstract object providing a class name and debugging functions</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.ftpconnector">
+<span id="hydroffice-base-ftpconnector-module"></span><h2>hydroffice.base.ftpconnector module<a class="headerlink" href="#module-hydroffice.base.ftpconnector" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.ftpconnector.FtpConnector">
+<em class="property">class </em><code class="descclassname">hydroffice.base.ftpconnector.</code><code class="descname">FtpConnector</code><span class="sig-paren">(</span><em>host</em>, <em>username=u'anonymous'</em>, <em>password=u'anonymous&#64;'</em>, <em>show_progress=False</em>, <em>debug_mode=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/ftpconnector.html#FtpConnector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.ftpconnector.FtpConnector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This class manage a FTP connection, and may also unzip the downloaded file</p>
+<dl class="method">
+<dt id="hydroffice.base.ftpconnector.FtpConnector.disconnect">
+<code class="descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/ftpconnector.html#FtpConnector.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.ftpconnector.FtpConnector.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the connection</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.ftpconnector.FtpConnector.get_file">
+<code class="descname">get_file</code><span class="sig-paren">(</span><em>file_src</em>, <em>file_dst</em>, <em>unzip_it=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/ftpconnector.html#FtpConnector.get_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.ftpconnector.FtpConnector.get_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a file</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>file_src:           File source
+file_dst:           File destination
+unzip_it:           Unzip the retrieved file</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hydroffice.base.ftpconnector.ProgressBar">
+<em class="property">class </em><code class="descclassname">hydroffice.base.ftpconnector.</code><code class="descname">ProgressBar</code><span class="sig-paren">(</span><em>start_state=0</em>, <em>end_state=10</em>, <em>bar_width=12</em>, <em>bar_fill=u'+'</em>, <em>bar_blank=u'-'</em>, <em>bar_format=u'[%(fill)s&#64;%(blank)s] %(progress)s%%'</em>, <em>use_stdout=&lt;colorama.ansitowin32.StreamWrapper object at 0x000000000377F7B8&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/ftpconnector.html#ProgressBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.ftpconnector.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class used to store the options of a progress bar</p>
+<dl class="method">
+<dt id="hydroffice.base.ftpconnector.ProgressBar.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/ftpconnector.html#ProgressBar.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.ftpconnector.ProgressBar.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the current progress to the start point</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.ftpconnector.ProgressBar.show_progress">
+<code class="descname">show_progress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/ftpconnector.html#ProgressBar.show_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.ftpconnector.ProgressBar.show_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the progress bar</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.gdal_aux">
+<span id="hydroffice-base-gdal-aux-module"></span><h2>hydroffice.base.gdal_aux module<a class="headerlink" href="#module-hydroffice.base.gdal_aux" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.gdal_aux.GdalAux">
+<em class="property">class </em><code class="descclassname">hydroffice.base.gdal_aux.</code><code class="descname">GdalAux</code><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#GdalAux"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hydroffice.base.base_objects.BaseObject" title="hydroffice.base.base_objects.BaseObject"><code class="xref py py-class docutils literal"><span class="pre">hydroffice.base.base_objects.BaseObject</span></code></a></p>
+<p>Auxiliary class to manage GDAL stuff</p>
+<dl class="classmethod">
+<dt id="hydroffice.base.gdal_aux.GdalAux.create_ogr_data_source">
+<em class="property">classmethod </em><code class="descname">create_ogr_data_source</code><span class="sig-paren">(</span><em>ogr_format</em>, <em>output_path</em>, <em>epsg=4326</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#GdalAux.create_ogr_data_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.create_ogr_data_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.gdal_aux.GdalAux.create_prj_file">
+<em class="property">classmethod </em><code class="descname">create_prj_file</code><span class="sig-paren">(</span><em>output_path</em>, <em>epsg=4326</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#GdalAux.create_prj_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.create_prj_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an ESRI prj file (geographic WGS84 by default)</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.gdal_aux.GdalAux.gdal_error_handler">
+<em class="property">static </em><code class="descname">gdal_error_handler</code><span class="sig-paren">(</span><em>err_class</em>, <em>err_num</em>, <em>err_msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#GdalAux.gdal_error_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.gdal_error_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>GDAL Error Handler</p>
+<p>To test it: gdal.Error(1, 2, b&#8217;test error&#8217;)</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.gdal_aux.GdalAux.get_ogr_driver">
+<em class="property">classmethod </em><code class="descname">get_ogr_driver</code><span class="sig-paren">(</span><em>ogr_format</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#GdalAux.get_ogr_driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.get_ogr_driver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.gdal_aux.GdalAux.list_ogr_drivers">
+<em class="property">static </em><code class="descname">list_ogr_drivers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#GdalAux.list_ogr_drivers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.list_ogr_drivers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide a list with all the available OGR drivers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hydroffice.base.gdal_aux.GdalAux.ogr_exts">
+<code class="descname">ogr_exts</code><em class="property"> = {'ESRI Shapefile': u'.shp', 'KML': u'.kml', 'CSV': u'.csv'}</em><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.ogr_exts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroffice.base.gdal_aux.GdalAux.ogr_formats">
+<code class="descname">ogr_formats</code><em class="property"> = {'ESRI Shapefile': 0, 'KML': 1, 'CSV': 2}</em><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.ogr_formats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.gdal_aux.GdalAux.push_gdal_error_handler">
+<em class="property">static </em><code class="descname">push_gdal_error_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#GdalAux.push_gdal_error_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.GdalAux.push_gdal_error_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install GDAL error handler</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.gdal_aux.check_gdal_data">
+<code class="descclassname">hydroffice.base.gdal_aux.</code><code class="descname">check_gdal_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/gdal_aux.html#check_gdal_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.gdal_aux.check_gdal_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the correctness of os env GDAL_DATA</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.geodesy">
+<span id="hydroffice-base-geodesy-module"></span><h2>hydroffice.base.geodesy module<a class="headerlink" href="#module-hydroffice.base.geodesy" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.geodesy.Geodesy">
+<em class="property">class </em><code class="descclassname">hydroffice.base.geodesy.</code><code class="descname">Geodesy</code><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A class about geodetic methods and conversions</p>
+<dl class="classmethod">
+<dt id="hydroffice.base.geodesy.Geodesy.dd2dm">
+<em class="property">classmethod </em><code class="descname">dd2dm</code><span class="sig-paren">(</span><em>dd</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.dd2dm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.dd2dm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert degree format from DD to DM.M</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>dd:             Decimal degree</dd>
+<dt>Returns:</dt>
+<dd>list:           Degrees, Minutes</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.geodesy.Geodesy.dd2dms">
+<em class="property">classmethod </em><code class="descname">dd2dms</code><span class="sig-paren">(</span><em>dd</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.dd2dms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.dd2dms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert degree format from DD to DMS</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.geodesy.Geodesy.degrees">
+<em class="property">classmethod </em><code class="descname">degrees</code><span class="sig-paren">(</span><em>radians</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.degrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radians to degree</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>radians:        Radians</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.geodesy.Geodesy.distance">
+<code class="descname">distance</code><span class="sig-paren">(</span><em>long_1</em>, <em>lat_1</em>, <em>long_2</em>, <em>lat_2</em>, <em>units=u'm'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns distance in &#8216;units&#8217; (default m) between two Lat Lon point sets</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>long_1:             Longitude of point 1
+lat_1:              Latitude of point 1
+long_2:             Longitude of point 2
+lat_2:              Latitude of point 2
+units:              Units (optional) can be &#8220;m&#8221;, &#8220;km&#8221;, &#8220;sm&#8221;, or &#8220;nm&#8221;</dd>
+<dt>Returns:</dt>
+<dd>float:              Distance (in the selected unit of measure)</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.geodesy.Geodesy.dms2dd">
+<em class="property">classmethod </em><code class="descname">dms2dd</code><span class="sig-paren">(</span><em>degrees=0.0</em>, <em>minutes=0.0</em>, <em>seconds=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.dms2dd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.dms2dd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert degree format from DMS to DD</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>degrees:        Degrees
+minutes:        Minutes
+seconds:        Seconds</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.geodesy.Geodesy.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>long_1</em>, <em>lat_1</em>, <em>bearing</em>, <em>dist</em>, <em>units=u'm'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns forward point in &#8216;units&#8217; (default m) based on bearing and range in km</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>long_1:             Longitude of starting point
+lat_1:              Latitude of starting point
+bearing:            Bearing
+dist:               Distance
+units:              Units (optional) can be &#8220;m&#8221;, &#8220;km&#8221;, &#8220;sm&#8221;, or &#8220;nm&#8221;</dd>
+<dt>Returns:</dt>
+<dd>list:               Longitude and latitude for the forward point</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.geodesy.Geodesy.get_transformed_point">
+<em class="property">classmethod </em><code class="descname">get_transformed_point</code><span class="sig-paren">(</span><em>long_in</em>, <em>lat_in</em>, <em>epsg_inputs=4326</em>, <em>epsg_calc=3857</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.get_transformed_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.get_transformed_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8221; Perform coordinate pair transformation</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>long_in:            Input longitude
+lat_in:             Input latitude
+epsg_inputs:        Input EPSG CRS
+epsg_calc:          Output EPSG CRS</dd>
+<dt>Returns:</dt>
+<dd>list:               X, Y</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.geodesy.Geodesy.radians">
+<em class="property">classmethod </em><code class="descname">radians</code><span class="sig-paren">(</span><em>degrees=0.0</em>, <em>minutes=0.0</em>, <em>seconds=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/geodesy.html#Geodesy.radians"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.geodesy.Geodesy.radians" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conversion of degrees, minutes and seconds to radians</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>degrees:            Degrees
+minutes:            Minutes
+seconds:            Seconds</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.helper">
+<span id="hydroffice-base-helper-module"></span><h2>hydroffice.base.helper module<a class="headerlink" href="#module-hydroffice.base.helper" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.helper.Helper">
+<em class="property">class </em><code class="descclassname">hydroffice.base.helper.</code><code class="descname">Helper</code><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A collection class with many helper functions</p>
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.combine_latlon">
+<em class="property">static </em><code class="descname">combine_latlon</code><span class="sig-paren">(</span><em>latlon</em>, <em>combined</em>, <em>a_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.combine_latlon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.combine_latlon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.copy_anything">
+<em class="property">static </em><code class="descname">copy_anything</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.copy_anything"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.copy_anything" title="Permalink to this definition">¶</a></dt>
+<dd><p>copy anything from src to dst</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.default_projects_folder">
+<em class="property">static </em><code class="descname">default_projects_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.default_projects_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.default_projects_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that return the default project folder for HydrOffice</p>
+<p>On Windows, if still not present, it create a folder &#8220;HydrOffice X.Y.Z&#8221; on the user&#8217;s doc folder
+On Linux and Mac, it creates the name folder into the user&#8217;s Home directory</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.delete_anything">
+<em class="property">static </em><code class="descname">delete_anything</code><span class="sig-paren">(</span><em>src</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.delete_anything"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.delete_anything" title="Permalink to this definition">¶</a></dt>
+<dd><p>delete anything from src</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.elide">
+<em class="property">static </em><code class="descname">elide</code><span class="sig-paren">(</span><em>input_str</em>, <em>max_len=255</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.elide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.elide" title="Permalink to this definition">¶</a></dt>
+<dd><p>only in case the passed string is longer than &#8216;max_len&#8217;, it applies elision</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.helper.Helper.explore_folder">
+<em class="property">classmethod </em><code class="descname">explore_folder</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.explore_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.explore_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the passed path using OS-native commands</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.get_file_properties">
+<em class="property">static </em><code class="descname">get_file_properties</code><span class="sig-paren">(</span><em>file_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.get_file_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.get_file_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all properties of the given file return them as a dictionary. [only for Windows]</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.get_pyd_python_version">
+<em class="property">static </em><code class="descname">get_pyd_python_version</code><span class="sig-paren">(</span><em>pyd_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.get_pyd_python_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.get_pyd_python_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the python version required by the passed pyd library [only for Windows]
+e.g. &#8220;C:Program FilesCARISBDB4.1pythoncariscoverage_init_caris_python.pyd&#8221;
+e.g. &#8220;C:py34x64Libsite-packageswin32win32api.pyd&#8221;</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.get_root_path">
+<em class="property">static </em><code class="descname">get_root_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.get_root_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.get_root_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return &#8216;/&#8217; on Linux and &#8216;C:&#8217; on Windows</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.get_samples_folder">
+<em class="property">static </em><code class="descname">get_samples_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.get_samples_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.get_samples_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the path to the folder with samples</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.get_separator">
+<em class="property">static </em><code class="descname">get_separator</code><span class="sig-paren">(</span><em>aline</em>, <em>headers</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.get_separator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.get_separator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to determine what separator is used between D, M, and S, for example, a space or a dash?</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.gray_html">
+<em class="property">static </em><code class="descname">gray_html</code><span class="sig-paren">(</span><em>text_input</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.gray_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.gray_html" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.is_64bit_os">
+<em class="property">static </em><code class="descname">is_64bit_os</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.is_64bit_os"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.is_64bit_os" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current OS is at 64 bits</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.is_64bit_python">
+<em class="property">static </em><code class="descname">is_64bit_python</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.is_64bit_python"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.is_64bit_python" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current Python is at 64 bits</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.helper.Helper.is_darwin">
+<em class="property">classmethod </em><code class="descname">is_darwin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.is_darwin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.is_darwin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current OS is Mac OS</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.helper.Helper.is_linux">
+<em class="property">classmethod </em><code class="descname">is_linux</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.is_linux"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.is_linux" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current OS is Linux</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.is_python_less_than">
+<em class="property">static </em><code class="descname">is_python_less_than</code><span class="sig-paren">(</span><em>major</em>, <em>minor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.is_python_less_than"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.is_python_less_than" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current version of Python is less than major.minor</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.helper.Helper.is_windows">
+<em class="property">classmethod </em><code class="descname">is_windows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.is_windows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.is_windows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current OS is Windows</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.list_hydro_packages">
+<em class="property">static </em><code class="descname">list_hydro_packages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.list_hydro_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.list_hydro_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>list all the available hydro-packages</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.module_exists">
+<em class="property">static </em><code class="descname">module_exists</code><span class="sig-paren">(</span><em>module_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.module_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.module_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if a module exists</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.move_anything">
+<em class="property">static </em><code class="descname">move_anything</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.move_anything"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.move_anything" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.noaa_sounding_rounding">
+<em class="property">static </em><code class="descname">noaa_sounding_rounding</code><span class="sig-paren">(</span><em>depth_in_meters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.noaa_sounding_rounding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.noaa_sounding_rounding" title="Permalink to this definition">¶</a></dt>
+<dd><p>NOAA sounding rounding convention for chart display: all depths less than 4.75 feet are
+rounded down to 4 feet, depths greater than 4.75 feet are rounding up to 5 feet.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.pkg_info">
+<em class="property">static </em><code class="descname">pkg_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.pkg_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.pkg_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>general info about the base package</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hydroffice.base.helper.Helper.python_path">
+<em class="property">classmethod </em><code class="descname">python_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.python_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.python_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the python site-specific directory prefix (the temporary folder for PyInstaller)</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.read_ascii">
+<em class="property">static </em><code class="descname">read_ascii</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.read_ascii"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.read_ascii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read an ascii file and return a list without blank lines</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.red_html">
+<em class="property">static </em><code class="descname">red_html</code><span class="sig-paren">(</span><em>text_input</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.red_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.red_html" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="hydroffice.base.helper.Helper.round_latlon">
+<em class="property">static </em><code class="descname">round_latlon</code><span class="sig-paren">(</span><em>orig</em>, <em>precision</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#Helper.round_latlon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.Helper.round_latlon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="hydroffice.base.helper.HyOError">
+<em class="property">exception </em><code class="descclassname">hydroffice.base.helper.</code><code class="descname">HyOError</code><span class="sig-paren">(</span><em>message</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#HyOError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.HyOError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Base class for exceptions in HydrOffice</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.helper.hyo_base_installation_folder">
+<code class="descclassname">hydroffice.base.helper.</code><code class="descname">hyo_base_installation_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#hyo_base_installation_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.hyo_base_installation_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the HydrOffice base folder</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.helper.hyo_base_version">
+<code class="descclassname">hydroffice.base.helper.</code><code class="descname">hyo_base_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#hyo_base_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.hyo_base_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>general info about the base package version</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.helper.hyo_installation_folder">
+<code class="descclassname">hydroffice.base.helper.</code><code class="descname">hyo_installation_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/helper.html#hyo_installation_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.helper.hyo_installation_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the HydrOffice namespace folder</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.logging_sqlite">
+<span id="hydroffice-base-logging-sqlite-module"></span><h2>hydroffice.base.logging_sqlite module<a class="headerlink" href="#module-hydroffice.base.logging_sqlite" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.logging_sqlite.SQLiteHandler">
+<em class="property">class </em><code class="descclassname">hydroffice.base.logging_sqlite.</code><code class="descname">SQLiteHandler</code><span class="sig-paren">(</span><em>db=u'app.db'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/logging_sqlite.html#SQLiteHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.logging_sqlite.SQLiteHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">logging.Handler</span></code></p>
+<p>Thread-safe logging handler for SQLite.</p>
+<dl class="method">
+<dt id="hydroffice.base.logging_sqlite.SQLiteHandler.emit">
+<code class="descname">emit</code><span class="sig-paren">(</span><em>record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/logging_sqlite.html#SQLiteHandler.emit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.logging_sqlite.SQLiteHandler.emit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.logging_sqlite.SQLiteHandler.format_time">
+<code class="descname">format_time</code><span class="sig-paren">(</span><em>record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/logging_sqlite.html#SQLiteHandler.format_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.logging_sqlite.SQLiteHandler.format_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a time stamp</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.project">
+<span id="hydroffice-base-project-module"></span><h2>hydroffice.base.project module<a class="headerlink" href="#module-hydroffice.base.project" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.project.Project">
+<em class="property">class </em><code class="descclassname">hydroffice.base.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>projects_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.project.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base template project</p>
+<dl class="method">
+<dt id="hydroffice.base.project.Project.get_output_folder">
+<code class="descname">get_output_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/project.html#Project.get_output_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.project.Project.get_output_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the output folder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.project.Project.set_output_folder">
+<code class="descname">set_output_folder</code><span class="sig-paren">(</span><em>output_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/project.html#Project.set_output_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.project.Project.set_output_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the output folder in case the user does not want the default one</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.pys57">
+<span id="hydroffice-base-pys57-module"></span><h2>hydroffice.base.pys57 module<a class="headerlink" href="#module-hydroffice.base.pys57" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.pys57.S57Object">
+<em class="property">class </em><code class="descclassname">hydroffice.base.pys57.</code><code class="descname">S57Object</code><span class="sig-paren">(</span><em>aline</em>, <em>headers</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#S57Object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.S57Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.check_all_features_for_attribute">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">check_all_features_for_attribute</code><span class="sig-paren">(</span><em>s57list</em>, <em>attribute</em>, <em>report=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#check_all_features_for_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.check_all_features_for_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.check_all_features_for_attribute_setting">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">check_all_features_for_attribute_setting</code><span class="sig-paren">(</span><em>s57</em>, <em>attribute</em>, <em>setting</em>, <em>message</em>, <em>report=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#check_all_features_for_attribute_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.check_all_features_for_attribute_setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.check_all_features_no_attribute">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">check_all_features_no_attribute</code><span class="sig-paren">(</span><em>s57list</em>, <em>attribute</em>, <em>report=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#check_all_features_no_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.check_all_features_no_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.check_feature_redundancy">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">check_feature_redundancy</code><span class="sig-paren">(</span><em>s57list</em>, <em>report=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#check_feature_redundancy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.check_feature_redundancy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.check_for_extended_attributes">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">check_for_extended_attributes</code><span class="sig-paren">(</span><em>s57</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#check_for_extended_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.check_for_extended_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.check_mandatory_attributes">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">check_mandatory_attributes</code><span class="sig-paren">(</span><em>s57list</em>, <em>objects</em>, <em>attributes</em>, <em>report=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#check_mandatory_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.check_mandatory_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.check_s57_linelist">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">check_s57_linelist</code><span class="sig-paren">(</span><em>linelist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#check_s57_linelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.check_s57_linelist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.filter_by_object">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">filter_by_object</code><span class="sig-paren">(</span><em>s57list</em>, <em>objects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#filter_by_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.filter_by_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.get_features_from_s57">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">get_features_from_s57</code><span class="sig-paren">(</span><em>s57_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#get_features_from_s57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.get_features_from_s57" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.get_features_from_s57_no_extended">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">get_features_from_s57_no_extended</code><span class="sig-paren">(</span><em>s57_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#get_features_from_s57_no_extended"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.get_features_from_s57_no_extended" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.get_soundings_from_s57">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">get_soundings_from_s57</code><span class="sig-paren">(</span><em>s57_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#get_soundings_from_s57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.get_soundings_from_s57" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.hcell_sbdare">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">hcell_sbdare</code><span class="sig-paren">(</span><em>sbdare</em>, <em>report=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#hcell_sbdare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.hcell_sbdare" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.parse_s57">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">parse_s57</code><span class="sig-paren">(</span><em>linelist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#parse_s57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.parse_s57" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.sort_by_attribute">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">sort_by_attribute</code><span class="sig-paren">(</span><em>s57list</em>, <em>attribute</em>, <em>setting</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#sort_by_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.sort_by_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.sort_by_geometry">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">sort_by_geometry</code><span class="sig-paren">(</span><em>s57list</em>, <em>geometry</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#sort_by_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.sort_by_geometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hydroffice.base.pys57.sort_by_object">
+<code class="descclassname">hydroffice.base.pys57.</code><code class="descname">sort_by_object</code><span class="sig-paren">(</span><em>s57list</em>, <em>objects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/pys57.html#sort_by_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.pys57.sort_by_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base.timerthread">
+<span id="hydroffice-base-timerthread-module"></span><h2>hydroffice.base.timerthread module<a class="headerlink" href="#module-hydroffice.base.timerthread" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hydroffice.base.timerthread.TimerThread">
+<em class="property">class </em><code class="descclassname">hydroffice.base.timerthread.</code><code class="descname">TimerThread</code><span class="sig-paren">(</span><em>target</em>, <em>timing=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/timerthread.html#TimerThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.timerthread.TimerThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></p>
+<p>Thread sub-class to implement a single-thread timer that can be stopped</p>
+<dl class="method">
+<dt id="hydroffice.base.timerthread.TimerThread.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/timerthread.html#TimerThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.timerthread.TimerThread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroffice.base.timerthread.TimerThread.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base/timerthread.html#TimerThread.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.timerthread.TimerThread.stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroffice.base">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hydroffice.base" title="Permalink to this headline">¶</a></h2>
+<p>HydrOffice Base</p>
+<dl class="function">
+<dt id="hydroffice.base.hyo_lib">
+<code class="descclassname">hydroffice.base.</code><code class="descname">hyo_lib</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hydroffice/base.html#hyo_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hydroffice.base.hyo_lib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp/raw/tip/hydroffice/ssp/media/favicon.png" alt="Logo"/>
+</a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="hydroffice.html"
+                        title="previous chapter">hydroffice package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../how_to_release.html"
+                        title="next chapter">How to release</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/hydroffice.base.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../how_to_release.html" title="How to release"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="hydroffice.html" title="hydroffice package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">HydrOffice SSP 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="modules.html" >hydroffice</a> &raquo;</li>
+          <li class="nav-item nav-item-3"><a href="hydroffice.html" >hydroffice package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

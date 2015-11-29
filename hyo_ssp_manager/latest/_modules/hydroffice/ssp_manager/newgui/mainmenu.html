@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hydroffice.ssp_manager.newgui.mainmenu &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="hydroffice.ssp_manager" href="../../ssp_manager.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../../ssp_manager.html" accesskey="U">hydroffice.ssp_manager</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
+    </p>
+
+</div>
+    <h1>Source code for hydroffice.ssp_manager.newgui.mainmenu</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+
+<div class="viewcode-block" id="SspMenu"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu">[docs]</a><span class="k">class</span> <span class="nc">SspMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cluster the menu and sub-menus</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SspMenu.FileMenu"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.FileMenu">[docs]</a>    <span class="k">class</span> <span class="nc">FileMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sep_0</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">exit_action</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.FileMenuImport"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.FileMenuImport">[docs]</a>    <span class="k">class</span> <span class="nc">FileMenuImport</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">castaway_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">idronaut_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saiv_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">seabird_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sippican_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">turo_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unb_action</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.FileMenuImportDigibar"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.FileMenuImportDigibar">[docs]</a>    <span class="k">class</span> <span class="nc">FileMenuImportDigibar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">digibar_pro_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">digibar_s_action</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.FileMenuImportValeport"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.FileMenuImportValeport">[docs]</a>    <span class="k">class</span> <span class="nc">FileMenuImportValeport</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valeport_midas_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valeport_monitor_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valeport_mini_svp_action</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.FileMenuQuery"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.FileMenuQuery">[docs]</a>    <span class="k">class</span> <span class="nc">FileMenuQuery</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.FileMenuExport"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.FileMenuExport">[docs]</a>    <span class="k">class</span> <span class="nc">FileMenuExport</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.ViewMenu"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.ViewMenu">[docs]</a>    <span class="k">class</span> <span class="nc">ViewMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.ProcessMenu"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.ProcessMenu">[docs]</a>    <span class="k">class</span> <span class="nc">ProcessMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">query_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sep_0</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.ToolsMenu"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.ToolsMenu">[docs]</a>    <span class="k">class</span> <span class="nc">ToolsMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_start_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_stop_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_force_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sep_0</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings_action</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="SspMenu.HelpMenu"><a class="viewcode-back" href="../../../../api/hydroffice.ssp_manager.newgui.html#hydroffice.ssp_manager.newgui.mainmenu.SspMenu.HelpMenu">[docs]</a>    <span class="k">class</span> <span class="nc">HelpMenu</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manual_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">help_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sep_0</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qt_about_action</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">about_action</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">FileMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_import</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">FileMenuImport</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_import_digibar</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">FileMenuImportDigibar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_import_valeport</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">FileMenuImportValeport</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_query</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">FileMenuQuery</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_export</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">FileMenuExport</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">ViewMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">ProcessMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tools</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">ToolsMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">help</span> <span class="o">=</span> <span class="n">SspMenu</span><span class="o">.</span><span class="n">HelpMenu</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="../../../../index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_ssp_manager/raw/tip/hydroffice/ssp_manager/media/favicon.png" alt="Logo"/>
+</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../../ssp_manager.html" >hydroffice.ssp_manager</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>
