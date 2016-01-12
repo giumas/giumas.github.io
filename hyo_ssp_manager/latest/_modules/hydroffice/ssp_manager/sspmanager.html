@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>hydroffice.ssp_manager.sspmanager &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    <title>hydroffice.ssp_manager.sspmanager &mdash; HydrOffice SSP Manager 2.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.2.0',
+        VERSION:     '2.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../index.html" />
+    <link rel="top" title="HydrOffice SSP Manager 2.1.0 documentation" href="../../../index.html" />
     <link rel="up" title="hydroffice.ssp_manager" href="../ssp_manager.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 2.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../ssp_manager.html" accesskey="U">hydroffice.ssp_manager</a> &raquo;</li> 
       </ul>
@@ -50,14 +50,13 @@
 <div class="deck">
 
     <p>
-    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    This document describes the HydrOffice SSP Manager (2.1). For the source code,
     <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
     </p>
 
 </div>
     <h1>Source code for hydroffice.ssp_manager.sspmanager</h1><div class="highlight"><pre>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">socket</span>
@@ -65,20 +64,11 @@
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">copy</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
-<span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s">&#39;font.family&#39;</span><span class="p">:</span> <span class="s">&#39;sans-serif&#39;</span><span class="p">,</span>
-        <span class="s">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">7</span>
-    <span class="p">}</span>
-<span class="p">)</span>
 <span class="kn">import</span> <span class="nn">wx</span>
 <span class="kn">from</span> <span class="nn">wx</span> <span class="kn">import</span> <span class="n">PyDeadObjectError</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">wxmpl</span>  <span class="c"># local version of this module, since Pydro&#39;s one has an issue</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
@@ -86,7 +76,6 @@
 <span class="kn">from</span> <span class="nn">hydroffice.base.helper</span> <span class="kn">import</span> <span class="n">HyOError</span>
 <span class="kn">from</span> <span class="nn">hydroffice.base.timerthread</span> <span class="kn">import</span> <span class="n">TimerThread</span>
 <span class="kn">from</span> <span class="nn">hydroffice.base.gdal_aux</span> <span class="kn">import</span> <span class="n">GdalAux</span>
-
 <span class="kn">from</span> <span class="nn">.plots</span> <span class="kn">import</span> <span class="n">WxPlots</span><span class="p">,</span> <span class="n">PlotsSettings</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">sspmanager_ui</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">refmonitor</span>
@@ -102,6 +91,7 @@
 <span class="kn">from</span> <span class="nn">hydroffice.ssp.ssp_collection</span> <span class="kn">import</span> <span class="n">SspCollection</span>
 <span class="kn">from</span> <span class="nn">hydroffice.ssp.helper</span> <span class="kn">import</span> <span class="n">Helper</span><span class="p">,</span> <span class="n">SspError</span>
 <span class="kn">from</span> <span class="nn">hydroffice.ssp.atlases.woa09checker</span> <span class="kn">import</span> <span class="n">Woa09Checker</span>
+<span class="kn">from</span> <span class="nn">hydroffice.ssp_settings</span> <span class="kn">import</span> <span class="n">ssp_settings</span>
 
 
 <div class="viewcode-block" id="SSPManager"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager">[docs]</a><span class="k">class</span> <span class="nc">SSPManager</span><span class="p">(</span><span class="n">sspmanager_ui</span><span class="o">.</span><span class="n">SSPManagerBase</span><span class="p">):</span>
@@ -166,16 +156,17 @@
 
         <span class="c"># check woa09 atlas</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">woa09_atlas_loaded</span><span class="p">)</span> <span class="ow">and</span> <span class="n">with_woa09</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Error: failed on World Ocean Atlas grid file load&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unable to load World Ocean Atlas grid file&#39;</span>
             <span class="n">dlg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">OK</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ICON_ERROR</span><span class="p">)</span>
             <span class="n">dlg</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">()</span>
             <span class="n">dlg</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
 
         <span class="c"># check rtofs atlas</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">rtofs_atlas_loaded</span><span class="p">)</span> <span class="ow">and</span> <span class="n">with_rtofs</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Warning: failure in RTOFS atlas loading (internet connectivity required).</span><span class="se">\n</span><span class="s">&#39;</span> \
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unable to load RTOFS atlas.</span><span class="se">\n</span><span class="s">&#39;</span> \
+                  <span class="s">&#39;To use RTOFS, Internet connectivity is required (with port 9090 open).</span><span class="se">\n</span><span class="s">&#39;</span> \
                   <span class="s">&#39;RTOFS queries disabled.&#39;</span>
-            <span class="n">dlg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">OK</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ICON_ERROR</span><span class="p">)</span>
+            <span class="n">dlg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;Warning&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">OK</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ICON_WARNING</span><span class="p">)</span>
             <span class="n">dlg</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">()</span>
             <span class="n">dlg</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
 
@@ -186,6 +177,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ref_monitor</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geo_monitor</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings_viewer</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings_tool</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs_viewer</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init_ui</span><span class="p">()</span>
 
@@ -194,21 +186,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gui_state</span><span class="p">[</span><span class="s">&quot;CLOSED&quot;</span><span class="p">])</span>
 
         <span class="c"># GUI timers (status bar and plots)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status_timer</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_status</span><span class="p">,</span> <span class="n">timing</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status_timer</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_status</span><span class="p">,</span> <span class="n">timing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_timer</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_plot</span><span class="p">,</span> <span class="n">timing</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_timer</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_plot</span><span class="p">,</span> <span class="n">timing</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">SetMinSize</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">Size</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SetSize</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">Size</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">550</span><span class="p">))</span>
 
 <div class="viewcode-block" id="SSPManager.init_ui"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.init_ui">[docs]</a>    <span class="k">def</span> <span class="nf">init_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">favicon</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Icon</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">,</span> <span class="s">&#39;media&#39;</span><span class="p">,</span> <span class="s">&#39;favicon.png&#39;</span><span class="p">),</span> <span class="n">wx</span><span class="o">.</span><span class="n">BITMAP_TYPE_PNG</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
         <span class="n">wx</span><span class="o">.</span><span class="n">Frame</span><span class="o">.</span><span class="n">SetIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">favicon</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span><span class="p">:</span>
-            <span class="c"># This is needed to display the app icon on the taskbar on Windows 7</span>
-            <span class="kn">import</span> <span class="nn">ctypes</span>
-
-            <span class="n">app_id</span> <span class="o">=</span> <span class="s">&#39;SSP Manager v.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
-            <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">SetCurrentProcessExplicitAppUserModelID</span><span class="p">(</span><span class="n">app_id</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c"># This is needed to display the app icon on the taskbar on Windows 7</span>
+                <span class="kn">import</span> <span class="nn">ctypes</span>
+                <span class="n">app_id</span> <span class="o">=</span> <span class="s">&#39;SSP Manager v.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+                <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">SetCurrentProcessExplicitAppUserModelID</span><span class="p">(</span><span class="n">app_id</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Unable to change app icon: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_CLOSE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_file_exit</span><span class="p">)</span>
 
@@ -283,9 +280,7 @@
         <span class="n">event</span><span class="o">.</span><span class="n">Skip</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="SSPManager.on_popup"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_popup">[docs]</a>    <span class="k">def</span> <span class="nf">on_popup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Print the label of the menu item selected</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Print the label of the menu item selected&quot;&quot;&quot;</span>
         <span class="n">item_id</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">GetId</span><span class="p">()</span>
         <span class="n">menu</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">GetEventObject</span><span class="p">()</span>
         <span class="n">menu_item</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">FindItemById</span><span class="p">(</span><span class="n">item_id</span><span class="p">)</span>
@@ -450,7 +445,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">status_message</span> <span class="o">=</span> <span class="s">&quot;Synthetic WOA09 cast&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Synthetic WOA09 cast using pos: (</span><span class="si">%.6f</span><span class="s">, </span><span class="si">%.6f</span><span class="s">) and time: </span><span class="si">%s</span><span class="s">&quot;</span>
-                        <span class="o">%</span> <span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">query_date</span><span class="p">))</span>
+                 <span class="o">%</span> <span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">query_date</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="SSPManager.on_file_query_rtofs"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_file_query_rtofs">[docs]</a>    <span class="k">def</span> <span class="nf">on_file_query_rtofs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">rtofs_atlas_loaded</span><span class="p">:</span>
@@ -515,7 +510,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">status_message</span> <span class="o">=</span> <span class="s">&quot;Synthetic RTOFS cast&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Synthetic RTOFS cast using pos: (</span><span class="si">%.6f</span><span class="s">, </span><span class="si">%.6f</span><span class="s">) and time: </span><span class="si">%s</span><span class="s">&quot;</span>
-                        <span class="o">%</span> <span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">query_date</span><span class="p">))</span>
+                 <span class="o">%</span> <span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">query_date</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="SSPManager.on_file_query_sis"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_file_query_sis">[docs]</a>    <span class="k">def</span> <span class="nf">on_file_query_sis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;requesting profile from SIS&quot;</span><span class="p">)</span>
@@ -934,7 +929,7 @@
             <span class="k">return</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;area selection: </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s"> / </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&quot;</span>
-                        <span class="o">%</span> <span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">x1data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y1data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">x2data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y2data</span><span class="p">))</span>
+                 <span class="o">%</span> <span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">x1data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y1data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">x2data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y2data</span><span class="p">))</span>
 
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">x1data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y1data</span>
         <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">x2data</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">y2data</span>
@@ -1116,7 +1111,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">temp_axes</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">temp_axes</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">min_temp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">max_temp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">min_depth</span><span class="p">,</span>
                                <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">max_depth</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">temp_axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;Temp [deg. C]&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">temp_axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;Temp [deg C]&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">sal_axes</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">sal_axes</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">min_sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">max_sal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">min_depth</span><span class="p">,</span>
@@ -1142,7 +1137,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">temp_axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
 
         <span class="c"># plot the current mean depth (if available and the user setting is on)</span>
-        <span class="c">#print(&quot;# %s %s&quot; % (self.prj.mean_depth, self.p.display_depth))</span>
+        <span class="c"># print(&quot;# %s %s&quot; % (self.prj.mean_depth, self.p.display_depth))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">mean_depth</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">display_depth</span><span class="p">:</span>
             <span class="c"># draw line on the 3 plots</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s">&#39;#663300&#39;</span>
@@ -1170,7 +1165,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">sal_axes</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">sel</span><span class="p">)</span>
 
         <span class="c"># plot vessel draft and surface sound speed (if available) [only on the speed plot]</span>
-        <span class="c">#print(&quot;@ %s %s&quot; % (self.prj.vessel_draft, self.prj.surface_sound_speed))</span>
+        <span class="c"># print(&quot;@ %s %s&quot; % (self.prj.vessel_draft, self.prj.surface_sound_speed))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">vessel_draft</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">surface_sound_speed</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="s">&#39;g--&#39;</span>
             <span class="c"># vertical line</span>
@@ -1250,7 +1245,7 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">rtofs_atlas_loaded</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">woa09_atlas_loaded</span><span class="p">:</span>  <span class="c"># try with WOA09</span>
                         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;RTOFS grids not loaded, reverting to WOA09&quot;</span><span class="p">)</span>
-                        <span class="c">#ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
+                        <span class="c"># ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
                         <span class="n">salinity_source</span> <span class="o">=</span> <span class="s">&quot;WOA09&quot;</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">replace_samples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_woa</span><span class="p">,</span> <span class="s">&#39;salinity&#39;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -1269,7 +1264,7 @@
                     <span class="k">except</span> <span class="n">SspError</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">woa09_atlas_loaded</span><span class="p">:</span>  <span class="c"># try with WOA09</span>
                             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;failure in RTOFS lookup, reverting to WOA09&quot;</span><span class="p">)</span>
-                            <span class="c">#ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
+                            <span class="c"># ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
                             <span class="n">salinity_source</span> <span class="o">=</span> <span class="s">&quot;WOA09&quot;</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">replace_samples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_woa</span><span class="p">,</span> <span class="s">&#39;salinity&#39;</span><span class="p">)</span>
 
@@ -1317,7 +1312,7 @@
 <div class="viewcode-block" id="SSPManager.on_process_load_temp_and_sal"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_process_load_temp_and_sal">[docs]</a>    <span class="k">def</span> <span class="nf">on_process_load_temp_and_sal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;XSV- and SVP- specific function&quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">sensor_type</span> <span class="o">!=</span> <span class="n">Dicts</span><span class="o">.</span><span class="n">sensor_types</span><span class="p">[</span><span class="s">&quot;XSV&quot;</span><span class="p">])</span>\
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">sensor_type</span> <span class="o">!=</span> <span class="n">Dicts</span><span class="o">.</span><span class="n">sensor_types</span><span class="p">[</span><span class="s">&quot;XSV&quot;</span><span class="p">])</span> \
                 <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">sensor_type</span> <span class="o">!=</span> <span class="n">Dicts</span><span class="o">.</span><span class="n">sensor_types</span><span class="p">[</span><span class="s">&quot;SVP&quot;</span><span class="p">]):</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;XSV- and SVP-specific function!&#39;</span>
             <span class="n">dlg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">OK</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ICON_ERROR</span><span class="p">)</span>
@@ -1338,7 +1333,7 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">rtofs_atlas_loaded</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">woa09_atlas_loaded</span><span class="p">:</span>  <span class="c"># try with WOA09</span>
                         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;RTOFS grids not loaded, reverting to WOA09&quot;</span><span class="p">)</span>
-                        <span class="c">#ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
+                        <span class="c"># ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
                         <span class="n">temperature_salinity_source</span> <span class="o">=</span> <span class="s">&quot;WOA09&quot;</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">replace_samples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_woa</span><span class="p">,</span> <span class="s">&#39;salinity&#39;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">replace_samples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_woa</span><span class="p">,</span> <span class="s">&#39;temperature&#39;</span><span class="p">)</span>
@@ -1359,7 +1354,7 @@
                     <span class="k">except</span> <span class="n">SspError</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">woa09_atlas_loaded</span><span class="p">:</span>  <span class="c"># try with WOA09</span>
                             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;failure in RTOFS lookup, reverting to WOA09&quot;</span><span class="p">)</span>
-                            <span class="c">#ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
+                            <span class="c"># ext_type = Dicts.source_types[&#39;Woa09Extend&#39;]</span>
                             <span class="n">temperature_salinity_source</span> <span class="o">=</span> <span class="s">&quot;WOA09&quot;</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">replace_samples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_woa</span><span class="p">,</span> <span class="s">&#39;salinity&#39;</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_data</span><span class="o">.</span><span class="n">replace_samples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">ssp_woa</span><span class="p">,</span> <span class="s">&#39;temperature&#39;</span><span class="p">)</span>
@@ -1855,7 +1850,7 @@
             <span class="k">return</span>
 
         <span class="n">pk_list</span> <span class="o">=</span> <span class="n">ssp_db</span><span class="o">.</span><span class="n">list_all_ssp_pks</span><span class="p">()</span>
-        <span class="c">#print(pk_list)</span>
+        <span class="c"># print(pk_list)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pk_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;The DB is empty. Nothing to delete!&#39;</span>
             <span class="n">dlg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;Local DB&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">OK</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ICON_WARNING</span><span class="p">)</span>
@@ -1870,7 +1865,7 @@
 
         <span class="n">dlg_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;</span><span class="si">%04d</span><span class="s">: </span><span class="si">%s</span><span class="s"> @ </span><span class="si">%s</span><span class="s"> [</span><span class="si">%s</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tp</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">Dicts</span><span class="o">.</span><span class="n">first_match</span><span class="p">(</span><span class="n">Dicts</span><span class="o">.</span><span class="n">sensor_types</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="mi">4</span><span class="p">]))))</span>
                     <span class="k">for</span> <span class="n">tp</span> <span class="ow">in</span> <span class="n">pk_list</span><span class="p">]</span>
-        <span class="c">#print(dlg_list)</span>
+        <span class="c"># print(dlg_list)</span>
         <span class="n">dialog</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">SingleChoiceDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&quot;Pick a stored SSP&quot;</span><span class="p">,</span> <span class="s">&quot;Local DB&quot;</span><span class="p">,</span> <span class="n">dlg_list</span><span class="p">)</span>
         <span class="n">selection</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">()</span>
         <span class="n">dialog</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
@@ -2011,6 +2006,10 @@
 </div>
 <div class="viewcode-block" id="SSPManager.on_tools_user_inputs"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_tools_user_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">on_tools_user_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs_viewer</span><span class="o">.</span><span class="n">OnShow</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="SSPManager.on_tools_modify_settings"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_tools_modify_settings">[docs]</a>    <span class="k">def</span> <span class="nf">on_tools_modify_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings_tool</span> <span class="o">=</span> <span class="n">ssp_settings</span><span class="o">.</span><span class="n">SSPSettings</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings_tool</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="SSPManager.on_tools_view_settings"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_tools_view_settings">[docs]</a>    <span class="k">def</span> <span class="nf">on_tools_view_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings_viewer</span><span class="o">.</span><span class="n">OnShow</span><span class="p">()</span>
@@ -2161,37 +2160,61 @@
     <span class="c"># ####### HELP ######</span>
 </div>
 <div class="viewcode-block" id="SSPManager.on_help_manual"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_help_manual">[docs]</a>    <span class="k">def</span> <span class="nf">on_help_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        open manual</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">manual_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="s">&quot;docs&quot;</span><span class="p">,</span> <span class="s">&quot;manual.pdf&quot;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">manual_path</span><span class="p">):</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;missing manual at: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">manual_path</span><span class="p">)</span>
-            <span class="k">return</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;open manual: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">manual_path</span><span class="p">)</span>
-        <span class="n">Helper</span><span class="o">.</span><span class="n">explore_folder</span><span class="p">(</span><span class="n">manual_path</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot; Open manual &quot;&quot;&quot;</span>
+        <span class="c"># manual_path = os.path.abspath(os.path.join(self.here, os.path.pardir, &quot;docs&quot;, &quot;manual.pdf&quot;))</span>
+        <span class="c"># if not os.path.isfile(manual_path):</span>
+        <span class="c">#     log.warning(&quot;missing manual at: %s&quot; % manual_path)</span>
+        <span class="c">#     return</span>
+        <span class="c"># log.info(&quot;open manual: %s&quot; % manual_path)</span>
+        <span class="c"># Helper.explore_folder(manual_path)</span>
+
+        <span class="c"># Open the url with the online documentation for SSP Manager</span>
+        <span class="kn">import</span> <span class="nn">webbrowser</span>
+        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;http://giumas.github.io/hyo_ssp_manager/latest/index.html&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="SSPManager.on_help_about"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager.SSPManager.on_help_about">[docs]</a>    <span class="k">def</span> <span class="nf">on_help_about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Info about the application&quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">platform</span>
+        <span class="kn">from</span> <span class="nn">hydroffice</span> <span class="kn">import</span> <span class="n">base</span>
+        <span class="kn">from</span> <span class="nn">hydroffice</span> <span class="kn">import</span> <span class="n">ssp</span>
         <span class="n">current_year</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y&quot;</span><span class="p">)</span>
         <span class="n">dlg</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">AboutDialogInfo</span><span class="p">()</span>
         <span class="n">dlg</span><span class="o">.</span><span class="n">SetName</span><span class="p">(</span><span class="s">&quot;SSP Manager&quot;</span><span class="p">)</span>
         <span class="n">dlg</span><span class="o">.</span><span class="n">SetVersion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
         <span class="n">dlg</span><span class="o">.</span><span class="n">SetLicense</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">license</span><span class="p">)</span>
         <span class="n">dlg</span><span class="o">.</span><span class="n">SetIcon</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">Icon</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">,</span> <span class="s">&quot;media&quot;</span><span class="p">,</span> <span class="s">&quot;ccom.png&quot;</span><span class="p">),</span> <span class="n">wx</span><span class="o">.</span><span class="n">BITMAP_TYPE_PNG</span><span class="p">))</span>
-        <span class="n">dlg</span><span class="o">.</span><span class="n">SetDescription</span><span class="p">(</span><span class="s">&quot;SSP Manager processes XBT/SVP/CTD data for being used by </span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot;acoustic systems.</span><span class="se">\n\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot;This work is/has been funded by:</span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot; - NOAA grant NA10NOS4000073</span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot; - NSF grant 1150574</span><span class="se">\n\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot;For bugs and unsupported formats, please send an email </span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot;(with attached the data files to reproduce and troubleshoot </span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot;the issue!) to:</span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot; - hydroffice.ssp_manager@ccom.unh.edu</span><span class="se">\n\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot;For code contributions and general comments, write to:</span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot; - gmasetti@ccom.unh.edu</span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot; - brc@ccom.unh.edu</span><span class="se">\n</span><span class="s">&quot;</span>
-                           <span class="s">&quot; - matthew.wilson@noaa.gov&quot;</span><span class="p">)</span>
+        <span class="n">about_description</span> <span class="o">=</span> <span class="s">&quot;SSP Manager processes XBT/SVP/CTD data for being used by </span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;acoustic systems.</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;This work is/has been funded by:</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - NOAA grant NA10NOS4000073</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - NSF grant 1150574</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;For bugs and unsupported formats, please send an email </span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;(with attached the data files to reproduce and troubleshoot </span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;the issue!) to:</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - hydroffice.ssp_manager@ccom.unh.edu</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;For code contributions and general comments, write to:</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - gmasetti@ccom.unh.edu</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - brc@ccom.unh.edu</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - matthew.wilson@noaa.gov</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;Contributors:</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - glen.rice@noaa.gov</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot;Environment:</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - os: </span><span class="si">%s</span><span class="s"> [</span><span class="si">%s</span><span class="s">bit]</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - python: </span><span class="si">%s</span><span class="s"> [</span><span class="si">%s</span><span class="s">bit]</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - wxPython: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - matplotlib: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - hydroffice.base: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> \
+                            <span class="s">&quot; - hydroffice.ssp: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> \
+                            <span class="p">(</span>
+                                <span class="n">os</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;64&quot;</span> <span class="k">if</span> <span class="n">Helper</span><span class="o">.</span><span class="n">is_64bit_os</span><span class="p">()</span> <span class="k">else</span> <span class="s">&quot;32&quot;</span><span class="p">,</span>
+                                <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span> <span class="s">&quot;64&quot;</span> <span class="k">if</span> <span class="n">Helper</span><span class="o">.</span><span class="n">is_64bit_python</span><span class="p">()</span> <span class="k">else</span> <span class="s">&quot;32&quot;</span><span class="p">,</span>
+                                <span class="n">wx</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+                                <span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+                                <span class="n">base</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+                                <span class="n">ssp</span><span class="o">.</span><span class="n">__version__</span>
+                            <span class="p">)</span>
+
+        <span class="n">dlg</span><span class="o">.</span><span class="n">SetDescription</span><span class="p">(</span><span class="n">about_description</span><span class="p">)</span>
         <span class="n">dlg</span><span class="o">.</span><span class="n">SetCopyright</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> (C) UNH/CCOM&quot;</span> <span class="o">%</span> <span class="n">current_year</span><span class="p">)</span>
         <span class="n">wx</span><span class="o">.</span><span class="n">AboutBox</span><span class="p">(</span><span class="n">dlg</span><span class="p">)</span>
 
@@ -2402,7 +2425,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c"># time stamp</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span><span class="o">.</span><span class="n">dg_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">sis_info_str</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span><span class="o">.</span><span class="n">dg_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span><span class="p">))</span>
+                <span class="n">sis_info_str</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prj</span><span class="o">.</span><span class="n">km_listener</span><span class="o">.</span><span class="n">nav</span><span class="o">.</span><span class="n">dg_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%H:%M:%S&quot;</span><span class="p">))</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">sis_info_str</span> <span class="o">=</span> <span class="s">&quot;NA, &quot;</span>
@@ -2505,7 +2528,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 2.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../ssp_manager.html" >hydroffice.ssp_manager</a> &raquo;</li> 
       </ul>

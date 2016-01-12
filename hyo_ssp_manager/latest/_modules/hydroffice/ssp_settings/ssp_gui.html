@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>hydroffice.ssp_settings.ssp_gui &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    <title>hydroffice.ssp_settings.ssp_gui &mdash; HydrOffice SSP Manager 2.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.2.0',
+        VERSION:     '2.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../index.html" />
+    <link rel="top" title="HydrOffice SSP Manager 2.1.0 documentation" href="../../../index.html" />
     <link rel="up" title="hydroffice.ssp_settings" href="../ssp_settings.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 2.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../ssp_settings.html" accesskey="U">hydroffice.ssp_settings</a> &raquo;</li> 
       </ul>
@@ -50,7 +50,7 @@
 <div class="deck">
 
     <p>
-    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    This document describes the HydrOffice SSP Manager (2.1). For the source code,
     <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
     </p>
 
@@ -65,13 +65,14 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ssp_settings</span>
 
-<span class="kn">from</span> <span class="nn">wx.lib.mixins.inspection</span> <span class="kn">import</span> <span class="n">InspectionMixin</span>
+<span class="c"># from wx.lib.mixins.inspection import InspectionMixin</span>
+
 
 <div class="viewcode-block" id="gui"><a class="viewcode-back" href="../../../api/hydroffice.ssp_settings.html#hydroffice.ssp_settings.ssp_gui.gui">[docs]</a><span class="k">def</span> <span class="nf">gui</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">App</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="n">InspectionMixin</span><span class="p">)</span>
-    <span class="n">svp_editor</span> <span class="o">=</span> <span class="n">ssp_settings</span><span class="o">.</span><span class="n">SSPSettings</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">SetTopWindow</span><span class="p">(</span><span class="n">svp_editor</span><span class="p">)</span>
-    <span class="n">svp_editor</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">App</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span> <span class="c"># , InspectionMixin)</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">ssp_settings</span><span class="o">.</span><span class="n">SSPSettings</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">SetTopWindow</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
     <span class="n">app</span><span class="o">.</span><span class="n">MainLoop</span><span class="p">()</span>
 </pre></div></div>
 
@@ -108,7 +109,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 2.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../ssp_settings.html" >hydroffice.ssp_settings</a> &raquo;</li> 
       </ul>

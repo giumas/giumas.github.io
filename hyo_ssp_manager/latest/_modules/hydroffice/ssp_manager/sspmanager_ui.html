@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>hydroffice.ssp_manager.sspmanager_ui &mdash; HydrOffice SSP Manager 0.2.0 documentation</title>
+    <title>hydroffice.ssp_manager.sspmanager_ui &mdash; HydrOffice SSP Manager 2.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/hyo.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.2.0',
+        VERSION:     '2.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="HydrOffice SSP Manager 0.2.0 documentation" href="../../../index.html" />
+    <link rel="top" title="HydrOffice SSP Manager 2.1.0 documentation" href="../../../index.html" />
     <link rel="up" title="hydroffice.ssp_manager" href="../ssp_manager.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 2.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../ssp_manager.html" accesskey="U">hydroffice.ssp_manager</a> &raquo;</li> 
       </ul>
@@ -50,7 +50,7 @@
 <div class="deck">
 
     <p>
-    This document describes the HydrOffice SSP Manager (0.2). For the source code,
+    This document describes the HydrOffice SSP Manager (2.1). For the source code,
     <a href="https://bitbucket.org/ccomjhc/hyo_ssp_manager">go here</a>.
     </p>
 
@@ -147,6 +147,7 @@
 <span class="n">MENU_TOOLS_CLEAR_REFERENCE_CAST</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">NewId</span><span class="p">()</span>
 <span class="n">MENU_TOOLS_EDIT_REFERENCE_CAST</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">NewId</span><span class="p">()</span>
 <span class="n">MENU_TOOLS_REFERENCE</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">NewId</span><span class="p">()</span>
+<span class="n">MENU_TOOLS_MODIFY_SETTINGS</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">NewId</span><span class="p">()</span>
 <span class="n">MENU_TOOLS_VIEW_SETTINGS</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">NewId</span><span class="p">()</span>
 <span class="n">MENU_TOOLS_RELOAD_SETTINGS</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">NewId</span><span class="p">()</span>
 <span class="n">MENU_TOOLS_USER_INPUTS</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">NewId</span><span class="p">()</span>
@@ -182,7 +183,7 @@
              <span class="n">MENU_SERVER_START</span><span class="p">,</span> <span class="n">MENU_SERVER_SEND</span><span class="p">,</span> <span class="n">MENU_SERVER_STOP</span><span class="p">,</span> <span class="n">MENU_SERVER_LOG_METADATA</span><span class="p">,</span>
              <span class="n">MENU_TOOLS_GEO_MONITOR</span><span class="p">,</span> <span class="n">MENU_TOOLS_REF_MON</span><span class="p">,</span>
              <span class="n">MENU_TOOLS_SET_REFERENCE_CAST</span><span class="p">,</span> <span class="n">MENU_TOOLS_EDIT_REFERENCE_CAST</span><span class="p">,</span> <span class="n">MENU_TOOLS_CLEAR_REFERENCE_CAST</span><span class="p">,</span>
-             <span class="n">MENU_TOOLS_VIEW_SETTINGS</span><span class="p">,</span> <span class="n">MENU_TOOLS_RELOAD_SETTINGS</span><span class="p">,</span>
+             <span class="n">MENU_TOOLS_MODIFY_SETTINGS</span><span class="p">,</span> <span class="n">MENU_TOOLS_VIEW_SETTINGS</span><span class="p">,</span> <span class="n">MENU_TOOLS_RELOAD_SETTINGS</span><span class="p">,</span>
              <span class="n">MENU_TOOLS_USER_INPUTS</span><span class="p">)</span>
 
 <span class="n">MENUS_DISABLED_ON_CLOSED</span> <span class="o">=</span> <span class="p">(</span>
@@ -496,6 +497,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ToolsUserInputs</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ToolsMenu</span><span class="p">,</span> <span class="n">MENU_TOOLS_USER_INPUTS</span><span class="p">,</span> <span class="s">&quot;Monitor user inputs&quot;</span><span class="p">,</span>
                                            <span class="s">&quot;Provide information about user inputs&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">ITEM_NORMAL</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ToolsMenu</span><span class="o">.</span><span class="n">AppendItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ToolsUserInputs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ToolsModifySettings</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ToolsMenu</span><span class="p">,</span> <span class="n">MENU_TOOLS_MODIFY_SETTINGS</span><span class="p">,</span> <span class="s">&quot;Modify SSP settings&quot;</span><span class="p">,</span>
+                                             <span class="s">&quot;Open tool to modify SSP settings&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">ITEM_NORMAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ToolsMenu</span><span class="o">.</span><span class="n">AppendItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ToolsModifySettings</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ToolsViewSettings</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ToolsMenu</span><span class="p">,</span> <span class="n">MENU_TOOLS_VIEW_SETTINGS</span><span class="p">,</span> <span class="s">&quot;View SSP settings&quot;</span><span class="p">,</span>
                                              <span class="s">&quot;Show SSP settings information&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">ITEM_NORMAL</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ToolsMenu</span><span class="o">.</span><span class="n">AppendItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ToolsViewSettings</span><span class="p">)</span>
@@ -515,7 +519,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">SVPEditorFrame_menubar</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">HelpMenu</span><span class="p">,</span> <span class="s">&quot;Help&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SetMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SVPEditorFrame_menubar</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame_statusbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CreateStatusBar</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_statusbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CreateStatusBar</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__set_properties</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__do_layout</span><span class="p">()</span>
 
@@ -590,6 +594,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_MENU</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tools_edit_reference_cast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ToolsEditReferenceCast</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_MENU</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tools_clear_reference_cast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ToolsClearReferenceCast</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_MENU</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tools_user_inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ToolsUserInputs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_MENU</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tools_modify_settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ToolsModifySettings</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_MENU</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tools_view_settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ToolsViewSettings</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_MENU</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tools_reload_settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ToolsReloadSettings</span><span class="p">)</span>
 
@@ -598,7 +603,7 @@
 
     <span class="k">def</span> <span class="nf">__set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SetTitle</span><span class="p">(</span><span class="s">&quot;SSP Manager&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SetSize</span><span class="p">((</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">800</span><span class="p">))</span>
+        <span class="c"># self.SetSize((1100, 700))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame_statusbar</span><span class="o">.</span><span class="n">SetStatusWidths</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
         <span class="n">SSPManFrame_statusbar_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">SSPManFrame_statusbar_fields</span><span class="p">)):</span>
@@ -608,7 +613,6 @@
         <span class="n">sizer_1</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">BoxSizer</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">VERTICAL</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SetSizer</span><span class="p">(</span><span class="n">sizer_1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Layout</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SetSize</span><span class="p">((</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">800</span><span class="p">))</span>
 
 <div class="viewcode-block" id="SSPManagerBase.on_file_query_woa09"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager_ui.SSPManagerBase.on_file_query_woa09">[docs]</a>    <span class="k">def</span> <span class="nf">on_file_query_woa09</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Event handler &#39;on_file_query_woa09&#39; not implemented!&quot;</span><span class="p">)</span>
@@ -866,6 +870,10 @@
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Event handler &#39;on_tools_server_log_metadata&#39; not implemented!&quot;</span><span class="p">)</span>
         <span class="n">event</span><span class="o">.</span><span class="n">Skip</span><span class="p">()</span>
 </div>
+<div class="viewcode-block" id="SSPManagerBase.on_tools_modify_settings"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager_ui.SSPManagerBase.on_tools_modify_settings">[docs]</a>    <span class="k">def</span> <span class="nf">on_tools_modify_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Event handler &#39;on_tools_modify_settings&#39; not implemented!&quot;</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">Skip</span><span class="p">()</span>
+</div>
 <div class="viewcode-block" id="SSPManagerBase.on_tools_view_settings"><a class="viewcode-back" href="../../../api/hydroffice.ssp_manager.html#hydroffice.ssp_manager.sspmanager_ui.SSPManagerBase.on_tools_view_settings">[docs]</a>    <span class="k">def</span> <span class="nf">on_tools_view_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Event handler &#39;on_tools_view_settings&#39; not implemented!&quot;</span><span class="p">)</span>
         <span class="n">event</span><span class="o">.</span><span class="n">Skip</span><span class="p">()</span>
@@ -916,7 +924,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 0.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HydrOffice SSP Manager 2.1.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="../ssp_manager.html" >hydroffice.ssp_manager</a> &raquo;</li> 
       </ul>
