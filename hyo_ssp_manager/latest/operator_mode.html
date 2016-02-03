@@ -36,9 +36,6 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="server_mode.html" title="Server Mode"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -65,8 +62,8 @@
     <div class="section" id="operator-mode">
 <span id="id1"></span><h1>Operator Mode<a class="headerlink" href="#operator-mode" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="data-import">
-<h2>Data import<a class="headerlink" href="#data-import" title="Permalink to this headline">¶</a></h2>
-<p>From the <em>File</em> menu, select <em>Import cast</em> and choose the desired import file type from the sub-menu.
+<span id="index-0"></span><h2>Data import<a class="headerlink" href="#data-import" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">From the <em>File</em> menu, select <em>Import cast</em> and choose the desired import file type from the sub-menu.
 This will launch a file selection dialog (with the expected file extension set as a filter, e.g. <code class="docutils literal"><span class="pre">.edf</span></code>
 for <em>Sippican</em> files). A number of sample data files are distributed with this package.</p>
 <p>After the selection of the desired file, the window shows panels with the sound speed, temperature and
@@ -104,7 +101,7 @@ The <em>Hide flagged</em> option in the <em>View menu</em> will toggle the displ
 then the reference cast will be used to augment salinity and/or temperature profiles instead of the WOA/RTOFS profiles.</p>
 <div class="section" id="xbt-probes">
 <h3>XBT probes<a class="headerlink" href="#xbt-probes" title="Permalink to this headline">¶</a></h3>
-<p>XBT probes measure the temperature of water as they drop to the seafloor. Since the speed of sound in water is
+<p id="index-2">XBT probes measure the temperature of water as they drop to the seafloor. Since the speed of sound in water is
 strongly affected by water temperature, this measurement can be used to estimate the sound speed profile.
 Since salinity can also influence the speed of sound in water, the accuracy of the sound speed estimate
 can be improved through better approximation of the water’s salinity. This approximation can be as simple as
@@ -122,7 +119,7 @@ Sound speed values are calculated using the UNESCO equation (<em>Fofonoff and Mi
 </div>
 <div class="section" id="xsv-probes">
 <h3>XSV probes<a class="headerlink" href="#xsv-probes" title="Permalink to this headline">¶</a></h3>
-<p>In the case of an XSV file, the user can decide to augment the measured sound speed with WOA/RTOFS temperature and
+<p id="index-3">In the case of an XSV file, the user can decide to augment the measured sound speed with WOA/RTOFS temperature and
 salinity through the XSV load temperature/salinity option under the <em>Process</em> menu (the option is only active
 when an XSV cast is loaded).
 In this mode, the sound speed is NOT recalculated, the temperature and salinity are meant merely for SIS
@@ -131,7 +128,7 @@ Thus, the package disallows application of WOA/RTOFS salinity to XSV profiles.</
 </div>
 <div class="section" id="manual-user-insertions">
 <h3>Manual user insertions<a class="headerlink" href="#manual-user-insertions" title="Permalink to this headline">¶</a></h3>
-<p>There are two methods to add points, after having selected the <em>Insert mode</em> in the <em>Visual inspection</em> sub-menu:</p>
+<p id="index-4">There are two methods to add points, after having selected the <em>Insert mode</em> in the <em>Visual inspection</em> sub-menu:</p>
 <ol class="arabic simple">
 <li>Adding sound speed points in the sound speed plot. This method adds points to the sound speed profile only and it holds the last observed temperature and salinity constant (i.e., it makes no attempt to update the temperature/salinity profiles for the chosen sound speed). Thus, this method is well suited for output formats or transmission protocols in which the temperature/salinity values are not used.</li>
 <li>Adding salinity and temperature points. This method adds salinity and temperature points in their respective plots and then calculates the resulting sound speed based on the temperature/salinity plots. A first click in the salinity plot adds a salinity point. Then, a second click is required in the temperature profile (the depth of the first point in the salinity plot will be adjusted to match the depth of the second click). Finally, a third click in the sound speed plot computes the new sound speed point based on the previously selected depth/temperature/salinity values (the depth from the last click in the sound speed plot is NOT used, i.e., you can click anywhere in the sound speed plot).</li>
@@ -160,7 +157,7 @@ in the sound speed profile used in the ray tracing calculations” (<em>Kongsber
 </div>
 <div class="section" id="profile-extension-using-woa-rtofs-atlases-or-a-reference-cast">
 <h3>Profile extension using WOA/RTOFS atlases or a reference cast<a class="headerlink" href="#profile-extension-using-woa-rtofs-atlases-or-a-reference-cast" title="Permalink to this headline">¶</a></h3>
-<p>Profile extension can be applied by selecting <em>Extend cast</em> from the <em>Process menu</em>.
+<span class="target" id="index-5"></span><p id="index-6">Profile extension can be applied by selecting <em>Extend cast</em> from the <em>Process menu</em>.
 This operation will extend the observed cast in depth as much as possible using the WOA/RTOFS profile.
 After that, the three plot panels will be updated. If necessary, users should edit any discontinuities
 between the cast in depth and the extension in the vicinity of the maximum observation depth.</p>
@@ -173,14 +170,14 @@ this will be used to extend the cast instead of WOA/RTOFS atlases data.</p>
 </div>
 <div class="section" id="data-storage">
 <h3>Data storage<a class="headerlink" href="#data-storage" title="Permalink to this headline">¶</a></h3>
-<p>The package provides also functionalities to permantently storage, delete and retrieve the SSP data.
+<p id="index-7">The package provides also functionalities to permantently storage, delete and retrieve the SSP data.
 In particular, each SSP may contain three types of stored data: the raw data (that makes possible
 to redo the processing from scratch), the processed samples (with flags to identify the various different source
 of data), and an optional SIS profile (that represents the result of the thinning process required by <em>Kongsberg SIS</em>).</p>
-<p>Additional functions to export in several formats (CSV, kml, shapefile) and to plot the metadata and the spatial
+<p>Additional functions to export in several formats (csv, kml, shapefile) and to plot the metadata and the spatial
 information for the stored SSP data set.</p>
-<div class="align-center figure" id="id4">
-<span id="kml-export-fig"></span><a class="reference internal image-reference" href="_images/kml_export.png"><img alt="alternate text" src="_images/kml_export.png" style="width: 600px; height: 400px;" /></a>
+<span class="target" id="index-8"></span><span class="target" id="index-9"></span><div class="align-center figure" id="id4">
+<span id="kml-export-fig"></span><span id="index-10"></span><a class="reference internal image-reference" href="_images/kml_export.png"><img alt="alternate text" src="_images/kml_export.png" style="width: 600px; height: 400px;" /></a>
 <p class="caption"><span class="caption-text">Figure – Loading result of the exported metadata (kml format) in Google Earth.</span></p>
 </div>
 <div class="align-center figure" id="id5">
@@ -195,14 +192,14 @@ information for the stored SSP data set.</p>
 </div>
 <div class="section" id="data-transmission">
 <span id="id2"></span><h2>Data transmission<a class="headerlink" href="#data-transmission" title="Permalink to this headline">¶</a></h2>
-<p>Data transmission is triggered by selecting <em>Send SSP</em> from the <em>Process menu</em>.
+<span class="target" id="index-11"></span><p id="index-12">Data transmission is triggered by selecting <em>Send SSP</em> from the <em>Process menu</em>.
 The recipients of such a transmission are configured in the configuration file (see <a class="reference internal" href="how_to_install.html#package-configuration"><span>Package configuration</span></a>).
 Given that the profile accepted by <em>SIS</em> often requires the application of a thinning algorithm,
 a method <em>Preview thinning</em> is provided to inspect the result of such an algorithm before the actual transmission.</p>
 </div>
 <div class="section" id="data-export">
 <h2>Data export<a class="headerlink" href="#data-export" title="Permalink to this headline">¶</a></h2>
-<p>Any file that is loaded into the package can be exported by accessing the <em>Export SSP</em> options under the <em>File menu</em>.
+<p id="index-13">Any file that is loaded into the package can be exported by accessing the <em>Export SSP</em> options under the <em>File menu</em>.
 Several formats are currently supported, so the user must select the format of interest and
 then choose <em>Export selected formats</em> to actually perform the export.
 If configured (with <code class="docutils literal"><span class="pre">export_prompt_filename</span></code> configuration option), the export function will prompt the user
@@ -213,7 +210,7 @@ Furthermore, at the end of the export, the folder with the created files is open
 <h2>Additional functionalities<a class="headerlink" href="#additional-functionalities" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="create-a-woa-or-rtofs-profile">
 <h3>Create a WOA or RTOFS profile<a class="headerlink" href="#create-a-woa-or-rtofs-profile" title="Permalink to this headline">¶</a></h3>
-<p>It is possible to upload a single WOA or RTOFS profile to <em>SIS</em>.
+<span class="target" id="index-14"></span><p id="index-15">It is possible to upload a single WOA or RTOFS profile to <em>SIS</em>.
 This can be done by first select WOA09 atlas or RTOFS atlas under the <em>File/Query</em> from sub-menu.
 This will trigger a series of question dialogs that will determine use of the SIS date/position input
 for the query position or an user provided input. After that, a surface sound speed can be applied,
@@ -223,7 +220,7 @@ in the filename based on the query time of the cast.</p>
 </div>
 <div class="section" id="request-profile-from-sis">
 <h3>Request profile from SIS<a class="headerlink" href="#request-profile-from-sis" title="Permalink to this headline">¶</a></h3>
-<p>This functionality is used to retrieve the cast currently being used by <em>SIS</em> and use it to create a new profile,
+<p id="index-16">This functionality is used to retrieve the cast currently being used by <em>SIS</em> and use it to create a new profile,
 by selecting <em>Kongsberg SIS</em> under the <em>File/Query</em> from sub-menu.</p>
 <p>This is only possible if the package is receiving data transmissions from <em>SIS</em>.
 If it is not, the package will request a cast and will wait 60 seconds until it times out on the request.
@@ -290,7 +287,7 @@ prior to sending it to the echosounder.</p>
 * The slider bar corrector value is reset to zero after transmission of the profile both for measured profiles and server profiles.</p>
 </div>
 <div class="section" id="network-data-reception">
-<h3>Network data reception<a class="headerlink" href="#network-data-reception" title="Permalink to this headline">¶</a></h3>
+<span id="index-17"></span><h3>Network data reception<a class="headerlink" href="#network-data-reception" title="Permalink to this headline">¶</a></h3>
 <p>The package is configurable to listen on specified ports for UDP input of sound speed cast data.
 Currently supported systems are <em>MVP</em> and <em>Sippican</em>. See <a class="reference internal" href="app_b_connection_settings.html#app-b-connection-settings"><span>Appendix B - Connection Settings</span></a> for more on how
 to configure these systems. The port numbers associated with various data sources can be changed
@@ -348,9 +345,6 @@ the received cast will be displayed as described above.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
         <li class="right" >
           <a href="server_mode.html" title="Server Mode"
              >next</a> |</li>
