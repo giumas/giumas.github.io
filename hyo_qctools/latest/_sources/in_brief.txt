@@ -1,9 +1,7 @@
 In brief
-========
+===========
 
-.. image:: _static/favicon.png
-    :alt: logo
+QC Tools assist in the review of various types of data occurring all throughout the ping-to-chart process. Data is input as a bathymetric grid and/or feature file, and the output is a GIS-layer that alerts to the user various parts of their data that might require more attention. 
 
-HydrOffice is a research development environment for ocean mapping. It provides a collection of hydro-packages, each of them dealing with a specific issue of the field. The main goal is to speed up both algorithms testing and research-2-operation.
+The objectives are to improve data accuracy, while also reducing the overall time required for ping-to-chart. 
 
-This package provides functionalities to QC of survey data and nautical chart review.

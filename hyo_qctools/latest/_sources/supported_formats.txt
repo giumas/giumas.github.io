@@ -6,4 +6,7 @@ Supported Formats
 =================================================== ==== =====
 Bathymetric Attributed Grid (.bag)                  X    
 Caris CSAR (.csar)*                                 X    
+S-57 (.000)                                         X    X
 =================================================== ==== =====
+
+*.csar is available for NOAA only
