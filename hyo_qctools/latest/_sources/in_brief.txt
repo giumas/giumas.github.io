@@ -1,7 +1,23 @@
 In brief
-===========
+========
 
-QC Tools assist in the review of various types of data occurring all throughout the ping-to-chart process. Data is input as a bathymetric grid and/or feature file, and the output is a GIS-layer that alerts to the user various parts of their data that might require more attention. 
+.. image:: _static/qctools.png
+    :width: 256px
+    :height: 256px
+    :align: center
+    :alt: logo
 
-The objectives are to improve data accuracy, while also reducing the overall time required for ping-to-chart. 
+.. index::
+    single: bathymetric grid
+    single: features
+    single: data; accuracy
+    single: ping-to-chart
+
+QC Tools assist in the review of various types of data occurring all throughout the ping-to-chart process.
+
+Data is input as a bathymetric grid and/or feature file, and the output is a GIS-layer that alerts to
+the user various parts of their data that might require more attention.
+
+The objectives are to improve data accuracy, while also reducing the overall time required for ping-to-chart.
+
 

@@ -1,0 +1,13 @@
+Developer's guide
+=================
+
+Contents
+--------
+
+.. toctree::
+    :maxdepth: 1
+
+    developer_guide_how_to_contribute
+    developer_guide_how_to_build_docs
+    developer_guide_how_to_distribute
+    developer_guide_todolist

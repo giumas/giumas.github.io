@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Supported Formats &mdash; HydrOffice QC Tools 1.0.0 documentation</title>
+    <title>Detect fliers &mdash; HydrOffice QC Tools 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="HydrOffice QC Tools 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="How to use" href="how_to_use.html" />
-    <link rel="prev" title="License" href="license.html" /> 
+    <link rel="up" title="Survey Review" href="user_manual_survey.html" />
+    <link rel="next" title="Scan features" href="user_manual_survey_3_scan_features.html" />
+    <link rel="prev" title="Data inputs" href="user_manual_survey_1_data_inputs.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -35,12 +36,14 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="how_to_use.html" title="How to use"
+          <a href="user_manual_survey_3_scan_features.html" title="Scan features"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="license.html" title="License"
+          <a href="user_manual_survey_1_data_inputs.html" title="Data inputs"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="user_manual.html" >User manual</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="user_manual_survey.html" accesskey="U">Survey Review</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,41 +55,30 @@
 <div class="deck">
 
     <p>
-    This document describes the HydrOffice QC Tools library and manager (1.0). For the source code,
-    <a href="https://bitbucket.org/ccomjhc/hyo_qctools">go here</a>.
+    This document describes the HydrOffice QC Tools application (1.0). For the project page,
+    <a href="https://www.hydroffice.org/qctools/main">go here</a>.
     </p>
 
 </div>
-    <div class="section" id="supported-formats">
-<h1>Supported Formats<a class="headerlink" href="#supported-formats" title="Permalink to this headline">¶</a></h1>
-<table border="1" class="docutils">
-<colgroup>
-<col width="85%" />
-<col width="7%" />
-<col width="8%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Format</th>
-<th class="head">Read</th>
-<th class="head">Write</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>Bathymetric Attributed Grid (.bag)</td>
-<td>X</td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-odd"><td>Caris CSAR (.csar)*</td>
-<td>X</td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-even"><td>S-57 (.000)</td>
-<td>X</td>
-<td>X</td>
-</tr>
-</tbody>
-</table>
-<p><a href="#id1"><span class="problematic" id="id2">*</span></a>.csar is available for NOAA only</p>
+    <div class="section" id="detect-fliers">
+<span id="detect-fliers-label"></span><h1>Detect fliers<a class="headerlink" href="#detect-fliers" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Scan grids for anomalous grid data &#8220;fliers&#8221;.</p>
+<ul class="simple">
+<li>Select the <strong>Detect fliers</strong> tab on the bottom of the QC Tools interface.</li>
+</ul>
+<ul class="simple" id="index-1">
+<li>In <strong>Parameters</strong>, enter the <strong>Flier height</strong> in meters.</li>
+</ul>
+<ul class="simple" id="index-2">
+<li>In <strong>Execution</strong>, select <strong>Find fliers v1</strong> or <strong>Find fliers v2</strong> (note, these use the same algorithm and one
+may expect the same output, only v2 has been optimized for faster operation, and v1 is expected to be deprecated
+after additional testing).</li>
+<li>After computing, the output window opens automatically, and the results are shown:</li>
+</ul>
+<img alt="logo" class="align-center" src="_images/flier_finder_results.png" />
+<ul class="simple" id="index-3">
+<li>From the output window, drag-and-drop the output into the processing software to guide the review.</li>
+</ul>
 </div>
 
 
@@ -98,29 +90,26 @@
   <img class="logo" src="_static/favicon.png" alt="Logo"/>
 </a></p>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="license.html"
-                        title="previous chapter">License</a></p>
+  <p class="topless"><a href="user_manual_survey_1_data_inputs.html"
+                        title="previous chapter">Data inputs</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="how_to_use.html"
-                        title="next chapter">How to use</a></p>
+  <p class="topless"><a href="user_manual_survey_3_scan_features.html"
+                        title="next chapter">Scan features</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/supported_formats.txt"
+      <li><a href="_sources/user_manual_survey_2_detect_fliers.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -134,12 +123,14 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="how_to_use.html" title="How to use"
+          <a href="user_manual_survey_3_scan_features.html" title="Scan features"
              >next</a> |</li>
         <li class="right" >
-          <a href="license.html" title="License"
+          <a href="user_manual_survey_1_data_inputs.html" title="Data inputs"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="user_manual.html" >User manual</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="user_manual_survey.html" >Survey Review</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

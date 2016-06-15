@@ -1,0 +1,18 @@
+Overview
+--------
+
+.. index::
+    single: survey review
+
+The **Survey Review** tab will:
+
+* Ingest bathymetric grids and feature files (see :ref:`data-inputs-label`).
+
+* Scan grids for anomalous grid data ":index:`fliers`" (see :ref:`detect-fliers-label`).
+
+* Scan features to ensure proper attribution (see :ref:`scan-features-label`).
+
+* Ensure surveyed features are properly accounted for in the :index:`gridded bathymetry` (see :ref:`valsou-checks-label`).
+
+* Export :index:`bottom samples` to a text file for archival (see :ref:`sbdare-checks-label`).
+

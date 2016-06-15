@@ -1,0 +1,28 @@
+.. _valsou-checks-label:
+
+VALSOU checks
+-------------
+
+.. index::
+    single: VALSOU
+
+Ensure surveyed features are properly accounted for in the gridded bathymetry.
+
+* Select the **VALSOU checks** tab on the bottom of the QC Tools interface.
+
+.. index::
+    single: VALSOU checks
+
+* Click **VALSOU check v2**.
+
+* After computing, the output window opens automatically, and the results are shown (note, the check considers all
+  combination of grids and features files loaded. If there is no overlap found between a grid and feature file,
+  no output is generated, and the summary will report "no overlap"):
+
+.. image:: _static/valsou_results.png
+    :align: center
+    :alt: logo
+
+* From the output window, drag-and-drop the output into the processing software to guide the review.
+
+

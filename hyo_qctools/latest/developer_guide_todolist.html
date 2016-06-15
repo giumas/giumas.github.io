@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>How to distribute &mdash; HydrOffice QC Tools 1.0.0 documentation</title>
+    <title>Todolist &mdash; HydrOffice QC Tools 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="HydrOffice QC Tools 1.0.0 documentation" href="index.html" />
-    <link rel="prev" title="How to build the documentation" href="how_to_build_docs.html" /> 
+    <link rel="up" title="Developer’s guide" href="developer_guide.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="How to distribute" href="developer_guide_how_to_distribute.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -34,9 +36,13 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="how_to_build_docs.html" title="How to build the documentation"
+          <a href="license.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="developer_guide_how_to_distribute.html" title="How to distribute"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="developer_guide.html" accesskey="U">Developer&#8217;s guide</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -48,27 +54,25 @@
 <div class="deck">
 
     <p>
-    This document describes the HydrOffice QC Tools library and manager (1.0). For the source code,
-    <a href="https://bitbucket.org/ccomjhc/hyo_qctools">go here</a>.
+    This document describes the HydrOffice QC Tools application (1.0). For the project page,
+    <a href="https://www.hydroffice.org/qctools/main">go here</a>.
     </p>
 
 </div>
-    <div class="section" id="how-to-distribute">
-<h1>How to distribute<a class="headerlink" href="#how-to-distribute" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>To bump the version, you need <code class="docutils literal"><span class="pre">bumpversion</span></code>:</p>
+    <div class="section" id="todolist">
+<h1>Todolist<a class="headerlink" href="#todolist" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="survey-review">
+<h2>Survey Review<a class="headerlink" href="#survey-review" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sphinx</span> <span class="pre">sphinx-autobuild</span></code></li>
+<li>Improve robustness for candidate fliers (aka, <strong>Find fliers v3</strong>)</li>
 </ul>
 </div>
-<div class="section" id="update-the-version">
-<h2>Update the version<a class="headerlink" href="#update-the-version" title="Permalink to this headline">¶</a></h2>
-<p>Once installed, you can run something like:</p>
+<div class="section" id="chart-review">
+<h2>Chart Review<a class="headerlink" href="#chart-review" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">bumpversion</span> <span class="pre">--allow-dirty</span> <span class="pre">--new-version</span> <span class="pre">0.1.4.dev0</span> <span class="pre">patch</span></code>.</li>
+<li>Evaluate chart-scale soundings versus survey-scale soundings via <strong>triangle rule</strong></li>
+<li><strong>Scan HCell features</strong> to ensure proper attribution</li>
 </ul>
-<p>The above release value should then match with the variable <code class="docutils literal"><span class="pre">version</span></code> present in the <code class="docutils literal"><span class="pre">conf.py</span></code> under the <cite>docs</cite> folder.</p>
 </div>
 </div>
 
@@ -81,26 +85,26 @@
   <img class="logo" src="_static/favicon.png" alt="Logo"/>
 </a></p>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="how_to_build_docs.html"
-                        title="previous chapter">How to build the documentation</a></p>
+  <p class="topless"><a href="developer_guide_how_to_distribute.html"
+                        title="previous chapter">How to distribute</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">License</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/how_to_distribute.txt"
+      <li><a href="_sources/developer_guide_todolist.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -114,9 +118,13 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="how_to_build_docs.html" title="How to build the documentation"
+          <a href="license.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="developer_guide_how_to_distribute.html" title="How to distribute"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="developer_guide.html" >Developer&#8217;s guide</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

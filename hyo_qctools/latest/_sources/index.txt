@@ -1,27 +1,24 @@
 .. HydrOffice QC Tools documentation master file.
 
-HydrOffice QC Tools's documentation
-===================================
+QC Tools's documentation
+========================
 
 Contents
 --------
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 1
 
-   in_brief
-   license
-   supported_formats
-   how_to_use
-   how_to_contribute
-   how_to_build_docs
-   how_to_distribute
+    in_brief
+    user_manual
+    developer_guide
+    license
+    credits
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 

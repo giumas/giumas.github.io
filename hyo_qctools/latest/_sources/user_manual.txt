@@ -1,0 +1,12 @@
+User manual
+===========
+
+Contents
+--------
+
+.. toctree::
+    :maxdepth: 2
+
+    user_manual_survey
+    user_manual_chart
+    user_manual_supported_formats

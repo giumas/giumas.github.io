@@ -1,0 +1,18 @@
+Todolist
+========
+
+Survey Review
+-------------
+
+* Improve robustness for candidate fliers (aka, **Find fliers v3**)
+
+
+Chart Review
+------------
+
+* Evaluate chart-scale soundings versus survey-scale soundings via **triangle rule**
+
+* **Scan HCell features** to ensure proper attribution
+
+
+
