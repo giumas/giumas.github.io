@@ -14,5 +14,5 @@ The **Survey Review** tab will:
 
 * Ensure surveyed features are properly accounted for in the :index:`gridded bathymetry` (see :ref:`valsou-checks-label`).
 
-* Export :index:`bottom samples` to a text file for archival (see :ref:`sbdare-checks-label`).
+* Export :index:`bottom samples` to a text file for archival (see :ref:`sbdare-export-label`).
 

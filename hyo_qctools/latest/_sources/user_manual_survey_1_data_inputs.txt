@@ -25,10 +25,10 @@ Ingest bathymetric grids and feature files.
     single: detect fliers
     single: scan features
     single: VALSOU checks
-    single: SBDARE checks
+    single: SBDARE export
 
 * With the addition of a grid and features, the **Detect fliers**, **Scan features**,
-  **VALSOU checks**, and **SBDARE checks** tabs on the bottom of the interface are now available:
+  **VALSOU checks**, and **SBDARE export** tabs on the bottom of the interface are now available:
 
 .. image:: _static/survey.png
     :align: center
