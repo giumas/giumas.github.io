@@ -10,12 +10,19 @@ Scan features to ensure proper attribution.
 
 * Select the **Scan features** tab on the bottom of the QC Tools interface.
 
-* In **Parameters**, turn the knob to select either the **Office** or **Field** profile.
+* In **Parameters**: 
+
+	# Turn the knob to select either the **Office** or **Field** profile.
+	# Turn the knob to select the applicable year as pertaining to required Hydrographic Survey Specifications.
 
 .. index::
     single: feature scan
 
-* Click **Feature scan v2**.
+* In **Execution**, click **Feature scan v2** or **Feature scan v3** (note, only v3 accomodates toggling the year of required specifications. v3 is recommended for all use, and v2 is expected to be deprecated after additional testing).
+
+.. image:: _static/feature_scan_interface.png
+    :align: center
+    :alt: logo
 
 * After computing, the output window opens automatically, and the results are shown:
 

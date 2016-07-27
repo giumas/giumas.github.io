@@ -13,7 +13,16 @@ Ensure surveyed features are properly accounted for in the gridded bathymetry.
 .. index::
     single: VALSOU checks
 
-* Click **VALSOU check v2**.
+* In **Parameters**:
+
+	# Turn the knob to select the applicable year as pertaining to required Hydrographic Survey Specifications.
+	# Enter in the applicable survey scale (e.g. 10,000 or 20,000, etc.).
+
+* In **Execution**, click **VALSOU check v2** or **VALSOU check v3** (note, only v3 accomodates toggling the year of required specifications or the survey scale input. v3 is recommended for all use, and v2 is expected to be deprecated after additional testing).
+
+.. image:: _static/valsou_check_interface.png
+    :align: center
+    :alt: logo
 
 * After computing, the output window opens automatically, and the results are shown (note, the check considers all
   combination of grids and features files loaded. If there is no overlap found between a grid and feature file,

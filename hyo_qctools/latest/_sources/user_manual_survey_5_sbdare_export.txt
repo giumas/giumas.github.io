@@ -12,6 +12,10 @@ Export bottom samples to a text file for archival.
 
 * Click **SBDARE export v2**.
 
+.. image:: _static/sbdare_export_interface.png
+    :align: center
+    :alt: logo
+
 * After computing, the output window opens automatically, and the results are shown:
 
 .. image:: _static/sbdare_results.png

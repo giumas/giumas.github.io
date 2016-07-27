@@ -18,9 +18,13 @@ Scan grids for anomalous grid data "fliers".
 .. index::
     single: find fliers
 
-* In **Execution**, select **Find fliers v1** or **Find fliers v2** (note, these use the same algorithm and one
+* In **Execution**, click **Find fliers v1** or **Find fliers v2** (note, these use the same algorithm and one
   may expect the same output, only v2 has been optimized for faster operation, and v1 is expected to be deprecated
   after additional testing).
+
+.. image:: _static/flier_finder_interface.png
+    :align: center
+    :alt: logo
 
 * After computing, the output window opens automatically, and the results are shown:
 
