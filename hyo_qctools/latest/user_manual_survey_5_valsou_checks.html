@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.5. VALSOU checks &mdash; HydrOffice QC Tools 1.1.1 documentation</title>
+    <title>2.1.6. VALSOU checks &mdash; HydrOffice QC Tools 1.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.1.1',
+        VERSION:     '1.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="HydrOffice QC Tools 1.1.1 documentation" href="index.html" />
+    <link rel="top" title="HydrOffice QC Tools 1.2.0 documentation" href="index.html" />
     <link rel="up" title="2.1. Survey Review" href="user_manual_survey.html" />
-    <link rel="next" title="2.1.6. SBDARE export" href="user_manual_survey_5_sbdare_export.html" />
-    <link rel="prev" title="2.1.4. Scan features" href="user_manual_survey_3_scan_features.html" /> 
+    <link rel="next" title="2.1.7. SBDARE export" href="user_manual_survey_6_sbdare_export.html" />
+    <link rel="prev" title="2.1.5. Scan features" href="user_manual_survey_4_scan_features.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -36,12 +36,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="user_manual_survey_5_sbdare_export.html" title="2.1.6. SBDARE export"
+          <a href="user_manual_survey_6_sbdare_export.html" title="2.1.7. SBDARE export"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="user_manual_survey_3_scan_features.html" title="2.1.4. Scan features"
+          <a href="user_manual_survey_4_scan_features.html" title="2.1.5. Scan features"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.1.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.2.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="user_manual.html" >2. User manual</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="user_manual_survey.html" accesskey="U">2.1. Survey Review</a> &raquo;</li> 
       </ul>
@@ -55,15 +55,15 @@
 <div class="deck">
 
     <p>
-    This document describes the HydrOffice QC Tools application (1.1). For the project page,
+    This document describes the HydrOffice QC Tools application (1.2). For the project page,
     <a href="https://www.hydroffice.org/qctools/main">go here</a>.
     </p>
 
 </div>
     <div class="section" id="valsou-checks">
-<span id="valsou-checks-label"></span><h1>2.1.5. VALSOU checks<a class="headerlink" href="#valsou-checks" title="Permalink to this headline">¶</a></h1>
+<span id="valsou-checks-label"></span><h1>2.1.6. VALSOU checks<a class="headerlink" href="#valsou-checks" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="how-to-use">
-<span id="index-0"></span><h2>2.1.5.1. How To Use?<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
+<span id="index-0"></span><h2>2.1.6.1. How To Use?<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
 <p>Ensure surveyed features are properly accounted for in the gridded bathymetry.</p>
 <ul class="simple">
 <li>Select the <strong>VALSOU checks</strong> tab on the bottom of the QC Tools interface.</li>
@@ -99,7 +99,7 @@ no output is generated, and the summary will report &#8220;no overlap&#8221;):</
 </div>
 </div>
 <div class="section" id="how-does-it-work">
-<h2>2.1.5.2. How Does It Work?<a class="headerlink" href="#how-does-it-work" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.6.2. How Does It Work?<a class="headerlink" href="#how-does-it-work" title="Permalink to this headline">¶</a></h2>
 <p>The grid is scanned for features expected to be represented in the grid as per specification; in this case, the 2015 or 2016 NOAA Hydrographic Survey Specifications. These features are new or updated wrecks, rocks, and obstructions, and a grid node should be found that agrees with the feature VALSOU. In most cases, this grid node should located within one grid resolution horizontally, though in some cases (such as features not submerged) this requirement is relaxed, so the grid node may be within 2mm at survey scale to the feature.</p>
 <p>The VALSOU checks logic is as follows:</p>
 <img alt="logo" class="align-center" src="_images/valsou_check_logic.png" />
@@ -137,15 +137,15 @@ no output is generated, and the summary will report &#8220;no overlap&#8221;):</
   <img class="logo" src="_static/favicon.png" alt="Logo"/>
 </a></p>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="user_manual_survey_3_scan_features.html"
-                        title="previous chapter">2.1.4. Scan features</a></p>
+  <p class="topless"><a href="user_manual_survey_4_scan_features.html"
+                        title="previous chapter">2.1.5. Scan features</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="user_manual_survey_5_sbdare_export.html"
-                        title="next chapter">2.1.6. SBDARE export</a></p>
+  <p class="topless"><a href="user_manual_survey_6_sbdare_export.html"
+                        title="next chapter">2.1.7. SBDARE export</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/user_manual_survey_4_valsou_checks.txt"
+      <li><a href="_sources/user_manual_survey_5_valsou_checks.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -170,12 +170,12 @@ no output is generated, and the summary will report &#8220;no overlap&#8221;):</
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="user_manual_survey_5_sbdare_export.html" title="2.1.6. SBDARE export"
+          <a href="user_manual_survey_6_sbdare_export.html" title="2.1.7. SBDARE export"
              >next</a> |</li>
         <li class="right" >
-          <a href="user_manual_survey_3_scan_features.html" title="2.1.4. Scan features"
+          <a href="user_manual_survey_4_scan_features.html" title="2.1.5. Scan features"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.1.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.2.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="user_manual.html" >2. User manual</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="user_manual_survey.html" >2.1. Survey Review</a> &raquo;</li> 
       </ul>

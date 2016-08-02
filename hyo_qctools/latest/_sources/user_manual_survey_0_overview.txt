@@ -10,6 +10,8 @@ The **Survey Review** tab will:
 
 * Scan grids for anomalous grid data ":index:`fliers`" (see :ref:`detect-fliers-label`).
 
+* Scan grids for empty grid nodes ":index:`holidays`" (see :ref:`detect-holidays-label`).
+
 * Scan features to ensure proper attribution (see :ref:`scan-features-label`).
 
 * Ensure surveyed features are properly accounted for in the :index:`gridded bathymetry` (see :ref:`valsou-checks-label`).

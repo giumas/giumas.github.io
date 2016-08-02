@@ -1,0 +1,83 @@
+.. _detect-holidays-label:
+
+Detect holidays
+---------------
+
+.. index::
+    single: holidays
+
+How To Use?
+^^^^^^^^^^^    
+    
+Scan grids for unpopulated nodes ("holidays").
+
+* Select the **Detect holidays** tab on the bottom of the QC Tools interface.
+
+.. index::
+    single: holidays; coverage
+
+* In **Parameters**, turn the knob to select **All holes**, **Object detection**, or **Full coverage**.
+
+.. index::
+    single: find holidays
+
+* In **Execution**, click **Find holiday v1**.
+
+.. image:: _static/detect_holidays_interface.png
+    :align: center
+    :alt: logo
+
+* After computing, the output window opens automatically, and the results are shown:
+
+.. image:: _static/detect_holidays_results.png
+    :align: center
+    :alt: logo
+
+.. index::
+    single: drag-and-drop
+
+* From the output window, drag-and-drop the output into the processing software to guide the review.
+
+|
+
+-----------------------------------------------------------
+
+|
+
+How Does It Work?
+^^^^^^^^^^^^^^^^^
+
+The grid is scanned, and any empty grid nodes ("holes") surrounded by populated nodes are identified. These are flagged as holidays per specification; in this case, the 2016 NOAA Hydrographic Survey Specifications.
+
+The specifications have different criteria by which holidays are defined, based on coverage requirements: 
+
+* A holiday under **Object Detection** coverage requirements is defined as three or more collinear, contiguous unpopulated nodes sharing adjacent sides. 
+
+* A holiday under **Full Coverage** requirements is defined as a box of three by three unpopulated nodes. 
+
+* There is also the option to simply flag all unpopulated nodes as holidays, by selecting the **All holes** setting.
+
+Note that the upper limit on holiday identification is 200 nodes, meaning that if the holiday consists of 200 nodes or more, it will not be flagged on a holiday. This limit exists so shoal areas outside of survey limits will not be flagged as holidays, causing undue clutter. Real holidays of more than 200 nodes will not be flagged, but hopefully will be obvious to the user.
+
+To illustrate the results of the three different Parameter settings are three different examples below. Note that the output of Holiday Finder is a sounding, with a value (in meters) equivalent to the area of the hole.
+
+* In the below example, the **All holes** setting marks three holes of 12, 7, and 2 nodes. 
+
+.. image:: _static/all_holes.png
+    :align: center
+    :alt: logo
+
+* In the below example, Object Detection requirements identify the holes of 12 and 7 nodes, because each has 3 collinear, contiguous unpopulated nodes. The hole with 2 grids does not.
+
+.. image:: _static/object_detection.png
+    :align: center
+    :alt: logo
+
+* In the below example, Full Coverage requirements identify the hole of 12 grid nodes, because there it contains an instance of 3x3 unpopulated grid nodes. The holes with 7 and 2 nodes do not.
+
+.. image:: _static/full_coverage.png
+    :align: center
+    :alt: logo
+
+
+
