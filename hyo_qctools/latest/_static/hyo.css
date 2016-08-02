@@ -346,8 +346,12 @@ blockquote {
 }
 
 ul {
-    margin: 10px 0 10px 30px;
+    margin: 4px 0 8px 20px;
     padding: 0;
+}
+
+ol.arabic {
+    padding-bottom: 10px;
 }
 
 pre {

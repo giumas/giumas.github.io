@@ -6,6 +6,9 @@ Detect fliers
 .. index::
     single: fliers
 
+How To Use?
+^^^^^^^^^^^    
+    
 Scan grids for anomalous grid data "fliers".
 
 * Select the **Detect fliers** tab on the bottom of the QC Tools interface.
@@ -36,4 +39,51 @@ Scan grids for anomalous grid data "fliers".
     single: drag-and-drop
 
 * From the output window, drag-and-drop the output into the processing software to guide the review.
+
+|
+
+-----------------------------------------------------------
+
+|
+
+How Does It Work?
+^^^^^^^^^^^^^^^^^
+
+The grid is scanned, and any rise and fall pairings (for a shoal flier) or fall and rise pairings (for a deep flier) that both exceed the flier height parameter and that occur over a horizontal distance of 3 grid nodes will be flagged as a potential flier. 
+
+In other words, to register as a potential flier, there are three requirements:
+
+#. A depth change exceeding the flier height parameter.
+
+#. A depth change in the opposite direction as the first, also exceeding the flier height parameter.
+
+#. #1 and #2 must occur within 3 grid nodes horizontally. 
+
+To illustrate the requirements are four examples:
+
+* In the below example, no flier is registered because there is no fall to pair with the rise.
+
+.. image:: _static/no_flier_slope.png
+    :align: center
+    :alt: logo
+
+* In the below example, no flier is registered because the fall does not occur within 3 grid nodes of the rise.
+
+.. image:: _static/no_flier_window.png
+    :align: center
+    :alt: logo
+
+* In the below example, no flier is registered because the rise and fall pairing does not exceed the flier height parameter.
+
+.. image:: _static/no_flier_height.png
+    :align: center
+    :alt: logo
+
+* In the below example, a flier is registered because the rise and fall pairings exceed the flier height parameter and occur within 3 grid nodes.
+
+.. image:: _static/flier.png
+    :align: center
+    :alt: logo
+
+
 

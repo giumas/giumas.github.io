@@ -1,9 +1,9 @@
 How to distribute
-=================
+-----------------
 
 
 Requirements
-------------
+^^^^^^^^^^^^
 
 To bump the version, you need ``bumpversion``:
 
@@ -11,7 +11,7 @@ To bump the version, you need ``bumpversion``:
 
 
 Update the version
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Once installed, you can run something like:
 

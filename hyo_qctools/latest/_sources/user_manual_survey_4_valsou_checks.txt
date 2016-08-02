@@ -5,6 +5,9 @@ VALSOU checks
 
 .. index::
     single: VALSOU
+    
+How To Use?
+^^^^^^^^^^^
 
 Ensure surveyed features are properly accounted for in the gridded bathymetry.
 
@@ -15,8 +18,10 @@ Ensure surveyed features are properly accounted for in the gridded bathymetry.
 
 * In **Parameters**:
 
-	# Turn the knob to select the applicable year as pertaining to required Hydrographic Survey Specifications.
-	# Enter in the applicable survey scale (e.g. 10,000 or 20,000, etc.).
+	#. Turn the knob to select the applicable year as pertaining to required Hydrographic Survey Specifications.
+
+	#. Enter in the applicable survey scale (e.g. 10,000 or 20,000, etc.).
+
 
 * In **Execution**, click **VALSOU check v2** or **VALSOU check v3** (note, only v3 accomodates toggling the year of required specifications or the survey scale input. v3 is recommended for all use, and v2 is expected to be deprecated after additional testing).
 
@@ -34,4 +39,53 @@ Ensure surveyed features are properly accounted for in the gridded bathymetry.
 
 * From the output window, drag-and-drop the output into the processing software to guide the review.
 
+|
 
+-----------------------------------------------------------
+
+|
+
+How Does It Work?
+^^^^^^^^^^^^^^^^^
+
+The grid is scanned for features expected to be represented in the grid as per specification; in this case, the 2015 or 2016 NOAA Hydrographic Survey Specifications. These features are new or updated wrecks, rocks, and obstructions, and a grid node should be found that agrees with the feature VALSOU. In most cases, this grid node should located within one grid resolution horizontally, though in some cases (such as features not submerged) this requirement is relaxed, so the grid node may be within 2mm at survey scale to the feature.
+
+The VALSOU checks logic is as follows:
+
+.. image:: _static/valsou_check_logic.png
+    :align: center
+    :alt: logo
+
+The following is an example to illustrate the search radius, and the possible results, from a feature evaluated under relaxed positioning criteria, which is 2mm at survey scale.
+
+* First, we understand the radii involved. In the circles below, the inner radius is 2mm at survey scale, and we require the feature to reside in this radius. The outer radius is 4mm at survey scale, and this is the extent to which the grid will be searched for the feature in question.
+
+.. image:: _static/radii.png
+    :align: center
+    :alt: logo
+
+* In the below example, the feature is located in the center of the grid, with a VALSOU = 1.67m. We find a grid node within the inner radius with a depth of 1.67m, thus there is both a depth and location match.
+
+.. image:: _static/depth_and_location_match.png
+    :align: center
+    :alt: logo
+
+* In the below example, the feature is located in the center of the grid, with a VALSOU = 1.67m. We find a grid node within the search radius with a depth of 1.67m, however, it is outside of the inner radius. The depth match is found, however, the location is marked as a discrepancy.
+
+.. image:: _static/depth_match_only.png
+    :align: center
+    :alt: logo
+
+* In the below example, the feature is located in the center of the grid, with a VALSOU = 1.65m. We do not find this grid node within the search radius, so there is a depth discrepancy. However, the grid node closest in value to 1.67 is found within the inner radius, so the location check passes.
+
+.. image:: _static/location_match_only.png
+    :align: center
+    :alt: logo
+
+* In the below example, the featue is located in the center of the grid, with a VALSOU = 1.67m. We do not find this grid node within the search radius, so there is a depth discrepancy. Furthermore, the grid node closest in value to the feature VALSOU resides outside of the inner search radius, so a location discrepancy is also given.
+
+.. image:: _static/no_match.png
+    :align: center
+    :alt: logo
+
+Note, in the case of the more stringent positioning requirement, the above logic still applies, and the search radius is 4mm at survey scale; however, the inner search radius (equivalent to the grid resolution) is much smaller.

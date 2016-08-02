@@ -2,7 +2,7 @@ Survey Review
 =============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     user_manual_survey_0_overview
     user_manual_survey_1_data_inputs
