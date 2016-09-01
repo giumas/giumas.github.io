@@ -15,5 +15,7 @@ Feel free to contact us for comments and suggestions:
 
 * `Giuseppe Masetti <mailto:gmasetti@ccom.unh.edu>`_
 
+* `Jack Riley <mailto:jack.riley@noaa.gov>`_
+
 
 For bugs and feature requests: `hydroffice.qctools@ccom.unh.edu <mailto:hydroffice.qctools@ccom.unh.edu>`_
