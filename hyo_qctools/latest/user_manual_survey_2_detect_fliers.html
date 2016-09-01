@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.3. Detect fliers &mdash; HydrOffice QC Tools 1.2.0 documentation</title>
+    <title>2.1.3. Detect fliers &mdash; HydrOffice QC Tools 1.4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2.0',
+        VERSION:     '1.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="HydrOffice QC Tools 1.2.0 documentation" href="index.html" />
+    <link rel="top" title="HydrOffice QC Tools 1.4.0 documentation" href="index.html" />
     <link rel="up" title="2.1. Survey Review" href="user_manual_survey.html" />
     <link rel="next" title="2.1.4. Detect holidays" href="user_manual_survey_3_detect_holidays.html" />
     <link rel="prev" title="2.1.2. Data inputs" href="user_manual_survey_1_data_inputs.html" /> 
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="user_manual_survey_1_data_inputs.html" title="2.1.2. Data inputs"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.4.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="user_manual.html" >2. User manual</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="user_manual_survey.html" accesskey="U">2.1. Survey Review</a> &raquo;</li> 
       </ul>
@@ -55,7 +55,7 @@
 <div class="deck">
 
     <p>
-    This document describes the HydrOffice QC Tools application (1.2). For the project page,
+    This document describes the HydrOffice QC Tools application (1.4). For the project page,
     <a href="https://www.hydroffice.org/qctools/main">go here</a>.
     </p>
 
@@ -68,19 +68,55 @@
 <ul class="simple">
 <li>Select the <strong>Detect fliers</strong> tab on the bottom of the QC Tools interface.</li>
 </ul>
-<ul class="simple" id="index-1">
+<ul id="index-1">
+<li><p class="first">For <strong>Flier finder v2:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
 <li>In <strong>Parameters</strong>, enter the <strong>Flier height</strong> in meters.</li>
+<li>In <strong>Execution</strong>, click <strong>Find fliers v2</strong>.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">For <strong>Flier finder v3</strong>, first consider <strong>Parameters:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>The <strong>Flier height</strong> will be determined automatically by the program and does not need to be set, but the user may choose to do so in order to run a specific <strong>Flier height</strong>.</li>
+<li>Default <strong>Checks</strong> are enabled and are recommended for standard use, but these too may be enabled or disabled in order to run custom checks (see the &#8220;How Does It Work?&#8221; section below).</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">To change the <strong>Parameters</strong> for <strong>Flier finder v3</strong>:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Click the <strong>Unlock</strong> button, and click <strong>OK</strong> to the dialogue.</p>
+</li>
+<li><p class="first">If desired, enter a desired Flier search height in meters in the <strong>Force flier heights</strong> box.</p>
+<blockquote>
+<div><ul class="simple">
+<li>A single height may be entered to apply to all loaded grids, or multiple heights may be entered (separated by comma) to apply to each grid loaded.</li>
+<li>These values, if entered, will override any <strong>Estimated heights</strong> determined by the program.</li>
 </ul>
-<ul class="simple" id="index-2">
-<li>In <strong>Execution</strong>, click <strong>Find fliers v1</strong> or <strong>Find fliers v2</strong> (note, these use the same algorithm and one
-may expect the same output, only v2 has been optimized for faster operation, and v1 is expected to be deprecated
-after additional testing).</li>
+</div></blockquote>
+</li>
+<li><p class="first">Enable or Disable the specific <strong>Checks</strong> to run.</p>
+</li>
+</ol>
+</div></blockquote>
+</li>
 </ul>
 <img alt="logo" class="align-center" src="_images/flier_finder_interface.png" />
+<ul id="index-2">
+<li><p class="first">In <strong>Execution</strong> for <strong>Flier finder v3:</strong></p>
 <ul class="simple">
-<li>After computing, the output window opens automatically, and the results are shown:</li>
+<li>Click <strong>Estimate heights</strong> to determine recommended flier search heights automatically based on the median depth, depth variability, and &#8220;roughness&#8221; of the grid(s) (see the &#8220;How Does It Work?&#8221; section below). The results will populate in <strong>Current flier heights</strong> in <strong>Parameters</strong>.</li>
 </ul>
-<img alt="logo" class="align-center" src="_images/flier_finder_results.png" />
+<img alt="logo" class="align-center" src="_images/flier_est_heights.png" />
+<ul class="simple">
+<li>Click <strong>Find fliers v3</strong>. After executing, the output window opens automatically, and the results are shown:</li>
+</ul>
+<img alt="logo" class="align-center" src="_images/flier_output.png" />
+</li>
+</ul>
 <ul class="simple" id="index-3">
 <li>From the output window, drag-and-drop the output into the processing software to guide the review.</li>
 </ul>
@@ -94,6 +130,7 @@ after additional testing).</li>
 </div>
 <div class="section" id="how-does-it-work">
 <h2>2.1.3.2. How Does It Work?<a class="headerlink" href="#how-does-it-work" title="Permalink to this headline">¶</a></h2>
+<p><strong>Flier finder v2:</strong></p>
 <p>The grid is scanned, and any rise and fall pairings (for a shoal flier) or fall and rise pairings (for a deep flier) that both exceed the flier height parameter and that occur over a horizontal distance of 3 grid nodes will be flagged as a potential flier.</p>
 <p>In other words, to register as a potential flier, there are three requirements:</p>
 <ol class="arabic simple">
@@ -118,6 +155,372 @@ after additional testing).</li>
 <li>In the below example, a flier is registered because the rise and fall pairings exceed the flier height parameter and occur within 3 grid nodes.</li>
 </ul>
 <img alt="logo" class="align-center" src="_images/flier.png" />
+<p>Flier Finder v2 is effective, but may result in excessive flags depending on how dynamic the seafloor is and the flier search height used.</p>
+<hr class="docutils" />
+<p><strong>Flier finder v3:</strong></p>
+<p><strong>Estimate height:</strong></p>
+<p>First, a base height from the median depth of the grid is assigned:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Depth Interval</th>
+<th class="head">Base height</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>if &lt; 20</td>
+<td>1.0</td>
+</tr>
+<tr class="row-odd"><td>if &lt; 40</td>
+<td>2.0</td>
+</tr>
+<tr class="row-even"><td>if &lt; 80</td>
+<td>4.0</td>
+</tr>
+<tr class="row-odd"><td>if &lt; 160</td>
+<td>6.0</td>
+</tr>
+<tr class="row-even"><td>if &gt;= 160</td>
+<td>8.0</td>
+</tr>
+</tbody>
+</table>
+<p>Then, the base height is incrementally increased by the level of depth variability and roughness of the grid:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Depth variability is estimated by proxy using the Normalized Median of Absolute Deviation (NMAD) of the grid, which is derived by dividing the absolute difference of depth mean and depth median by depth standard deviation.</p>
+<blockquote>
+<div><ul class="simple">
+<li>The lower the NMAD, the more depth variability we estimate.</li>
+<li>An increase in the Base height of the flier search height estimation is warranted if NMAD is less than 0.20 (1 increase) or less than 0.10 (2 increases).</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Roughness is estimated by the standard deviation of the Gaussian curvature (STD_CURV).</p>
+<blockquote>
+<div><ul class="simple">
+<li>The Gaussian curvature is a measure of concavity at each node, whether concave up (shoal) or concave down (deep).</li>
+<li>The higher the STD_CURV, the rougher the surface.</li>
+<li>An increase in the Base height of the flier search height estimation is warrented if STD_CURV is greater than 0.01 (1 increase) or greater than 0.10 (2 increases).</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+<p>Increases are +2.0 meters, unless the Base height is 1.0 meter, then the increase is +1.0 meter. In this manner, Estimated flier heights are always on the interval scale of 1 (minimum), 2, 4, 6, 8, 10, 12, 14, 16 (maximum).</p>
+<p>For example:</p>
+<ul class="simple">
+<li>if a surface has depth median = 12 m, NMAD = 0.15, and STD_CURV = 0.005, then the Estimated height = 2.0 m.</li>
+<li>if a surface has depth median = 75 m, NMAD = .04, and STD_CURV = 0.08, then the Estimated height = 10.0 m.</li>
+</ul>
+<hr class="docutils" />
+<p><strong>Checks:</strong></p>
+<p><strong>Laplacian Operator</strong></p>
+<p>The Laplacian Operator is a measure of curvature at each node. It is equivalent to summing the depth gradients of the four nodes adjacent (north, south, east, and west) to each node. If the absolute value of the Laplacian Operator is greater than four times the flier search height, the node will be flagged.</p>
+<p>In the example below, a 3 m flier search height would register 1 flag, while a 2 m flier search height would register 4 flags, and a 1m search height would register 7 flags.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="4">Depth Layer</th>
+<th class="head">&nbsp;</th>
+<th class="head" colspan="4">Laplace</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>8</td>
+<td>9</td>
+<td>6</td>
+<td>&nbsp;</td>
+<td>1</td>
+<td>4</td>
+<td>10</td>
+<td>9</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>9</td>
+<td>3</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>7</td>
+<td>24</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The algorithm is effective, but may be prone to excessive flags, as demonstrated in the above example. Testing showed that it generally did not reveal fliers not already revealed by the other algorithms. For these reasons, it is disabled by default, but is recommended as an additional check in those situations when the other algorithms return very few or no flags.</p>
+<p>The example below shows grid nodes (depths in meters) recommended for further examination by the Laplacian Operator (indicated by 1s) and a 6m estimated search height.</p>
+<img alt="logo" class="align-center" src="_images/laplace_ex.png" />
+<hr class="docutils" />
+<p><strong>Gaussian Curvature</strong></p>
+<p>The Gaussian Curvature is a measure of concavity at each node. The gradients are taken in the x and y directions to establish gx and gy, and repeated on each gradient again in the x and y direction to establish gxx, gxy, gyx, and gyy (note that gxy = gyx). The gaussian curvature at each node is then determined by:</p>
+<p>(gxx *  gyy - (gxy * gyx)) / (1 + (gx^2) + (gy^2))^2</p>
+<p>If the resulting gaussian curvature at a particular node is greater than 6, it will be flagged. Note that this algorithm is independent of flier search height.</p>
+<p>In the example below, a single flier is found (regardless of flier height).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="4">Depth Layer</th>
+<th class="head">&nbsp;</th>
+<th class="head" colspan="4">Gaussian Curvature</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>-1</td>
+<td>0</td>
+<td>-1</td>
+<td>-.09</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>8</td>
+<td>9</td>
+<td>6</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>-2.3</td>
+<td>0</td>
+<td>-.14</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>9</td>
+<td>3</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>-2.5</td>
+<td>0</td>
+<td>20</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>-9</td>
+<td>0</td>
+<td>-36</td>
+</tr>
+</tbody>
+</table>
+<p>Testing showed that the algorithm on occasion offered unique value by flagging a flier not captured by other algorithms, while also it is not prone to excessive flags. For these reasons this algorithm is enabled by default.</p>
+<p>The example below shows grid nodes (depths in meters) and a deep flier found by the Gaussian Curvature (indicated by the red 2).</p>
+<img alt="logo" class="align-center" src="_images/gauss_ex.png" />
+<hr class="docutils" />
+<p><strong>Adjacent Cells</strong></p>
+<p>This algorithm examines the nodes that are adjacent to a single node. There are a maximum of 8 adjacent nodes (N,NW,W,SW,S,SE,E,NE), but there could be less than 8 if the node resides on a grid edge. The depth is differenced with each adjacent cell, and the number of times the difference is greater in magnitude than the flier search height is tallied. If the ratio of this tally to the number of adjacent cells available is 0.8 or greater, then the node is flagged.</p>
+<p>In the example below, a 3 m flier search height would register 2 flags, while a 2m search height would also register 2 flags, and a 1m search height would register 3 flags.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="4">Depth Layer</th>
+<th class="head">&nbsp;</th>
+<th class="head" colspan="4">Adjacent Cells(3m)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>.2</td>
+<td>.33</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>8</td>
+<td>9</td>
+<td>6</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>.13</td>
+<td>.25</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>9</td>
+<td>3</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>.4</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>.2</td>
+<td>.2</td>
+<td>.33</td>
+</tr>
+</tbody>
+</table>
+<p>Testing showed that the Adjacent Cells algorithm offers unique value by flagging fliers not captured by the other algorithms (especially those residing on grid edges), and is not as prone to excessive flagging as the Laplacian Operator. For these reasons, it is enabled by default.</p>
+<p>The example below shows grid nodes (depths in meters) and the type of flier that Adjacent Cells (indicated by the red 3) identifies with particular effectiveness, in this case with a 4m search height.</p>
+<img alt="logo" class="align-center" src="_images/adj_ex.png" />
+<hr class="docutils" />
+<p><strong>Edge Slivers</strong></p>
+<p>The Edge Slivers algorithm identifies small groups of connected nodes (3 nodes or less) that are detached (but within 5 nodes) from the grid. If the depth difference between the nearest detached node and the valid connection to the grid is greater than half the flier search height, a flag is registered.</p>
+<p>Testing showed that the algorithm offers unique value by identifying the quite common fliers that result in areas of sparse data density. For this reason, it is enabled by default.</p>
+<p>The example below shows grid nodes (depths in meters) and the type of detached nodes that Edge Slivers flags, in this case with a 4m search height.</p>
+<img alt="logo" class="align-center" src="_images/edge_ex.png" />
+<hr class="docutils" />
+<p><strong>Isolated Nodes</strong></p>
+<p>The Isolated Nodes algorithm identifies small groups of connected nodes (3 nodes or less) that are detached (but outside of 5 nodes) of the grid. Effectively it is identifying the remaining isolated nodes not caught by Edge Slivers, however, it is independent of flier search height, meaning that all small groups of isolated nodes will be flagged.</p>
+<p>Testing shows that the algorithm offers unique value by identifying nodes far detached from the grid that the reviewer may wish to exclude. Because it is identifying any detached nodes and not considering their associated depth, it is largely considered a separate tool to be used on an &#8220;as-needed&#8221; basis. Therefore, it is not enabled by default.</p>
+<p>The example below shows a grid node far detached from the main grid, found by Isolated Nodes (indicated by a red 5).</p>
+<img alt="logo" class="align-center" src="_images/iso_ex.png" />
+<hr class="docutils" />
+<p><strong>Which Flier Finder Algorithm Should I Use?</strong></p>
+<p><strong>For basic use:</strong></p>
+<ul class="simple">
+<li>Flier Finder v3 with the default options is recommended and is intended as a standardized operation of this tool.</li>
+<li>Simply click <strong>Estimate Height</strong>, and after the program determines a recommended flier search height, click <strong>Find fliers v3</strong> (see the &#8220;How To Use?&#8221; section above).</li>
+</ul>
+<p><strong>For advanced use:</strong></p>
+<ul class="simple">
+<li>If the default options generate too few flags, and/or it is desired to perform a custom search, you may force a smaller flier height, and/or utilize another algorithm, such as the &#8220;Laplace Operator&#8221; or &#8220;Flier Finder v2&#8221;.</li>
+<li>The &#8220;Isolated Nodes&#8221; algorithm is used to find nodes detached from the grid and is an independent check to be used on an as-needed basis.</li>
+</ul>
+<p>A summary of the checks is shown in the table below, and also see the &#8220;How Does It Work?&#8221; section to understand how each check works. Unique value means that the check was observed to flag a real flier during testing that none of the other checks captured.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head">v2</th>
+<th class="head">v3
+Lap
+#1</th>
+<th class="head">v3
+Gau
+#2</th>
+<th class="head">v3
+Adj
+#3</th>
+<th class="head">v3
+Edg
+#4</th>
+<th class="head">v3
+Iso
+#5</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Unique value proven</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>o</td>
+<td>o</td>
+<td>o</td>
+<td>o</td>
+</tr>
+<tr class="row-odd"><td>Flier height required</td>
+<td>o</td>
+<td>o</td>
+<td>&nbsp;</td>
+<td>o</td>
+<td>o</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Prone to excessive flags</td>
+<td>o</td>
+<td>o</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>o</td>
+</tr>
+<tr class="row-odd"><td>Enabled by default</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>o</td>
+<td>o</td>
+<td>o</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Use on as-needed basis</td>
+<td>o</td>
+<td>o</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>o</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -168,7 +571,7 @@ after additional testing).</li>
         <li class="right" >
           <a href="user_manual_survey_1_data_inputs.html" title="2.1.2. Data inputs"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.2.0 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice QC Tools 1.4.0 documentation</a> &raquo;</li>
           <li class="nav-item nav-item-1"><a href="user_manual.html" >2. User manual</a> &raquo;</li>
           <li class="nav-item nav-item-2"><a href="user_manual_survey.html" >2.1. Survey Review</a> &raquo;</li> 
       </ul>

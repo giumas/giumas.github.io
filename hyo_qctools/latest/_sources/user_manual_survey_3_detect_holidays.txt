@@ -18,10 +18,12 @@ Scan grids for unpopulated nodes ("holidays").
 
 * In **Parameters**, turn the knob to select **All holes**, **Object detection**, or **Full coverage**.
 
+* For **Holiday finder v2** only, set the **Upper limit for holiday areas (in grid nodes)**. Unpopulated parts of the grid larger than this setting will not be flagged as holidays.  
+
 .. index::
     single: find holidays
 
-* In **Execution**, click **Find holiday v1**.
+* In **Execution**, click **Find holiday v1** or **Find holiday v2**.
 
 .. image:: _static/detect_holidays_interface.png
     :align: center
@@ -57,8 +59,6 @@ The specifications have different criteria by which holidays are defined, based 
 
 * There is also the option to simply flag all unpopulated nodes as holidays, by selecting the **All holes** setting.
 
-Note that the upper limit on holiday identification is 200 nodes, meaning that if the holiday consists of 200 nodes or more, it will not be flagged on a holiday. This limit exists so shoal areas outside of survey limits will not be flagged as holidays, causing undue clutter. Real holidays of more than 200 nodes will not be flagged, but hopefully will be obvious to the user.
-
 To illustrate the results of the three different Parameter settings are three different examples below. Note that the output of Holiday Finder is a sounding, with a value (in meters) equivalent to the area of the hole.
 
 * In the below example, the **All holes** setting marks three holes of 12, 7, and 2 nodes. 
@@ -79,5 +79,12 @@ To illustrate the results of the three different Parameter settings are three di
     :align: center
     :alt: logo
 
+Note that the default **Upper limit for holiday area** is set at 400 nodes, meaning that if an unpopulated part of the grid consists of 400 nodes or more, it will not be flagged as a holiday, regardless of the coverage type selected. This setting exists so the search can be refined at the user's discretion. 
 
+For example:
 
+* If desired to search for only the smallest of holidays, the **Upper limit** might be set at **100**.
+
+* If desired to flag all unpopulated parts of the grid, regardless of their size, the **Upper limit** would be set at **unlimited**.
+
+* Settings in between are used at the discretion of the user, to identify holidays, while also preventing undue clutter in the output.

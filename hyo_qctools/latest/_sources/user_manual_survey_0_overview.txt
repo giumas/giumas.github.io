@@ -12,6 +12,8 @@ The **Survey Review** tab will:
 
 * Scan grids for empty grid nodes ":index:`holidays`" (see :ref:`detect-holidays-label`).
 
+* Computes basic grid statistics to ensure compliance to uncertainty and density requirements ":index:`grid qa`" (see :ref:`grid-qa-label`).
+
 * Scan features to ensure proper attribution (see :ref:`scan-features-label`).
 
 * Ensure surveyed features are properly accounted for in the :index:`gridded bathymetry` (see :ref:`valsou-checks-label`).

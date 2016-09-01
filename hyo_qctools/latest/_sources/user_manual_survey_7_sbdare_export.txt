@@ -1,0 +1,26 @@
+.. _sbdare-export-label:
+
+SBDARE export
+-------------
+
+Export bottom samples to a text file for archival.
+
+* Select the **SBDARE export** tab on the bottom of the QC Tools interface.
+
+.. index::
+    single: SBDARE export
+
+* Click **SBDARE export v2**.
+
+.. image:: _static/sbdare_export_interface.png
+    :align: center
+    :alt: logo
+
+* After computing, the output window opens automatically, and the results are shown:
+
+.. image:: _static/sbdare_results.png
+    :align: center
+    :alt: logo
+
+* The output is in the proper format for archival.
+
