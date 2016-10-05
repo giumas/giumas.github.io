@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2.2. Server Mode &mdash; HydrOffice Sound Speed 3.0.a2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.0.a2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice Sound Speed 3.0.a2 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice Sound Speed 3.0.a2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice Sound Speed library and manager (3.0). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_soundspeed">go here</a>.
+    </p>
+
+</div>
+    <div class="section" id="server-mode">
+<span id="id1"></span><h1>Server Mode<a class="headerlink" href="#server-mode" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">The <em>Server mode</em> is meant for transits during which perhaps one XBT per day might be thrown.
+For much of the world oceans, using the WOA is a reasonable substitute for <em>in situ</em> measurements
+(<em>Beaudoin et al., 2011</em>).</p>
+<p>Given that transit data are usually a lower priority, this mode supports continuous underway logging of multibeam data
+that are refraction corrected, using the mean temperature and salinity profiles provided by oceanographic models.
+This mode should not be used if SSPs are going to be collected on a regular basis.</p>
+<p>A preliminary requirement to run the <em>Server Mode</em> is that position and surface sound speed are received from <em>SIS</em>.
+This can be checked by looking in the status bar.</p>
+<p>When this mode is active, all the user’s manual functionalities becomes unavailable until the <em>Server mode</em> is stopped.
+The last sent profile is displayed in the view panel and all three plot panels are colored green.
+The mode can be stopped by selecting <em>Stop</em> under the <em>Server</em> menu. Closing the application will also stop the server.
+To guard against accidentally overwriting a profile that was uploaded by the operator after the server was started,
+this mode verifies with SIS that nothing has been uploaded since the last synthetic cast was delivered.</p>
+<p>If the package finds that a profile has been uploaded, either by another program or a person, it will stop serving
+WOA data to SIS and will notify the user.</p>
+<div class="section" id="serving-to-multiple-clients">
+<h2>Serving to multiple clients<a class="headerlink" href="#serving-to-multiple-clients" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">For installations with multiple clients, the server will deliver the cast sequentially to all clients.
+Failure on transmission to one client will not interfere with other clients.
+Once a client is deemed “dead”, i.e., no reception confirmation is received, no further attempts to send
+to the client are made even if a “dead” client comes back to life (a restart is required).
+If all clients are deemed dead, then the server stops and notifies the user.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><em>SIS</em> will accept and rebroadcast SVP datagrams even if it is not pinging. Thus, to make a client appearing “dead” to the server, you must shutdown <em>SIS</em>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_soundspeed/raw/master/hydroffice/soundspeedmanager/media/favicon.png" alt="Logo"/>
+</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/user_manual_how_to_use_2_server_mode.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice Sound Speed 3.0.a2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>

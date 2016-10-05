@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1.2. Configurations &mdash; HydrOffice Sound Speed 3.0.a2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/hyo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.0.a2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HydrOffice Sound Speed 3.0.a2 documentation" href="index.html" />
+    <link rel="up" title="2.1. Installation" href="user_manual_installation.html" />
+    <link rel="next" title="2.2. How to use" href="user_manual_how_to_use.html" />
+    <link rel="prev" title="2.1.1. Requirements" href="user_manual_installation_1_requirements.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="user_manual_how_to_use.html" title="2.2. How to use"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="user_manual_installation_1_requirements.html" title="2.1.1. Requirements"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice Sound Speed 3.0.a2 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="user_manual.html" >2. User manual</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="user_manual_installation.html" accesskey="U">2.1. Installation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+<div class="deck">
+
+    <p>
+    This document describes the HydrOffice Sound Speed library and manager (3.0). For the source code,
+    <a href="https://bitbucket.org/ccomjhc/hyo_soundspeed">go here</a>.
+    </p>
+
+</div>
+    <div class="section" id="configurations">
+<h1>2.1.2. Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="suggested-configurations">
+<h2>2.1.2.1. Suggested configurations<a class="headerlink" href="#suggested-configurations" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">Given its specific aim, <em>Sound Speed Manager</em> is usually installed to run in one of two configurations:</p>
+<div class="section" id="on-the-machine-used-for-sound-speed-profile-acquisition">
+<h3>2.1.2.1.1. On the machine used for sound speed profile acquisition<a class="headerlink" href="#on-the-machine-used-for-sound-speed-profile-acquisition" title="Permalink to this headline">¶</a></h3>
+<p>This represents a quite common choice since many of the operations accomplished in the software are typically done
+immediately after acquisition of a cast. If the machine is on the same network as the multibeam acquisition workstation,
+the processed profile can be directly delivered via network.
+When this is not possible, the package can export the processed data to files that can then be manually uploaded
+to the multibeam workstation.</p>
+</div>
+<div class="section" id="on-the-multibeam-acquisition-workstation">
+<h3>2.1.2.1.2. On the multibeam acquisition workstation<a class="headerlink" href="#on-the-multibeam-acquisition-workstation" title="Permalink to this headline">¶</a></h3>
+<p>This configuration is particularly useful when it is anticipated that the software will run in Server Mode.
+In fact, it is important that multibeam watch standers are able to monitor the server and to disable it
+in the event that a measured profile is to be uploaded.</p>
+</div>
+</div>
+<div class="section" id="upgrading">
+<h2>2.1.2.2. Upgrading<a class="headerlink" href="#upgrading" title="Permalink to this headline">¶</a></h2>
+<p>You will need to migrate specific configuration settings from your previous installation over
+into the new configuration file. The migration of configuration settings is currently done manually.</p>
+</div>
+<div class="section" id="space-requirements">
+<h2>2.1.2.3. Space requirements<a class="headerlink" href="#space-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Approximately 500MB of additional disk space is required for the WOA09 db set optionally required
+(but warmly suggested) by this hydro-package. If not available, the package will attempt to download it.
+Alternatively, it is also possible to manually download, unpack the WOA09 data set, and modify the configuration file
+to point to the correct path (see <a class="reference internal" href="#package-configuration"><span class="std std-ref">Package configuration</span></a>).</p>
+<p>The WOA13 db provides a much better spatial resolution, but this comes with a much larger data size.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If a previous version of the application was installed, <em>Sound Speed Manager</em> will try to localize already installed
+WOA databases (WOA09 or WOA13).</p>
+</div>
+</div>
+<div class="section" id="package-configuration">
+<span id="id1"></span><h2>2.1.2.4. Package configuration<a class="headerlink" href="#package-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <em>Sound Speed</em> data folder, you can find a configuration file: <code class="docutils literal"><span class="pre">settings.db</span></code>.
+This SQLite database file has to be modified to reflect the chosen software deployment and environment-specific
+configuration settings (e.g., the SIS IP address and ports).</p>
+<p>Use the <em>Settings</em> tab to modify the available configuration options.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you want to use the RTOFS data, Internet (and the port 9090) must be accessible from the machine in use.</p>
+</div>
+</div>
+<div class="section" id="sound-speed-manager-sis-interaction">
+<h2>2.1.2.5. Sound Speed Manager - SIS interaction<a class="headerlink" href="#sound-speed-manager-sis-interaction" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">In order to automatically interact with <em>Kongsberg SIS</em>, some initial configuration are required on the <em>SIS</em> side
+to make it to broadcast a specific subset of datagrams that can then be interpreted by the <em>SSP</em> hydro-package
+(identification codes in parentheses):</p>
+<ul class="simple">
+<li><strong>Position</strong> (‘P’, 80, 0x50): for retrieving current date and position</li>
+<li><strong>Sound Speed Profile</strong> (‘U’, 85, 0x55): checking whether a SSP transmission was successful</li>
+<li><strong>XYZ88</strong> (‘X’, 88, 0x58): to retrieve:<ul>
+<li>The surface sound speed (used in beam forming and steering) and the transducer draft (both used when augmenting SSPs with the measured surface sound speed value).</li>
+<li>The depth (to estimate the approximate water depth). This is used in the sound speed, temperature and salinity plots to help the user appreciate the minimal depth to which the profiles should be extended.</li>
+</ul>
+</li>
+</ul>
+<p><em>Kongsberg SIS</em> can be configured to broadcast datagrams in different ways:</p>
+<div class="section" id="method-1">
+<span id="id2"></span><h3>2.1.2.5.1. Method #1<a class="headerlink" href="#method-1" title="Permalink to this headline">¶</a></h3>
+<p>This method is usually used for the case where the hydro-package and <em>SIS</em> are installed on the same machine.
+However, since the <em>User Defined UDP</em> port cannot be modified, this method may not be suitable if this mechanism is
+already in used by another program.
+In such a case, the <em>DataDistrib.exe</em> program explored in <a class="reference internal" href="#method-3"><span class="std std-ref">Method #3</span></a> may be attempted.</p>
+<p>The configuration for this method is actually quite simple:</p>
+<ul class="simple">
+<li>Stop pinging</li>
+<li>Access the <em>Installation Parameters</em> dialog (see <a class="reference internal" href="#method-1-fig"><span class="std std-ref">SIS Installation parameters dialog, with key settings in red for method_1.</span></a>) from the <em>View</em> menu by choosing <em>Tear off</em> and then <em>Installation Parameters</em></li>
+</ul>
+<div class="align-center figure" id="id5">
+<span id="method-1-fig"></span><a class="reference internal image-reference" href="_images/method1.png"><img alt="figure with method #1" src="_images/method1.png" style="width: 600px; height: 580px;" /></a>
+<p class="caption"><span class="caption-text"><em>SIS Installation parameters</em> dialog, with key settings in red for <a class="reference internal" href="#method-1"><span class="std std-ref">Method #1</span></a>.</span></p>
+</div>
+<ul class="simple">
+<li>Select the <em>PU Communication Setup</em> tab and then choose the <em>Output Setup</em> sub-tab.</li>
+<li>Choose <em>User Defined</em> from the <em>UDP Host Port</em> dropdown menu (the default output port varies with the MBES model). Take a note of this for configuring SSP Manager later.</li>
+<li>Select the following datagrams: <em>Depth</em>, <em>Position</em>, and <em>Sound Speed Profile</em>.</li>
+<li>Click the <em>OK</em> button at the top left of the tabbed panels.</li>
+<li>Restart pinging.</li>
+</ul>
+</div>
+<div class="section" id="method-2">
+<span id="id3"></span><h3>2.1.2.5.2. Method #2<a class="headerlink" href="#method-2" title="Permalink to this headline">¶</a></h3>
+<p>This method is more general, and it can be used for data transmission to other computers on the network
+(by specifying IP address and port, as well as transmission rate).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><em>SIS</em> needs to be restarted for the changes to take effect. Furthermore, since the software does not seem
+to validate user inputs, mistakes made cannot be easily discovered and undone (unsubscribe).</p>
+</div>
+<ul class="simple">
+<li>From the <em>Tools</em> menu, choose <em>Custom…</em> and then <em>Datagram Distribution</em> (see <a class="reference internal" href="#method-2-fig"><span class="std std-ref">Datagram Distribution dialog, with key settings in red for method_2.</span></a>).</li>
+</ul>
+<div class="align-center figure" id="id6">
+<span id="method-2-fig"></span><a class="reference internal image-reference" href="_images/method2.png"><img alt="figure with method #2" src="_images/method2.png" style="width: 400px; height: 460px;" /></a>
+<p class="caption"><span class="caption-text"><em>Datagram Distribution</em> dialog, with key settings in red for <a class="reference internal" href="#method-2"><span class="std std-ref">Method #2</span></a>.</span></p>
+</div>
+<ul class="simple">
+<li>Choose the datagram from the drop down menu, starting with <em>Position (P)</em>.</li>
+<li>Type in the IP address of the remote machine where this hydro-package is installed, immediately followed by a colon (:), then  the port number that the data should be delivered to on the remote machine: e.g., <code class="docutils literal"><span class="pre">192.168.1.67:16103</span></code>.</li>
+<li>Click the <em>Subscribe</em> button.</li>
+<li>Repeat Steps 2-4 for the <em>SVP (U)</em> and the <em>XYZ88 (X)</em> datagrams.</li>
+</ul>
+</div>
+<div class="section" id="method-3">
+<span id="id4"></span><h3>2.1.2.5.3. Method #3<a class="headerlink" href="#method-3" title="Permalink to this headline">¶</a></h3>
+<p>This method is required when multiple software packages need to receive data from <em>SIS</em>, and it represents
+an extension of the previous two methods. It uses a standalone program, named <em>DataDistrib.exe</em>,
+bundled with <em>SIS</em> and usually installed in <em>C:\Program Files\Kongsberg Maritime\SIS\bin</em>
+(together with a configuration file <em>DataDistrib.ini</em> with all the subscriptions).</p>
+<p>It is suggested to add the <em>DataDistrib.exe</em> to the <em>Startup</em> menu (so that it is automatically started).
+However, common backsides of this method is that the executable can be accidentally closed (stopping the data
+distribution to this package), or it can accidentally runs twice corrupting the configuration file
+(to prevent this, it could be made ‘read only’).</p>
+<p>The setup of this method is summarized as follows:</p>
+<ul class="simple">
+<li>If the program is running already, click the icon in the taskbar to launch the graphical user interface (see <a class="reference internal" href="#method-3-fig"><span class="std std-ref">The Data Distrubution application, with key settings in red for method_3.</span></a>). If not, navigate to <em>C:\Program Files\Kongsberg Maritime\SIS\bin</em> and double click on <em>DataDistrib.exe</em> to launch it</li>
+</ul>
+<div class="align-center figure" id="id7">
+<span id="method-3-fig"></span><a class="reference internal image-reference" href="_images/method3.png"><img alt="figure with method #3" src="_images/method3.png" style="width: 600px; height: 360px;" /></a>
+<p class="caption"><span class="caption-text">The <em>Data Distrubution</em> application, with key settings in red for <a class="reference internal" href="#method-3"><span class="std std-ref">Method #3</span></a>.</span></p>
+</div>
+<ul class="simple">
+<li>Find the first empty row and enter the UDP port to which <em>SIS</em> has to distribute data in the left most column. Hit the <em>Enter</em> key to finalize the entry</li>
+<li>In the same row, click on the fourth column and type in the IP address of the remote machine on which this package is installed, immediately followed by a colon (:), then port number that the data should be delivered to on the remote machine: e.g., 192.168.1.67:16103. Again, hit the <em>Enter</em> key to finalize the entry. If SIS is pinging and distributing the data, you should see the packet count increase steadily in the third column.</li>
+</ul>
+</div>
+<div class="section" id="sound-speed-manager-side">
+<h3>2.1.2.5.4. Sound Speed Manager side<a class="headerlink" href="#sound-speed-manager-side" title="Permalink to this headline">¶</a></h3>
+<p>The parameters, present in <em>settings.db</em>, can be modified using the <em>Settings</em> tab.</p>
+<div class="align-center figure" id="id8">
+<a class="reference internal image-reference" href="_images/settings0.png"><img alt="Settings tab" src="_images/settings0.png" style="width: 600px; height: 440px;" /></a>
+<p class="caption"><span class="caption-text">The <em>Settings</em> tab, in red, can be used to inspect/modify the package settings.</span></p>
+</div>
+<p>By default, the <em>Settings</em> tab is in read-only mode. To be able to modify the package settings, you need to unlock it.</p>
+<div class="align-center figure" id="id9">
+<a class="reference internal image-reference" href="_images/settings1.png"><img alt="unlocking the Settings tab" src="_images/settings1.png" style="width: 600px; height: 440px;" /></a>
+<p class="caption"><span class="caption-text">The <em>Settings</em> tab must be unlocked for settings modifications.</span></p>
+</div>
+<p>Once unlocked, you can add a settings profile, or you may want to modify one of the existing ones. For the interaction
+with <em>SIS</em>, you need to access the <em>Output</em> sub-tab and the <em>SIS</em> sub-tab.</p>
+<p>In the <em>Output</em> sub-tab, you have to add a client to the <em>client list</em> you need to specify:</p>
+<ul class="simple">
+<li>a name for the client (for ease of recognition)</li>
+<li>the client IP address to which the data should be sent by <em>Sound Speed Manager</em> (if the package is installed on the same machine as <em>SIS</em>, this should be <code class="docutils literal"><span class="pre">127.0.0.1</span></code>)</li>
+<li>the port to which the client is listening for the sound speed profile (<em>SIS</em> always listens port <code class="docutils literal"><span class="pre">4001</span></code> for SSP input)</li>
+<li>the protocol in use: <code class="docutils literal"><span class="pre">SIS</span></code></li>
+</ul>
+<div class="align-center figure" id="id10">
+<a class="reference internal image-reference" href="_images/settings2.png"><img alt="client list" src="_images/settings2.png" style="width: 600px; height: 440px;" /></a>
+<p class="caption"><span class="caption-text">The <em>Client list</em>, in red, is used to add the <em>SIS</em> client information.</span></p>
+</div>
+<p>In the <em>SIS</em> sub-tab, The <em>List port</em> entry provides the port to which <em>SIS</em> has been configured to broadcast datagrams.
+This should match the port address selected in the previous methods. For instance, <code class="docutils literal"><span class="pre">16103</span></code>.</p>
+<div class="align-center figure" id="id11">
+<a class="reference internal image-reference" href="_images/settings3.png"><img alt="SIS port" src="_images/settings3.png" style="width: 600px; height: 440px;" /></a>
+<p class="caption"><span class="caption-text">The <em>Client list</em>, in red, is used to add the <em>SIS</em> client information.</span></p>
+</div>
+<p>If both <em>SIS</em> and <em>Sound Speed Manager</em> sides have been properly configured, <em>Sound Speed Manager</em> will show (in the right side
+of the lower window statusbar) the date, geographic position, surface sound speed and average depth (when <em>SIS</em> is pinging).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The surface sound speed and depth will only update if the echosounder is pinging (since the surface sound speed information can only be extracted when <em>SSP</em> receives the depth datagram).</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo"><a href="index.html">
+  <img class="logo" src="https://bitbucket.org/ccomjhc/hyo_soundspeed/raw/master/hydroffice/soundspeedmanager/media/favicon.png" alt="Logo"/>
+</a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="user_manual_installation_1_requirements.html"
+                        title="previous chapter">2.1.1. Requirements</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="user_manual_how_to_use.html"
+                        title="next chapter">2.2. How to use</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/user_manual_installation_2_configurations.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="user_manual_how_to_use.html" title="2.2. How to use"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="user_manual_installation_1_requirements.html" title="2.1.1. Requirements"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HydrOffice Sound Speed 3.0.a2 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="user_manual.html" >2. User manual</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="user_manual_installation.html" >2.1. Installation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, University of New Hampshire, Center for Coastal and Ocean Mapping.
+    </div>
+  </body>
+</html>
